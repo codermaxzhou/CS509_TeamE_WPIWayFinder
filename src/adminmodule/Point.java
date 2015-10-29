@@ -13,6 +13,10 @@ public class Point {
     // we can use a JOIN query. Make sure to design the Point table in the database
     // with foreign keys to the map and location
     
+    public Point() {
+    
+    }
+    
     public Point(int x, int y, Type type) {
         this.X = x;
         this.Y = y;

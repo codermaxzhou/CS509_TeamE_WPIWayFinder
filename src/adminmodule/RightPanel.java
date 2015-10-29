@@ -5,6 +5,11 @@
  */
 package adminmodule;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import jdbc.JDBC;
+
 /**
  *
  * @author Yihao
@@ -120,7 +125,14 @@ public class RightPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_resetButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        // TODO add your handling code here:
+        JDBC db = new JDBC();
+        try {
+            db.saveLocations(frame.locations);
+            db.savePoints(frame.points);
+            db.saveEdges(frame.edges);
+        } catch (SQLException ex) {
+            System.out.println("problem saving");
+        }
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void pointButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pointButtonMouseClicked
@@ -131,19 +143,19 @@ public class RightPanel extends javax.swing.JPanel {
     private void pointButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pointButtonMouseReleased
         // TODO add your handling code here:
         frame.button = AdminFrame.Button.POINT;
-        frame.map.addMouseListener(frame);
+        //frame.map.addMouseListener(frame);
     }//GEN-LAST:event_pointButtonMouseReleased
 
     private void locationButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_locationButtonMouseReleased
         // TODO add your handling code here:
         frame.button = AdminFrame.Button.LOCATION;
-        frame.map.addMouseListener(frame);
+        //frame.map.addMouseListener(frame);
     }//GEN-LAST:event_locationButtonMouseReleased
 
     private void edgeButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_edgeButtonMouseReleased
         // TODO add your handling code here:
         frame.button = AdminFrame.Button.EDGE;
-        frame.map.addMouseListener(frame);
+        //frame.map.addMouseListener(frame);
     }//GEN-LAST:event_edgeButtonMouseReleased
 
 

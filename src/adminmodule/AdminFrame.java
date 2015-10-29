@@ -6,15 +6,13 @@
 package adminmodule;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.EventQueue;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
 
 /**
  *
@@ -44,6 +42,7 @@ public class AdminFrame extends JFrame implements MouseListener {
     }
 
     public void init() {
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         map = new MapPanel(this);
         map.setPreferredSize(new Dimension(900, 800));
         //map.addMouseListener(this);
@@ -57,15 +56,30 @@ public class AdminFrame extends JFrame implements MouseListener {
 
         this.setVisible(true);
         Dimension d = new Dimension(1300, 850);
+        //System.out.println(map.getWidth() + " : " + map.getHeight());
         this.setSize(d);
         this.setResizable(false);
+        map.addMouseListener(this);
     }
 
     @Override
     /* left click on the map */
     public void mouseClicked(MouseEvent e) {
 
-        Point newpoint;
+        
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e
+    ) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e
+    ) {
+            Point newpoint;
         Location newlocation;
         Edge newedge;
         int x = e.getX() + map.getHorizontalScrollBar().getValue();
@@ -83,6 +97,7 @@ public class AdminFrame extends JFrame implements MouseListener {
                 }
 
                 newpoint = new Point(x, y, Point.Type.WAYPOINT);
+                newpoint.pointID = -1;
                 points.add(newpoint);
                 System.out.println("add point:" + newpoint.X + ", " + newpoint.Y);
                 System.out.println("point list size:" + points.size());
@@ -102,11 +117,33 @@ public class AdminFrame extends JFrame implements MouseListener {
                 newpoint = new Point(x, y, Point.Type.LOCATION);
                 newlocation = new Location(newpoint);
                 newpoint.location = newlocation;
+                newpoint.pointID = -1;
+                newlocation.locationID = -1;
+                newlocation.name = "test" + x;
+                newlocation.description = "desc" + y;
+                newlocation.category = Location.Category.DINING;
                 points.add(newpoint);
                 locations.add(newlocation);
                 System.out.println("add location:" + newpoint.X + ", " + newpoint.Y);
                 System.out.println("point list size:" + points.size());
                 System.out.println("location list size:" + locations.size());
+                EventQueue.invokeLater(new Runnable()
+         {
+            public void run()
+            {
+               JFrame frame = new LocationEdit(newlocation);
+               frame.setTitle("Location Edit");
+               frame.setSize (500, 500);
+               frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+               frame.setVisible(true);
+               System.out.println("add location:" + newpoint.X + ", " + newpoint.Y);
+               System.out.println("point list size:" + points.size());
+               System.out.println("location list size:" + locations.size());
+               
+               
+            }
+            
+         });
                 repaint();
                 break;
 
@@ -124,12 +161,14 @@ public class AdminFrame extends JFrame implements MouseListener {
                         else if ((startpoint != null) && (endpoint == null) && (temp != startpoint)) {
                             endpoint = temp;
                             newedge = new Edge(startpoint, endpoint);
+                            newedge.edgeID = -1;
                             edges.add(newedge);
                             System.out.println("add edge weight:" + newedge.weight);
                             System.out.println("edge list size:" + edges.size());
                             startpoint = null;
                             endpoint = null;
                             repaint();
+                            return;
                         } else {
                             return;
                         }
@@ -137,19 +176,6 @@ public class AdminFrame extends JFrame implements MouseListener {
                 }
             break;
         }
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e
-    ) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e
-    ) {
-
     }
 
     @Override

@@ -26,7 +26,7 @@ public class MapPanel extends JScrollPane {
     public MapPanel(AdminFrame frame) {
         this.frame = frame;
         this.setLayout(new ScrollPaneLayout());
-        image = new ImageIcon("/Users/Yihao/NetBeansProjects/AdminModule/src/maps/refined_project_floor_1.png").getImage();
+        image = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_1.png")).getImage();
 
         //JLabel label = new JLabel(image);
         //this.getViewport().add(label);
@@ -36,7 +36,7 @@ public class MapPanel extends JScrollPane {
     public void paint(Graphics g) {
         super.paint(g);
 
-        //System.out.println(this.getWidth() + "," + this.getHeight());
+        System.out.println(this.getWidth() + "," + this.getHeight());
         g.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), null);
         //g.drawOval(x-radius, y-radius, 2*radius, 2*radius);
         g.setColor(Color.red);
@@ -47,12 +47,12 @@ public class MapPanel extends JScrollPane {
             switch (p.type) {
                 case WAYPOINT:
                     if (!(x < 0 || y < 0)) {
-                        g.fillOval(x, y, 10, 10);
+                        g.fillOval(x-5, y-5, 10, 10);
                     }
                     break;
                 case LOCATION:
                     if (!(x < 0 || y < 0)) {
-                        g.fillRect(x, y, 10, 10);
+                        g.fillRect(x-5, y-5, 10, 10);
                     }
                     break;
             }

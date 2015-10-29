@@ -9,9 +9,13 @@ public class Edge {
     public double weight;               // Weight of the edge
     public int edgeID;                  // Edge ID from the DB entry
     
+    public Edge() {
+    
+    }
+    
     public Edge(Point startPoint, Point endPoint) {
         this.startPoint = startPoint;
         this.endPoint = endPoint;
-        this.weight = Math.sqrt((startPoint.getX()-endPoint.getX())^2 + (startPoint.getY()-endPoint.getY())^2);
+        this.weight = 5;
     }
 }

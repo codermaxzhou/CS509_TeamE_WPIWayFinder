@@ -9,7 +9,15 @@ public class Location {
     public String description;                              // Description of the location
     public int locationID;                                  // The primary key of this location from the DB
     
+    public Location() {
+    
+    }
+    
     public Location(Point point) {
         this.point = point;
+    }
+
+    public Location(Category category, String name, String description){
+        
     }
 }
