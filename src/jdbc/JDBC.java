@@ -12,8 +12,10 @@ package jdbc;
 
 import adminmodule.Edge;
 import adminmodule.Location;
+import adminmodule.Map;
 import adminmodule.MapInfo;
 import adminmodule.Point;
+import java.awt.Image;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -34,7 +36,13 @@ public class JDBC {
    
    int maxPointID = 0;
    int maxLocID = 0;
+   int maxMapID=0;
    Connection conn = null;
+    private Statement stmt;
+    private int mapID;
+    private int description;
+    private int name;
+    private int isInteriorMap;
    
    public JDBC() {
        try {
@@ -49,7 +57,10 @@ public class JDBC {
            query = "SELECT MAX(pointID) AS MAXPOINT FROM Point;";
            rs = stmt.executeQuery(query);
            if(rs.next()) maxPointID = rs.getInt("MAXPOINT") + 1;
-       } catch (Exception ex) {
+           query = "SELECT MAX(mapID) AS MAXPOINT FROM Map;";
+           rs = stmt.executeQuery(query);
+           if(rs.next()) maxMapID = rs.getInt("MAXPOINT") + 1;
+       } catch (ClassNotFoundException | SQLException ex) {
            System.out.println("Problem creating connection.");
        }
    }
@@ -179,6 +190,69 @@ public class JDBC {
        
        return true;
    }
+   //########################
+   public boolean updateLocation(ArrayList<Location> A) throws SQLException{
+       String query = null;
+       for(int i=0;i<A.size();++i){
+           Location l=A.get(i);
+           query="UPDATE Location SET ";
+           query+="locationID="+l.locationID+",category="+l.category+",name="+l.name+",description="+l.description+"mapID="+"1;";
+           query+="where locationID=l.locationID";
+       }
+       Statement stmt = conn.createStatement();
+       stmt.executeUpdate(query);
+       return true;
+   }
+   
+   
+   public boolean deleteALL(String tableName) throws SQLException{
+       String query=null;
+       query="DELETE FROM"+tableName+";";
+       Statement stmt = conn.createStatement();
+       stmt.executeUpdate(query);
+       return true;
+   }
+   
+   public boolean addMap(String name,String desc,String path) throws SQLException{
+       String query=null;
+       query = "INSERT INTO Map (mapID,name,description ) ";
+       query += "VALUES(" + (maxMapID++) + ", " + name + ", " + desc+";)";
+       Statement stmt = conn.createStatement();
+       stmt.executeUpdate(query);
+       return true;
+   }
+   
+   public ArrayList<Map> showAllMap() throws SQLException{
+       String query= "SELECT MapID,name,description,isInteriorMap From Map;";
+       Statement stmt = conn.createStatement();
+       ResultSet rs = stmt.executeQuery(query);
+       ArrayList<Map> m=new ArrayList<Map>();
+       while(rs.next()){
+           Map temp=new Map();
+           temp.mapID=rs.getInt(mapID);
+           temp.description=rs.getString(description);
+           temp.name=rs.getString(name);
+           temp.isInteriorMap=rs.getBoolean(isInteriorMap);
+           m.add(temp);
+      }
+       return m;
+       
+   }
+   public Map showMap(int searchID) throws SQLException{
+       String query;
+       query="SELECT name,description,isInteriorMap FROM Map";
+       query+="WHERE mapID="+searchID+";";
+       Statement stmt = conn.createStatement();
+       ResultSet rs = stmt.executeQuery(query);
+       Map m=new Map();
+       m.description=rs.getString(description);
+       m.name=rs.getString(name);
+       m.isInteriorMap=rs.getBoolean(isInteriorMap);
+       return m;
+       
+       
+   }
+   //###################
 
     /**
      * @param args the command line arguments
