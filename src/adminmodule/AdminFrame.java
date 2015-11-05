@@ -121,12 +121,13 @@ public class AdminFrame extends JFrame implements MouseListener {
                 newlocation.locationID = -1;
                 newlocation.name = "test" + x;
                 newlocation.description = "desc" + y;
-                newlocation.category = Location.Category.DINING;
+                /*newlocation.category = Location.Category.DINING;*/
                 points.add(newpoint);
                 locations.add(newlocation);
                 System.out.println("add location:" + newpoint.X + ", " + newpoint.Y);
                 System.out.println("point list size:" + points.size());
                 System.out.println("location list size:" + locations.size());
+                
                 EventQueue.invokeLater(new Runnable()
          {
             public void run()

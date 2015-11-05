@@ -26,10 +26,13 @@ public class LocationEdit extends JFrame
         private JTextField Description;
         private JButton okButton;
         private JButton cancelButton;
-        private JRadioButton jrb1 = new JRadioButton("DINING");// 定义一个单选按钮
+        private JComboBox box;
+        private String options[] = { "DINING", "ATM", "ADMIN","PARKING" };
+        
+       /* private JRadioButton jrb1 = new JRadioButton("DINING");// 定义一个单选按钮
         private JRadioButton jrb2 = new JRadioButton("ATM");// 定义一个单选按钮
         private JRadioButton jrb3 = new JRadioButton("ADMIN");// 定义一个单选按钮
-        private JRadioButton jrb4 = new JRadioButton("PARKING");
+        private JRadioButton jrb4 = new JRadioButton("PARKING");*/
         
         public Information()
         {
@@ -38,13 +41,17 @@ public class LocationEdit extends JFrame
       // construct a panel
 
             JPanel panel = new JPanel();
+            
             panel.setLayout(new GridLayout(10, 50));
             panel.add(new JLabel("Name:"));
             panel.add(Name = new JTextField(""));
             panel.add(new JLabel("Description:"));
             panel.add(Description = new JTextField(""));
             panel.add(new JLabel("Category:"));
-            jrb1.setActionCommand("DINING");
+            JComboBox box = new JComboBox(options);
+            panel.add(box);
+            
+            /*jrb1.setActionCommand("DINING");
             jrb2.setActionCommand("ATM");
             jrb3.setActionCommand("ADMIN");
             jrb4.setActionCommand("PARKING");
@@ -57,7 +64,7 @@ public class LocationEdit extends JFrame
             group.add(this.jrb1);
             group.add(this.jrb2);
             group.add(this.jrb3);
-            group.add(this.jrb4);
+            group.add(this.jrb4);*/
             add(panel, BorderLayout.CENTER);
             
             // create Ok and Cancel buttons
@@ -70,14 +77,18 @@ public class LocationEdit extends JFrame
                 {
                     RoomInfo u = getRoom();
                     System.out.println("Name = " + u.getName() + ", Description = "
-                  + (new String(u.getDescription())) + ", Category = "+ group.getSelection().getActionCommand());
+                  + (new String(u.getDescription())) + ", Category = "+ box.getSelectedItem());
                     dispose();
                     l.name = Name.getText();
                     l.description = Description.getText();
-                    if(jrb1.isSelected()) l.category = Location.Category.DINING;
+                    if(box.getSelectedItem() == "DINING") l.category = Location.Category.DINING;
+                    else if(box.getSelectedItem() == "ATM") l.category = Location.Category.ATM;
+                    else if(box.getSelectedItem() == "ADMIN") l.category = Location.Category.ADMIN;
+                    else l.category = Location.Category.PARKING;
+                    /*if(jrb1.isSelected()) l.category = Location.Category.DINING;
                     else if(jrb2.isSelected()) l.category = Location.Category.ATM;
                     else if(jrb3.isSelected()) l.category = Location.Category.ADMIN;
-                    else l.category = Location.Category.PARKING;
+                    else l.category = Location.Category.PARKING;*/
                 }
             });
 
