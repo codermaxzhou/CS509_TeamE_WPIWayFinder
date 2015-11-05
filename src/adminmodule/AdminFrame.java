@@ -129,22 +129,19 @@ public class AdminFrame extends JFrame implements MouseListener {
                 System.out.println("location list size:" + locations.size());
                 
                 EventQueue.invokeLater(new Runnable()
-         {
-            public void run()
-            {
-               JFrame frame = new LocationEdit(newlocation);
-               frame.setTitle("Location Edit");
-               frame.setSize (500, 500);
-               frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-               frame.setVisible(true);
-               System.out.println("add location:" + newpoint.X + ", " + newpoint.Y);
-               System.out.println("point list size:" + points.size());
-               System.out.println("location list size:" + locations.size());
+                {
+                    public void run()
+                    {
+                        JFrame frame = new LocationEdit(newlocation);
+                        frame.setTitle("Location Edit");
+                        frame.setSize (500, 500);
+                        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                        frame.setVisible(true);
+              
                
-               
-            }
+                    }
             
-         });
+                });
                 repaint();
                 break;
 

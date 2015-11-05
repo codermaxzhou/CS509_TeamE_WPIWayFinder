@@ -4,7 +4,10 @@
  * and open the template in the editor.
  */
 package adminmodule;
-import javax.swing.*;
+
+import java.awt.EventQueue;
+import javax.swing.JFrame;
+
 /**
  *
  * @author Yihao
@@ -99,9 +102,27 @@ public class LeftPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_deleteMapButtonActionPerformed
 
     private void addMapButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMapButtonActionPerformed
-        // TODO add your handling code here:
-        JFileChooser saveFile = new JFileChooser();
-        saveFile.showSaveDialog(null);
+        // TODO add your handling code here:zz
+
+        Location newlocations;
+        newlocations = new Location();
+      
+  
+
+                
+        EventQueue.invokeLater(new Runnable()
+         {
+            public void run()
+            {
+               JFrame frame = new openfile(newlocations);
+               frame.setTitle("Add Map");
+               frame.setSize (500, 500);
+               frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+               frame.setVisible(true);
+            }
+            
+         });
+       
     }//GEN-LAST:event_addMapButtonActionPerformed
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
