@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package adminmodule;
-
+import javax.swing.*;
 /**
  *
  * @author Yihao
@@ -100,7 +100,8 @@ public class LeftPanel extends javax.swing.JPanel {
 
     private void addMapButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMapButtonActionPerformed
         // TODO add your handling code here:
-        
+        JFileChooser saveFile = new JFileChooser();
+        saveFile.showSaveDialog(null);
     }//GEN-LAST:event_addMapButtonActionPerformed
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
