@@ -126,10 +126,12 @@ public class RightPanel extends javax.swing.JPanel {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         JDBC db = new JDBC();
+        frame.button = AdminFrame.Button.NULL;
         try {
             db.saveLocations(frame.locations);
             db.savePoints(frame.points);
             db.saveEdges(frame.edges);
+            db.updateLocation(frame.locations);
         } catch (SQLException ex) {
             System.out.println("problem saving");
         }

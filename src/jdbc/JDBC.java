@@ -147,6 +147,7 @@ public class JDBC {
            Statement stmt = conn.createStatement();
            stmt.executeUpdate(query);
            
+           l.locationID = maxLocID;
            l.point.pointID = maxPointID;
            
            query = "INSERT INTO Point (PointID, x, y, locationID, mapID) ";
@@ -195,9 +196,11 @@ public class JDBC {
        String query = null;
        for(int i=0;i<A.size();++i){
            Location l=A.get(i);
-           query="UPDATE Location SET ";
-           query+="locationID="+l.locationID+",category="+l.category+",name="+l.name+",description="+l.description+"mapID="+"1;";
-           query+="where locationID=l.locationID";
+           if (l.locationID != -1) {
+            query="UPDATE Location SET ";
+            query+="locationID="+l.locationID+",category=\""+l.category+"\",name=\""+l.name+"\",description=\""+l.description+"\",mapID="+"1 ";
+            query+="where locationID=" + l.locationID + ";";
+           }
        }
        Statement stmt = conn.createStatement();
        stmt.executeUpdate(query);
