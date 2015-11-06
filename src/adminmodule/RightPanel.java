@@ -123,6 +123,7 @@ public class RightPanel extends javax.swing.JPanel {
         } catch (SQLException ex) {
             Logger.getLogger(RightPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
+        frame.button = AdminFrame.Button.NULL;
         frame.map.repaint();
     }//GEN-LAST:event_resetButtonActionPerformed
 

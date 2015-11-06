@@ -108,7 +108,7 @@ public class JDBC {
            Point temp = new Point();
            temp.X = rs.getInt("X");
            temp.Y = rs.getInt("Y");
-           Location partner = locMap.get(rs.getInt("locationID"));
+           Location partner = locMap.get(rs.getInt("pointID"));
            temp.location = partner;
            if(partner != null) {
                partner.point = temp;
@@ -209,10 +209,11 @@ public class JDBC {
             query="UPDATE Location SET ";
             query+="locationID="+l.locationID+",category=\""+l.category+"\",name=\""+l.name+"\",description=\""+l.description+"\",mapID="+"1 ";
             query+="where locationID=" + l.locationID + ";";
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(query);
            }
        }
-       Statement stmt = conn.createStatement();
-       stmt.executeUpdate(query);
+       
        return true;
    }
    
