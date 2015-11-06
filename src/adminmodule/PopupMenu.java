@@ -25,7 +25,9 @@ public class PopupMenu extends JPopupMenu {
                 System.out.println("Menu item Edit");
                 EventQueue.invokeLater(new Runnable() {
                     public void run() {
-                        JFrame frame = new LocationEdit(location);
+                        LocationEdit frame = new LocationEdit(location);
+                        frame.setName(location.name);
+                        frame.setDescription(location.description);
                         //System.out.println(temp.name);
                         frame.setTitle("Location Edit");
                         frame.setSize(500, 500);

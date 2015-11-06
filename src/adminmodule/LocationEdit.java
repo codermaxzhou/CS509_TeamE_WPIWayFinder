@@ -10,6 +10,12 @@ public class LocationEdit extends JFrame {
     public static final int TEXT_COLUMNS = 40;
     private JTextArea textArea;
     Location l;
+    
+    private JTextField Name;
+    private JTextField Description;
+    private JButton okButton;
+    private JButton cancelButton;
+    private JComboBox box;
 
     public LocationEdit(Location l) {
         this.l = l;
@@ -20,11 +26,7 @@ public class LocationEdit extends JFrame {
 
     public class Information extends JPanel {
 
-        private JTextField Name;
-        private JTextField Description;
-        private JButton okButton;
-        private JButton cancelButton;
-        private JComboBox box;
+        
         private String options[] = {"DINING", "ATM", "ADMIN", "PARKING"};
 
         /* private JRadioButton jrb1 = new JRadioButton("DINING");// 定义一个单选按钮
@@ -41,7 +43,7 @@ public class LocationEdit extends JFrame {
             panel.add(new JLabel("Name:"));
             panel.add(Name = new JTextField(""));
             panel.add(new JLabel("Description:"));
-            panel.add(Description = new JTextField(""));
+            panel.add(Description = new JTextField(""));    
             panel.add(new JLabel("Category:"));
             JComboBox box = new JComboBox(options);
             panel.add(box);
@@ -107,11 +109,22 @@ public class LocationEdit extends JFrame {
         public void setRoom(RoomInfo u) {
             Name.setText(u.getName());
         }
+        
+        
 
     //return a Room object
         public RoomInfo getRoom() {
             return new RoomInfo(Name.getText(), Description.getText());
         }
 
+    }
+    
+    public void setName(String s) {
+            Name.setText(s);
+            
+        }
+    
+    public void setDescription(String s) {
+        Description.setText(s);
     }
 }
