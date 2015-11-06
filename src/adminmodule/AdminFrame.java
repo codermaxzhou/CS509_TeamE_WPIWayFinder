@@ -42,10 +42,7 @@ public class AdminFrame extends JFrame implements MouseListener {
     }
 
     public void init() throws SQLException {
-        mapinfo = db.getMapInfo(1);
-        points = mapinfo.points;
-        locations = mapinfo.locations;
-        edges = mapinfo.edges;
+        loadMapInfo();
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         map = new MapPanel(this);
         map.setPreferredSize(new Dimension(900, 800));
@@ -65,6 +62,13 @@ public class AdminFrame extends JFrame implements MouseListener {
         this.setResizable(false);
         map.addMouseListener(this);
         //map.addMouseListener(new PopupTriggerListener());
+    }
+    
+    public void loadMapInfo() throws SQLException {
+        mapinfo = db.getMapInfo(1);
+        points = mapinfo.points;
+        locations = mapinfo.locations;
+        edges = mapinfo.edges;
     }
 
     /*
@@ -91,8 +95,13 @@ public class AdminFrame extends JFrame implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        Point newpoint;
+        Location newlocation;
+        Edge newedge;
         int x = e.getX();
         int y = e.getY();
+        
+        /* right click on the map */
         if (e.isPopupTrigger()) {
             for (Location temp : locations) {
                 if (!((x < (temp.point.getX() - radius))
@@ -105,15 +114,7 @@ public class AdminFrame extends JFrame implements MouseListener {
             }
 
         }
-    }
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        Point newpoint;
-        Location newlocation;
-        Edge newedge;
-        int x = e.getX() + map.getHorizontalScrollBar().getValue();
-        int y = e.getY() + map.getVerticalScrollBar().getValue();
         /* left click on the map */
         if (e.getButton() == MouseEvent.BUTTON1) {
             switch (button) {
@@ -205,6 +206,11 @@ public class AdminFrame extends JFrame implements MouseListener {
                     break;
             }
         }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
     }
 
     @Override
