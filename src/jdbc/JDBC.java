@@ -110,7 +110,11 @@ public class JDBC {
            temp.Y = rs.getInt("Y");
            Location partner = locMap.get(rs.getInt("locationID"));
            temp.location = partner;
-           if(partner != null) partner.point = temp;
+           if(partner != null) {
+               partner.point = temp;
+               temp.type = Point.Type.LOCATION;
+           } else
+               temp.type = Point.Type.WAYPOINT;
            temp.map = null;
            temp.pointID = rs.getInt("pointID");
            ptMap.put(rs.getInt("pointID"), temp);

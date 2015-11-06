@@ -11,9 +11,11 @@ import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+import jdbc.JDBC;
 
 /**
  *
@@ -21,27 +23,29 @@ import javax.swing.WindowConstants;
  */
 public class AdminFrame extends JFrame implements MouseListener {
 
-    public enum Button {
-
-        POINT, LOCATION, EDGE, NULL
-    };
-
+    public enum Button {POINT, LOCATION, EDGE, NULL};
+    public MapInfo mapinfo = new MapInfo();
     public ArrayList<Point> points = new ArrayList<Point>();
     public ArrayList<Location> locations = new ArrayList<Location>();
     public ArrayList<Edge> edges = new ArrayList<Edge>();
     public Button button = Button.NULL;
+    public JDBC db = new JDBC();
     int radius = 10;
     MapPanel map;
     Point startpoint = null;
     Point endpoint = null;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         System.out.println("start...");
         AdminFrame f = new AdminFrame();
         f.init();
     }
 
-    public void init() {
+    public void init() throws SQLException {
+        mapinfo = db.getMapInfo(1);
+        points = mapinfo.points;
+        locations = mapinfo.locations;
+        edges = mapinfo.edges;
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         map = new MapPanel(this);
         map.setPreferredSize(new Dimension(900, 800));
