@@ -1,7 +1,11 @@
 package adminmodule;
 
 import java.awt.Image;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 
 public class Map {
     public ArrayList<Edge> edgeList;        // List of all edges on the map
@@ -14,13 +18,20 @@ public class Map {
     public int mapID;                       // Map's ID
     public String path;
     
+    public Map() {}
+    
+    public Map(String name,String desc,Boolean isInteriorMap,String path) throws MalformedURLException, IOException{
+      //  this.mapID=mapID;
+        this.name=name;
+        this.description=desc;
+        this.path=path;
+        this.image=ImageIO.read(new URL(path));
+        this.isInteriorMap=isInteriorMap;
+        
+    }
     // For those doing the admin module, you may have to draw shapes "centered" at the
     // <X,Y> coordinates of points. There is an easy way to check if the <X,Y> coordinate
     // corresponding to a user's click event is within the area of a shap, this way we can
     // allow users to click on points to draw edges and maybe even edit existing points
     // by right clicking. Edges should also be drawn with enough thickness.
-
-    public Map(int i, String fl, String computer_science, String usersxiemingchenDesktop5096th_floorpng, int i0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

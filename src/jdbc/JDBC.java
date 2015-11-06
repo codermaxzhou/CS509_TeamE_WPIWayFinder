@@ -218,10 +218,15 @@ public class JDBC {
        return true;
    }
    
-   public boolean addMap(String name,String desc,String path,int isInteriorMap) throws SQLException{
+   public boolean addMap(String name,String desc,String path,boolean isInteriorMap) throws SQLException{
        String query=null;
+       int isInteriorMap_int=0;
+       if (isInteriorMap)
+           isInteriorMap_int=1;
+           
+       
        query = "INSERT INTO Map (mapID,name,description,path,isInteriorMap ) ";
-       query += "VALUES(" + (maxMapID++) + ", " + name + ", " + desc+","+path+","+isInteriorMap+";)";
+       query += "VALUES(" + (maxMapID++) + ", " + name + ", " + desc+","+path+","+isInteriorMap_int+";)";
        Statement stmt = conn.createStatement();
        stmt.executeUpdate(query);
        return true;
@@ -237,7 +242,11 @@ public class JDBC {
            temp.mapID=rs.getInt(mapID);
            temp.description=rs.getString(description);
            temp.name=rs.getString(name);
-           temp.isInteriorMap=rs.getBoolean(isInteriorMap);
+           int isInteriorMap_int=rs.getInt(isInteriorMap);
+           if (isInteriorMap_int==0)
+               temp.isInteriorMap=false;
+           else
+               temp.isInteriorMap=true;
            temp.path=rs.getString(path);
            temp.image=ImageIO.read(new URL(temp.path));
            m.add(temp);
@@ -254,7 +263,10 @@ public class JDBC {
        Map m=new Map();
        m.description=rs.getString(description);
        m.name=rs.getString(name);
-       m.isInteriorMap=rs.getBoolean(isInteriorMap);
+       int isInteriorMap_int=rs.getInt(isInteriorMap);
+       m.isInteriorMap=false;
+       if (isInteriorMap_int==1)
+           m.isInteriorMap=true;
        m.path=rs.getString(path);
        m.image=ImageIO.read(new URL(m.path));
        
@@ -268,11 +280,15 @@ public class JDBC {
 
     /**
      * @param args the command line arguments
+     * @throws java.sql.SQLException
+     * @throws java.io.IOException
      */
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, IOException {
         
         JDBC db = new JDBC();
-        Map m=new Map(2,"fl","computer science","/Users/xiemingchen/Desktop/509/6th floor.png",1);
+  //      Map m;
+  //     m = new Map("fl","computer science",true,"/Users/xiemingchen/Desktop/509/6th floor.png");
+ //      Map.addMap(m);
         
         
         Point p = new Point(8, 9, Point.Type.LOCATION);
