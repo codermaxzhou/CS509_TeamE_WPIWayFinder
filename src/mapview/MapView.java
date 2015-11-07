@@ -331,7 +331,8 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
                         && (e.getY() >= l.point.Y - 10 || e.getY() <= l.point.Y + 10))
                 {
                     PopupMenu menu = new PopupMenu(l);
-                    //menu.show(e.getComponent(), x, y);
+                    
+                    menu.show(e.getComponent(), l.point.X, l.point.Y);
                 }   
                 }
 	}

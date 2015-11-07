@@ -166,12 +166,13 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
         int n = 0;
         int m = 0;
         JLabel pinLabel = new JLabel();
-        
-        for(JLabel j: labelList){
+        // set all label to null
+        for(JLabel j: pinList){
+           // j.setIcon(null);
             j.setIcon(null);
             
         }
-        mainPanel.validate();
+//        mainPanel.validate();
         
         
         for (m= 0; m < labelList.size(); m++) {
@@ -188,14 +189,14 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
                 
 
                 pinLabel.setText(labelList.get(n).getText());
-                
+                pinLabel.setBackground(Color.GRAY);
                 pinLabel.setBounds(locationList.get(n).point.X, locationList.get(n).point.Y, 100, 30);
                 pinList.add(pinLabel);
                 
                 //System.out.println(locationList.get(n).point.X +","+ locationList.get(n).point.Y);
                 mainPanel.add(pinLabel);
-                //mainPanel.validate();
-                mainPanel.repaint();  
+                mainPanel.validate();
+                //mainPanel.repaint();  
                 
                 
                 Image pinImage = new ImageIcon(this.getClass().getResource("/icons/marker.png")).getImage();
