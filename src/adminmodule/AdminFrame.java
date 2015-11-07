@@ -8,15 +8,12 @@ package adminmodule;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -40,6 +37,7 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     
     public JDBC db = new JDBC();
     int radius = 10;
+    
     
     MapPanel map ;
     LeftPanel left;
@@ -87,10 +85,13 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
             left.model.addElement(m.name);
         }
         
+        
         //mapinfo = db.getMapInfo(1);
         points = maps.get(0).pointList;
         locations = maps.get(0).locList;
         edges = maps.get(0).edgeList;
+        
+        left.mapList.setSelectedIndex(0);
     }
     
     public void mapChanged(int index) {
@@ -175,6 +176,7 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
 
                     newpoint = new Point(x, y, Point.Type.WAYPOINT);
                     newpoint.pointID = -1;
+                    newpoint.map = maps.get(left.mapList.getSelectedIndex());
                     points.add(newpoint);
                     System.out.println("add point:" + newpoint.X + ", " + newpoint.Y);
                     System.out.println("point list size:" + points.size());
@@ -193,6 +195,7 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
 
                     newpoint = new Point(x, y, Point.Type.LOCATION);
                     newlocation = new Location(newpoint);
+                    newpoint.map = maps.get(left.mapList.getSelectedIndex());
                     newpoint.location = newlocation;
                     newpoint.pointID = -1;
                     newlocation.locationID = -1;
@@ -236,6 +239,8 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
                                 endpoint = temp;
                                 newedge = new Edge(startpoint, endpoint);
                                 newedge.edgeID = -1;
+                                newedge.startMapID = maps.get(left.mapList.getSelectedIndex()).mapID;
+                                newedge.endMapID = maps.get(left.mapList.getSelectedIndex()).mapID;
                                 edges.add(newedge);
                                 System.out.println("add edge weight:" + newedge.weight);
                                 System.out.println("edge list size:" + edges.size());
@@ -265,14 +270,12 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     }
 
     @Override
-    public void mouseEntered(MouseEvent e
-    ) {
+    public void mouseEntered(MouseEvent e) {
         
     }
 
     @Override
-    public void mouseExited(MouseEvent e
-    ) {
+    public void mouseExited(MouseEvent e) {
 
     }
           

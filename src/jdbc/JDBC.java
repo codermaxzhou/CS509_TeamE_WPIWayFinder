@@ -157,7 +157,7 @@ public class JDBC {
            if(l.locationID != -1) continue;
            query = "INSERT INTO Location (LocationID, PointID, category, name, description, mapID) ";
            query += "VALUES(" + maxLocID + ", " + maxPointID + ", \"" + l.category.toString() + "\", \"" + 
-                    l.name + "\", \"" + l.description + "\", 1);";
+                    l.name + "\", \"" + l.description + "\", " + l.point.map.mapID + ");";
            Statement stmt = conn.createStatement();
            stmt.executeUpdate(query);
            
@@ -166,7 +166,7 @@ public class JDBC {
            
            query = "INSERT INTO Point (PointID, x, y, locationID, mapID) ";
            query += "VALUES(" + (maxPointID++) + ", " + l.point.X + ", " + 
-                    l.point.Y + ", " + (maxLocID++) + ", 1);";
+                    l.point.Y + ", " + (maxLocID++) + ", " + l.point.map.mapID + ");";
            
            stmt.executeUpdate(query);
        }
@@ -183,7 +183,7 @@ public class JDBC {
            p.pointID = maxPointID;
            query = "INSERT INTO Point (PointID, x, y, locationID, mapID) ";
            query += "VALUES(" + (maxPointID++) + ", " + p.X + ", " + 
-                    p.Y + ", " + -1 + ", 1);";
+                    p.Y + ", " + -1 + ", " + p.map.mapID + ");";
            Statement stmt = conn.createStatement();
            stmt.executeUpdate(query);
        }
@@ -198,7 +198,7 @@ public class JDBC {
            if(e.edgeID != -1) continue;
            query = "INSERT INTO Edge (startpointID, endpointID, weight, startmapID, endmapID) ";
            query += "VALUES(" + e.startPoint.pointID + ", " + e.endPoint.pointID + ", " + 
-                    e.weight + ", " + 1 + ", 1);";
+                    e.weight + ", " + e.startMapID + ", " + e.endMapID + ");";
            Statement stmt = conn.createStatement();
            stmt.executeUpdate(query);
        }
@@ -233,28 +233,42 @@ public class JDBC {
    
    public boolean addMap(ArrayList<Map> maps) throws SQLException, FileNotFoundException, IOException{
        for(Map m : maps) {
-           String query = "";
-           int isBldgMap = m.isInteriorMap ? 1 : 0;
+           if(m.mapID == -1) {
+                String query = "";
+                int isBldgMap = m.isInteriorMap ? 1 : 0;
+
+                query = "INSERT INTO Map (mapID, name, description, isInteriorMap) ";
+                query += "VALUES(" + maxMapID + ", \"" + m.name + "\", \"" + m.description +"\", " + isBldgMap + ");";
+                Statement stmt = conn.createStatement();
+                stmt.executeUpdate(query);
+
+                m.mapID = maxMapID;
+
+                PreparedStatement ps = null;
+                conn.setAutoCommit(false);
+                File file = new File(m.path);
+                FileInputStream fis = new FileInputStream(file);
+                ps = conn.prepareStatement("UPDATE Map SET image = ? WHERE mapID = " + maxMapID);
+                ps.setBinaryStream(1, fis, (int) file.length());
+                ps.executeUpdate();
+                conn.commit();
+                
+                for(Edge e : m.edgeList) {
+                    e.startMapID = maxMapID;
+                    e.endMapID = maxMapID;
+                }
+
+                maxMapID++;
+                
+                ps.close();
+                fis.close();
+                conn.setAutoCommit(true);
+           }
            
-           query = "INSERT INTO Map (mapID, name, description, isInteriorMap) ";
-           query += "VALUES(" + maxMapID + ", \"" + m.name + "\", \"" + m.description +"\", " + isBldgMap + ");";
-           Statement stmt = conn.createStatement();
-           stmt.executeUpdate(query);
-           
-           PreparedStatement ps = null;
-           conn.setAutoCommit(false);
-           File file = new File(m.path);
-           FileInputStream fis = new FileInputStream(file);
-           ps = conn.prepareStatement("UPDATE Map SET image = ? WHERE mapID = " + maxMapID);
-           ps.setBinaryStream(1, fis, (int) file.length());
-           ps.executeUpdate();
-           conn.commit();
-           
-           maxMapID++;
-           
-           ps.close();
-           fis.close();
-           conn.setAutoCommit(true);
+           if(m.locList != null) this.saveLocations(m.locList);
+           if(m.pointList != null) this.savePoints(m.pointList);
+           if(m.edgeList != null) this.saveEdges(m.edgeList);
+           if(m.locList != null) this.updateLocation(m.locList);
        }
            
        
@@ -335,14 +349,14 @@ public class JDBC {
         A.add(p);
         db.savePoints(A);*/
         
-        /*ArrayList<Map> list = new ArrayList<>();
+        ArrayList<Map> list = new ArrayList<>();
         Map m = new Map();
         m.name = "Project Center 1";
         m.description = "Building for projects";
         m.path = "/Users/Yihao/Desktop/map.png";
         m.isInteriorMap = true;
         list.add(m);
-        db.addMap(list);*/
+        db.addMap(list);
         
         //list = db.showAllMap();
         
