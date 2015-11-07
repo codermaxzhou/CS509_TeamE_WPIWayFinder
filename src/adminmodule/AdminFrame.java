@@ -34,6 +34,8 @@ public class AdminFrame extends JFrame implements MouseListener {
     MapPanel map;
     Point startpoint = null;
     Point endpoint = null;
+    
+    LeftPanel left;
 
     public static void main(String[] args) throws SQLException {
         System.out.println("start...");
@@ -52,7 +54,7 @@ public class AdminFrame extends JFrame implements MouseListener {
         RightPanel right = new RightPanel(this);
         this.getContentPane().add(right, BorderLayout.EAST);
 
-        LeftPanel left = new LeftPanel();
+        left = new LeftPanel();
         this.getContentPane().add(left, BorderLayout.WEST);
 
         this.setVisible(true);
