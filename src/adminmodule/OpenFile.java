@@ -24,6 +24,7 @@ import javax.swing.*;
     private JTextField Name;
     private JTextField Description;
     private JComboBox box = new JComboBox();
+    private JCheckBox ckbox = new JCheckBox();
     JToolBar tb = new JToolBar();  
     AdminFrame admin;
     public OpenFile (AdminFrame admin)
@@ -34,15 +35,18 @@ import javax.swing.*;
         JButton openButton = new JButton ("Open");
         JButton saveButton = new JButton ("Save");
         JButton cancelButton = new JButton ("Cancel");
+        
         this.admin = admin;
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 50));
+        panel.setLayout(new GridLayout(4, 50));
         panel.add(new JLabel("Name:"));
         panel.add(Name = new JTextField(""));
         panel.add(new JLabel("Description:"));
         panel.add(Description = new JTextField(""));
         panel.add(new JLabel("Type:"));
         panel.add(box);
+        panel.add(new JLabel("InteriorMap"));
+        panel.add(ckbox);
         tb.add(openButton);
         tb.add(saveButton);
         tb.add(cancelButton);
@@ -91,6 +95,9 @@ import javax.swing.*;
                 ms.mapID = -1;
                 ms.isInteriorMap = false;
                 ms.name = Name.getText();
+                if(ckbox.isSelected())
+                    ms.isInteriorMap = true;
+                else ms.isInteriorMap = false;
                 ms.description = Description.getText();
                 ms.path = chooser.getSelectedFile ().getAbsolutePath ();
                 System.out.println(ms.path);
