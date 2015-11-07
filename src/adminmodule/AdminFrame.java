@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import jdbc.JDBC;
@@ -31,11 +32,11 @@ public class AdminFrame extends JFrame implements MouseListener {
     public Button button = Button.NULL;
     public JDBC db = new JDBC();
     int radius = 10;
-    MapPanel map;
+    MapPanel map ;
+    LeftPanel left;
     Point startpoint = null;
     Point endpoint = null;
-    
-    LeftPanel left;
+
 
     public static void main(String[] args) throws SQLException {
         System.out.println("start...");
@@ -54,7 +55,8 @@ public class AdminFrame extends JFrame implements MouseListener {
         RightPanel right = new RightPanel(this);
         this.getContentPane().add(right, BorderLayout.EAST);
 
-        left = new LeftPanel();
+
+        left = new LeftPanel(this);
         this.getContentPane().add(left, BorderLayout.WEST);
 
         this.setVisible(true);
@@ -65,6 +67,7 @@ public class AdminFrame extends JFrame implements MouseListener {
         map.addMouseListener(this);
         //map.addMouseListener(new PopupTriggerListener());
     }
+
     
     public void loadMapInfo() throws SQLException {
         mapinfo = db.getMapInfo(1);
@@ -72,6 +75,20 @@ public class AdminFrame extends JFrame implements MouseListener {
         locations = mapinfo.locations;
         edges = mapinfo.edges;
     }
+
+    public  void PassValue(Map p)
+    {
+        
+        map.image = p.image;
+//        look for method in JList that adds or appends item
+         //left.mapList.setListData(new String[] {"Hello"});
+        left.model.addElement(p.name);
+        
+        
+        repaint();
+        
+    }
+
 
     /*
      class PopupTriggerListener extends MouseAdapter {
@@ -94,6 +111,8 @@ public class AdminFrame extends JFrame implements MouseListener {
     public void mouseClicked(MouseEvent e) {
 
     }
+    
+    //CREATE METHOD HERE THAT YOUR FRAME WILL CALL WHEN IT IS CLOSING
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -218,7 +237,7 @@ public class AdminFrame extends JFrame implements MouseListener {
     @Override
     public void mouseEntered(MouseEvent e
     ) {
-
+        
     }
 
     @Override
@@ -226,4 +245,5 @@ public class AdminFrame extends JFrame implements MouseListener {
     ) {
 
     }
+          
 }

@@ -35,12 +35,7 @@ public class MapView extends JFrame{
 	MapPanel mapPanel;
 	Image backGround = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_1.png")).getImage();
     
-	public static void main(String[] args) throws SQLException {
-		// TODO Auto-generated method stub
-    MapView mapView = new MapView();
-    
-		
-	}
+
 	// construction method 
 	public MapView() throws SQLException{
 		//  mapÍ¼²ã
