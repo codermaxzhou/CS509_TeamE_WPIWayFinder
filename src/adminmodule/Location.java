@@ -1,7 +1,7 @@
 package adminmodule;
 
 public class Location {
-    public enum Category { DINING, ATM, ADMIN, PARKING,CLASSROOM, RESTROOM };   // we will expand this list later
+    public enum Category { DINING, ATM, ADMIN, PARKING, CLASSROOM, RESTROOM };   // we will expand this list later
     
     public Point point;                                     // The location's point on the map
     public Category category;                               // Location type

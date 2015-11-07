@@ -26,7 +26,7 @@ public class LocationEdit extends JFrame {
     public class Information extends JPanel {
 
         
-        private String options[] = {"DINING", "ATM", "ADMIN", "PARKING"};
+        private String options[] = {"DINING", "ATM", "ADMIN", "PARKING", "CLASSROOM", "RESTROOM"};
 
         /* private JRadioButton jrb1 = new JRadioButton("DINING");// 定义一个单选按钮
          private JRadioButton jrb2 = new JRadioButton("ATM");// 定义一个单选按钮
@@ -82,6 +82,10 @@ public class LocationEdit extends JFrame {
                         l.category = Location.Category.ATM;
                     } else if (box.getSelectedItem() == "ADMIN") {
                         l.category = Location.Category.ADMIN;
+                    }  else if (box.getSelectedItem() == "CLASSROOM") {
+                        l.category = Location.Category.CLASSROOM;
+                    } else if (box.getSelectedItem() == "RESTROOM") {
+                        l.category = Location.Category.RESTROOM;
                     } else {
                         l.category = Location.Category.PARKING;
                     }

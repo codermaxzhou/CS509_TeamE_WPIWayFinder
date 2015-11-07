@@ -141,16 +141,19 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
 	MainPanel() throws SQLException{
                 JDBC db = new JDBC();
                 
-                MapInfo info = db.getMapInfo(1, null);
+                Map m = new Map();
+                m.mapID = 1;
+                
+                MapInfo info = db.getMapInfo(1, m);
                 pointList = info.points;
                 edgeList = info.edges;
                 locationList = info.locations;
                  
                 // Just for test
-                locationList.get(0).point = pointList.get(0);
+                /*locationList.get(0).point = pointList.get(0);
                 locationList.get(1).point = pointList.get(1);
                 locationList.get(2).point = pointList.get(2);
-                locationList.get(3).point = pointList.get(3);
+                locationList.get(3).point = pointList.get(3);*/
                  
 		background = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_1.png")).getImage();
 		
@@ -280,8 +283,8 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
                   //System.out.println("categoryList is "+p.category);
                   //this.getGraphics().drawOval(p.point.X, p.point.Y, 10, 10);
                     switch (p.category) {
-                    case DINING:
-                        if (category.equals("DINING")) {
+                    case CLASSROOM:
+                        if (category.equals("CLASSROOM")) {
                             
                             
 //                            g.fillOval(p.point.X, p.point.Y, 10, 10); 
@@ -290,8 +293,8 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
                             
                         }
                         break;
-                    case PARKING:
-                        if (category.equals("PARKING")) {
+                    case RESTROOM:
+                        if (category.equals("RESTROOM")) {
                             
                            // g.fillOval(p.point.X, p.point.Y, 10, 10);
                             g.drawImage(pinImage, p.point.X - 5, p.point.Y - 5, 20, 20, null);

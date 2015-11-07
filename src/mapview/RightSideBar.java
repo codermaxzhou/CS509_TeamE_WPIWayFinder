@@ -140,10 +140,10 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
         secRightSideBar.setBackground(new java.awt.Color(231,0,102)); // 1 for red
         // show pins of selected locations in the map 
        // mainPanel.repaint();
-        mainPanel.showLocationPin("DINING");
+        mainPanel.showLocationPin("CLASSROOM");
         // show list of location name in second right side bar
         try {
-            secRightSideBar.ShowLocationName("DINING");
+            secRightSideBar.ShowLocationName("CLASSROOM");
         } catch (SQLException ex) {
             Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -159,11 +159,11 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
         secRightSideBar.setBackground(new java.awt.Color(38,195,194)); // 2 for yellow
         
         //mainPanel.repaint();
-        mainPanel.showLocationPin("PARKING");
+        mainPanel.showLocationPin("RESTROOM");
         
         try {
             
-            secRightSideBar.ShowLocationName("PARKING");
+            secRightSideBar.ShowLocationName("RESTROOM");
         } catch (SQLException ex) {
             Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
         }
