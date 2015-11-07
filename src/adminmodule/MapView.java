@@ -80,7 +80,7 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
 
 	MainPanel(Image image) throws SQLException{
                 JDBC db = new JDBC();
-                MapInfo info = db.getMapInfo(1);
+                MapInfo info = db.getMapInfo(1, null);
                 pointList = info.points;
                 edgeList = info.edges;
                 locationList = info.locations;

@@ -75,7 +75,7 @@ public class JDBC {
        }
    }
    
-   public MapInfo getMapInfo(int MapID) throws SQLException {
+   public MapInfo getMapInfo(int MapID, Map map) throws SQLException {
        String query = "SELECT locationID, pointID, category, name, description, mapID FROM Location WHERE MapID = " + MapID + ";";
        Statement stmt = conn.createStatement();
        ResultSet rs = stmt.executeQuery(query);
@@ -124,6 +124,7 @@ public class JDBC {
            temp.pointID = rs.getInt("pointID");
            ptMap.put(rs.getInt("pointID"), temp);
            P.add(temp);
+           temp.map = map;
        }
        
        query = "SELECT edgeID, startpointID, endpointID, weight, startmapID, endmapID FROM Edge WHERE startmapID = " + MapID + " AND endmapID = " + MapID + ";";
@@ -133,8 +134,8 @@ public class JDBC {
        while(rs.next()) {
            Edge temp = new Edge();
            temp.weight = rs.getDouble("weight");
-           temp.endMapID = 1;
-           temp.startMapID = 1;
+           temp.endMapID = map.mapID;
+           temp.startMapID = map.mapID;
            temp.startPoint = ptMap.get(rs.getInt("startpointID"));
            temp.endPoint   = ptMap.get(rs.getInt("endpointID"));
            temp.edgeID = rs.getInt("edgeID");
@@ -212,8 +213,8 @@ public class JDBC {
            Location l=A.get(i);
            if (l.locationID != -1) {
             query="UPDATE Location SET ";
-            query+="locationID="+l.locationID+",category=\""+l.category+"\",name=\""+l.name+"\",description=\""+l.description+"\",mapID="+"1 ";
-            query+="where locationID=" + l.locationID + ";";
+            query+="locationID="+l.locationID+",category=\""+l.category+"\",name=\""+l.name+"\",description=\""+l.description+"\",mapID="+ l.point.map.mapID;
+            query+=" where locationID=" + l.locationID + ";";
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(query);
            }
@@ -297,7 +298,7 @@ public class JDBC {
            InputStream binaryStream = rs.getBinaryStream("image");
            temp.image = ImageIO.read(binaryStream);
            
-           MapInfo info = this.getMapInfo(temp.mapID);
+           MapInfo info = this.getMapInfo(temp.mapID, temp);
            temp.edgeList = info.edges;
            temp.pointList = info.points;
            temp.locList = info.locations;
