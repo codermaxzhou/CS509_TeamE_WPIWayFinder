@@ -37,7 +37,6 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
      * Creates new form SecRightSideBar
      */
     public SecRightSideBar() {
-
         initComponents();
         
     }
@@ -185,7 +184,7 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
         for (n = 0; n < labelList.size(); n++) {
             if (e.getSource().equals(labelList.get(n))) {
                 
-                labelList.get(n).setForeground(Color.black);
+                /*labelList.get(n).setForeground(Color.black);
                 
 
                 pinLabel.setText(labelList.get(n).getText());
@@ -206,7 +205,8 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
                 mainPanel.getGraphics().drawImage(pinImage,locationList.get(n).point.X - 5 , locationList.get(n).point.Y -5,20,20, null);
                   
                 
-                this.repaint();
+                this.repaint();*/
+                mainPanel.showSinglePin(labelList.get(n).getText());
                 
                 
                 
