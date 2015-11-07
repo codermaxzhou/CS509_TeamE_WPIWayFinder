@@ -5,137 +5,115 @@ package adminmodule;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
+import java.awt.*;   
+import java.io.File;
+import java.awt.event.*;   
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.file.Paths;
+import javax.imageio.ImageIO;
+import javax.swing.filechooser.*;   
+import javax.swing.*;  
 
-/**
- *
- * @author Castro
- */
-
-public class openfile extends JFrame {
-    public static final int TEXT_ROWS = 20;
-    public static final int TEXT_COLUMNS = 40;
-    private JTextArea textArea;
-    Location l;
-   
-    public openfile(Location l)
+  public class OpenFile extends JPanel
+{
+    Map ms = new Map();
+    
+    private static final long serialVersionUID = 1L;
+    BufferedImage bi = null;
+    private JTextField Name;
+    private JTextField Description;
+    private JComboBox box = new JComboBox();
+    JToolBar tb = new JToolBar();  
+    AdminFrame admin;
+    public OpenFile (AdminFrame admin)
     {
-        this.l = l;
-        Information panel = new Information ();
-        setLayout (new BorderLayout ());
-        add (panel, BorderLayout.CENTER);
-    }
-   
-    public class Information extends JPanel
-    {
-        private JTextField Name;
-        private JTextField Description;
-        private JButton openButton;
-        private JButton saveButton;
-        private JComboBox box;
-        private String options[] = { "DINING", "ATM", "ADMIN","PARKING" };
-        
-       /* private JRadioButton jrb1 = new JRadioButton("DINING");// 定义一个单选按钮
-        private JRadioButton jrb2 = new JRadioButton("ATM");// 定义一个单选按钮
-        private JRadioButton jrb3 = new JRadioButton("ADMIN");// 定义一个单选按钮
-        private JRadioButton jrb4 = new JRadioButton("PARKING");*/
-        
-        public Information()
+        final JFileChooser chooser = new JFileChooser ();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter ("Some Images", "jpg", "gif", "png", "jpeg");
+        chooser.setFileFilter (filter);
+        JButton openButton = new JButton ("Open");
+        JButton saveButton = new JButton ("Save");
+        JButton cancelButton = new JButton ("Cancel");
+        this.admin = admin;
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 50));
+        panel.add(new JLabel("Name:"));
+        panel.add(Name = new JTextField(""));
+        panel.add(new JLabel("Description:"));
+        panel.add(Description = new JTextField(""));
+        panel.add(new JLabel("Type:"));
+        panel.add(box);
+        tb.add(openButton);
+        tb.add(saveButton);
+        tb.add(cancelButton);
+        JFrame jFrame = new JFrame ();
+        jFrame.setLayout (new BorderLayout ());
+        jFrame.setSize (500, 500);
+        jFrame.add (this, BorderLayout.CENTER);
+        tb.add(panel);
+        jFrame.add (tb, BorderLayout.NORTH);
+        jFrame.setLocationRelativeTo (null);
+        jFrame.setDefaultCloseOperation (JFrame.HIDE_ON_CLOSE);
+        jFrame.setVisible (true);
+             openButton.addActionListener (new ActionListener ()
         {
-            setLayout(new BorderLayout());
-
-      // construct a panel
-
-            JPanel panel = new JPanel();
-            
-            panel.setLayout(new GridLayout(10, 50));
-            panel.add(new JLabel("Name:"));
-            panel.add(Name = new JTextField(""));
-            panel.add(new JLabel("Description:"));
-            panel.add(Description = new JTextField(""));
-            panel.add(new JLabel("Category:"));
-            JComboBox box = new JComboBox(options);
-            panel.add(box);
-            
-            /*jrb1.setActionCommand("DINING");
-            jrb2.setActionCommand("ATM");
-            jrb3.setActionCommand("ADMIN");
-            jrb4.setActionCommand("PARKING");
-
-            panel.add(this.jrb1);// 加入组件
-            panel.add(this.jrb2);
-            panel.add(this.jrb3);
-            panel.add(this.jrb4);
-            ButtonGroup group = new ButtonGroup();
-            group.add(this.jrb1);
-            group.add(this.jrb2);
-            group.add(this.jrb3);
-            group.add(this.jrb4);*/
-            add(panel, BorderLayout.CENTER);
-            
-            // create open and save buttons
-            
-            openButton = new JButton("Open");
-            
-            openButton.addActionListener(new ActionListener()
+            @Override
+            public void actionPerformed ( ActionEvent e )
             {
-                public void actionPerformed(ActionEvent event)
+                int returnVal = chooser.showOpenDialog (OpenFile.this);
+                if (returnVal == JFileChooser.APPROVE_OPTION)
                 {
-                    JFileChooser openFile = new JFileChooser();
-                    openFile.showOpenDialog(null);
-                    /*RoomInfo u = getRoom();
-                    System.out.println("Name = " + u.getName() + ", Description = "
-                  + (new String(u.getDescription())) + ", Category = "+ box.getSelectedItem());
-                    dispose();
-                    l.name = Name.getText();
-                    l.description = Description.getText();
-                    if(box.getSelectedItem() == "DINING") l.category = Location.Category.DINING;
-                    else if(box.getSelectedItem() == "ATM") l.category = Location.Category.ATM;
-                    else if(box.getSelectedItem() == "ADMIN") l.category = Location.Category.ADMIN;
-                    else l.category = Location.Category.PARKING;
-                    /*if(jrb1.isSelected()) l.category = Location.Category.DINING;
-                    else if(jrb2.isSelected()) l.category = Location.Category.ATM;
-                    else if(jrb3.isSelected()) l.category = Location.Category.ADMIN;
-                    else l.category = Location.Category.PARKING;*/
+                    try
+                    {
+                        bi = ImageIO.read (new File (chooser.getSelectedFile ().getAbsolutePath ()));
+                        
+                        repaint ();
+                    }
+                    
+                    catch (IOException e1)
+                    {
+                        e1.printStackTrace ();
+                    }
                 }
-            });
-
-            JButton saveButton = new JButton("Save");
-            saveButton.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent event)
-            {
                 
-               //dispose();
+                
             }
         });
+        saveButton.addActionListener (new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( ActionEvent e )
+            {
+                
+                ms.image = bi;
+                ms.name = Name.getText();
+                ms.description = Description.getText();
+                ms.path = chooser.getSelectedFile ().getAbsolutePath ();
+                System.out.println(ms.path);
+                System.out.println("Name = " + ms.name + ", Description = "
+                  + ms.description + ms.path );
+                jFrame.dispose();
+                admin.PassValue(ms);
 
-            // add these buttons to southern border
-
-            JPanel buttonPanel = new JPanel();
-            buttonPanel.add(openButton);
-            buttonPanel.add(saveButton);
-            add(buttonPanel, BorderLayout.SOUTH);
-   }
-
-   
-    // Sets the Room defaults.
-    
-    public void setRoom(RoomInfo u)
-    {
-        Name.setText(u.getName());
+            }
+        });
+        cancelButton.addActionListener (new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( ActionEvent e )
+            {
+                
+               jFrame.dispose();
+            }
+        });
+        
     }
-    
-    
-    //return a Room object
-    
-    public RoomInfo getRoom()
+ 
+ public void paint ( Graphics g )
     {
-        return new RoomInfo(Name.getText(), Description.getText());
+        super.paint (g);
+        g.drawImage (bi, 0, 0, this.getWidth (), this.getHeight (), null);
+        g.dispose ();
     }
-    
-}
-}
+
+  }
