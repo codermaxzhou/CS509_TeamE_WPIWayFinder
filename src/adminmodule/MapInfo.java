@@ -6,4 +6,6 @@ public class MapInfo {
     public ArrayList<Point> points;
     public ArrayList<Location> locations;
     public ArrayList<Edge> edges;
+    
+    
 }

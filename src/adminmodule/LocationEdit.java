@@ -9,7 +9,6 @@ public class LocationEdit extends JFrame
 {
     public static final int TEXT_ROWS = 20;
     public static final int TEXT_COLUMNS = 40;
-    private JTextArea textArea;
     Location l;
    
     public LocationEdit(Location l)
@@ -75,9 +74,9 @@ public class LocationEdit extends JFrame
             {
                 public void actionPerformed(ActionEvent event)
                 {
-                    RoomInfo u = getRoom();
-                    System.out.println("Name = " + u.getName() + ", Description = "
-                  + (new String(u.getDescription())) + ", Category = "+ box.getSelectedItem());
+                   
+                    System.out.println("Name = " + Name.getText() + ", Description = "
+                  + Description.getText() + ", Category = "+ box.getSelectedItem());
                     dispose();
                     l.name = Name.getText();
                     l.description = Description.getText();
@@ -112,18 +111,7 @@ public class LocationEdit extends JFrame
    
     // Sets the Room defaults.
     
-    public void setRoom(RoomInfo u)
-    {
-        Name.setText(u.getName());
-    }
-    
-    
-    //return a Room object
-    
-    public RoomInfo getRoom()
-    {
-        return new RoomInfo(Name.getText(), Description.getText());
-    }
+   
     
 }
 }

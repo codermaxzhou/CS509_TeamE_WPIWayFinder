@@ -11,6 +11,7 @@ import java.awt.EventQueue;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
@@ -31,7 +32,8 @@ public class AdminFrame extends JFrame implements MouseListener {
     public Button button = Button.NULL;
 
     int radius = 10;
-    MapPanel map;
+    MapPanel map ;
+    LeftPanel left;
     Point startpoint = null;
     Point endpoint = null;
 
@@ -51,7 +53,7 @@ public class AdminFrame extends JFrame implements MouseListener {
         RightPanel right = new RightPanel(this);
         this.getContentPane().add(right, BorderLayout.EAST);
 
-        LeftPanel left = new LeftPanel();
+        left = new LeftPanel(this);
         this.getContentPane().add(left, BorderLayout.WEST);
 
         this.setVisible(true);
@@ -61,7 +63,18 @@ public class AdminFrame extends JFrame implements MouseListener {
         this.setResizable(false);
         map.addMouseListener(this);
     }
-
+     public  void PassValue(Map p)
+    {
+        
+        map.image = p.image;
+//        look for method in JList that adds or appends item
+         //left.mapList.setListData(new String[] {"Hello"});
+        left.model.addElement(p.name);
+        
+        
+        repaint();
+        
+    }
     @Override
     /* left click on the map */
     public void mouseClicked(MouseEvent e) {
@@ -75,6 +88,8 @@ public class AdminFrame extends JFrame implements MouseListener {
     ) {
 
     }
+    
+    //CREATE METHOD HERE THAT YOUR FRAME WILL CALL WHEN IT IS CLOSING
 
     @Override
     public void mouseReleased(MouseEvent e
@@ -135,6 +150,7 @@ public class AdminFrame extends JFrame implements MouseListener {
                         JFrame frame = new LocationEdit(newlocation);
                         frame.setTitle("Location Edit");
                         frame.setSize (500, 500);
+                        frame.setLocationRelativeTo (null);
                         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
                         frame.setVisible(true);
               
@@ -179,7 +195,7 @@ public class AdminFrame extends JFrame implements MouseListener {
     @Override
     public void mouseEntered(MouseEvent e
     ) {
-
+        
     }
 
     @Override
@@ -187,4 +203,13 @@ public class AdminFrame extends JFrame implements MouseListener {
     ) {
 
     }
+    public static void tesPassValue(Map p)
+    {
+       
+      
+        System.out.println("into test..");
+        
+        System.out.println(p.name);
+    }
+          
 }
