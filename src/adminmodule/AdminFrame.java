@@ -84,14 +84,15 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
         for(Map m : maps) {
             left.model.addElement(m.name);
         }
-        
-        
         //mapinfo = db.getMapInfo(1);
-        points = maps.get(0).pointList;
-        locations = maps.get(0).locList;
-        edges = maps.get(0).edgeList;
         
-        left.mapList.setSelectedIndex(0);
+        if(maps.size() > 0) {
+            points = maps.get(0).pointList;
+            locations = maps.get(0).locList;
+            edges = maps.get(0).edgeList;
+
+            left.mapList.setSelectedIndex(0);
+        }
     }
     
     public void mapChanged(int index) {
@@ -111,6 +112,8 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
          //left.mapList.setListData(new String[] {"Hello"});
         left.model.addElement(p.name);
         maps.add(p);
+        
+        if(maps.size() == 1) left.mapList.setSelectedIndex(0);
         
     }
 

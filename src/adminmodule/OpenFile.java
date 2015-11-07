@@ -93,7 +93,7 @@ import javax.swing.*;
                 ms.locList = new ArrayList<Location>();
                 ms.image = bi;
                 ms.mapID = -1;
-                ms.isInteriorMap = false;
+                ms.isInteriorMap = ckbox.isSelected();
                 ms.name = Name.getText();
                 if(ckbox.isSelected())
                     ms.isInteriorMap = true;
