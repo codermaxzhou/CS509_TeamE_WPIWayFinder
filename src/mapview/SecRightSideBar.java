@@ -166,8 +166,14 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
         int n = 0;
         int m = 0;
         JLabel pinLabel = new JLabel();
-        //pinList.removeAll(pinList);
-        mainPanel.repaint();
+        
+        for(JLabel j: labelList){
+            j.setIcon(null);
+            
+        }
+        mainPanel.validate();
+        
+        
         for (m= 0; m < labelList.size(); m++) {
 
             labelList.get(m).setForeground(Color.white);

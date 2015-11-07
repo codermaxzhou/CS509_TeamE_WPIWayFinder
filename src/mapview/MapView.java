@@ -12,6 +12,7 @@ import adminmodule.Map;
 import adminmodule.MapInfo;
 
 import adminmodule.Point;
+import adminmodule.PopupMenu;
 
 import java.awt.BorderLayout;
 
@@ -216,6 +217,7 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
 		map1.pointList = pointList;
                 
                 this.setVisible(true);
+               
                 
 		
 		
@@ -321,14 +323,14 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// µã»÷Êó±êÔò»á·µ»ØÊó±êµÄÎ»ÖÃ 
-		//System.out.println(e.getPoint());
-		// µã»÷Êó±ê»Øµ÷ÓÃ»­³öÏß¶ÎµÄº¯Êý 
-		//this.drawRoute(pointList.get(0),pointList.get(1));
-		
-		//this.drawManyRoute(edgeList);
-		// TODO Auto-generated method stub
-		
+		for(Location l: locationList){
+                if((e.getX() >= l.point.X - 10 || e.getX() <= l.point.X + 10 )
+                        && (e.getY() >= l.point.Y - 10 || e.getY() <= l.point.Y + 10))
+                {
+                    PopupMenu menu = new PopupMenu(l);
+                    //menu.show(e.getComponent(), x, y);
+                }   
+                }
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
