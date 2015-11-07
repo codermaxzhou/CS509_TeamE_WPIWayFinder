@@ -33,7 +33,6 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
      * @param mapView
      */
     public RightSideBar() {
-      
         initComponents();
         
                 
@@ -130,7 +129,7 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
         // TODO add your handling code here:
-        mainPanel.repaint();
+        mainPanel.clearPins();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void classroomLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_classroomLabelMouseClicked
