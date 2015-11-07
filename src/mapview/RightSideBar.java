@@ -48,10 +48,10 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
     private void initComponents() {
 
         clearButton = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        showButton = new javax.swing.JButton();
         classroomLabel = new javax.swing.JLabel();
         restroomLabel = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        backLabel = new javax.swing.JLabel();
 
         clearButton.setText("Clear Pins");
         clearButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -65,13 +65,19 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
             }
         });
 
-        jButton2.setText("Show Pins");
+        showButton.setText("Show Pins");
 
         classroomLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/classrooml.png"))); // NOI18N
         classroomLabel.setBounds(new java.awt.Rectangle(100, 200, 45, 16));
         classroomLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 classroomLabelMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                classroomLabelMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                classroomLabelMouseEntered(evt);
             }
         });
 
@@ -81,12 +87,18 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 restroomLabelMouseClicked(evt);
             }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                restroomLabelMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                restroomLabelMouseEntered(evt);
+            }
         });
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Left Arrow.png"))); // NOI18N
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+        backLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Left Arrow.png"))); // NOI18N
+        backLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
+                backLabelMouseClicked(evt);
             }
         });
 
@@ -99,7 +111,7 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
                     .addGroup(layout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton2)
+                            .addComponent(showButton)
                             .addComponent(clearButton)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(53, 53, 53)
@@ -108,13 +120,13 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
                             .addComponent(restroomLabel)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel1)))
+                        .addComponent(backLabel)))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(backLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21)
                 .addComponent(classroomLabel)
                 .addGap(34, 34, 34)
@@ -122,7 +134,7 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 188, Short.MAX_VALUE)
                 .addComponent(clearButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
+                .addComponent(showButton)
                 .addGap(22, 22, 22))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -173,22 +185,54 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
         
     }//GEN-LAST:event_restroomLabelMouseClicked
 
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+    private void backLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backLabelMouseClicked
         // TODO add your handling code here:
         secRightSideBar.setBackground(Color.white);
-    }//GEN-LAST:event_jLabel1MouseClicked
+    }//GEN-LAST:event_backLabelMouseClicked
 
     private void clearButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearButtonMouseClicked
         // TODO add your handling code here:
+     
     }//GEN-LAST:event_clearButtonMouseClicked
+
+    private void classroomLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_classroomLabelMouseEntered
+        // TODO add your handling code here:
+        
+        this.classroomLabel.setBounds(this.classroomLabel.getX() - 5, this.classroomLabel.getY() - 5,
+           this.classroomLabel.getHeight() , this.classroomLabel.getWidth() );
+        this.classroomLabel.setToolTipText("Classrooms");
+        this.repaint();
+    }//GEN-LAST:event_classroomLabelMouseEntered
+
+    private void classroomLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_classroomLabelMouseExited
+        // TODO add your handling code here:
+         this.classroomLabel.setBounds(this.classroomLabel.getX() + 5, this.classroomLabel.getY() + 5,
+           this.classroomLabel.getHeight() , this.classroomLabel.getWidth() );
+        this.repaint();
+    }//GEN-LAST:event_classroomLabelMouseExited
+
+    private void restroomLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_restroomLabelMouseEntered
+        // TODO add your handling code here:
+        this.restroomLabel.setBounds(this.restroomLabel.getX() - 5, this.restroomLabel.getY() - 5,
+           this.restroomLabel.getHeight() , this.restroomLabel.getWidth() );
+        this.restroomLabel.setToolTipText("Restrooms");
+        this.repaint();
+    }//GEN-LAST:event_restroomLabelMouseEntered
+
+    private void restroomLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_restroomLabelMouseExited
+        // TODO add your handling code here:
+        this.restroomLabel.setBounds(this.restroomLabel.getX() + 5, this.restroomLabel.getY() + 5,
+           this.restroomLabel.getHeight() , this.restroomLabel.getWidth() );
+        this.repaint();
+    }//GEN-LAST:event_restroomLabelMouseExited
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel backLabel;
     private javax.swing.JLabel classroomLabel;
     private javax.swing.JButton clearButton;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel restroomLabel;
+    private javax.swing.JButton showButton;
     // End of variables declaration//GEN-END:variables
 
     @Override

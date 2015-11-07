@@ -60,28 +60,9 @@ public class MapView extends JFrame{
 	}
 	// construction method 
 	public MapView() throws SQLException{
-		//  mapÍ¼²ã
-//		mapPanel = new MapPanel(this);
-//        mapPanel.setPreferredSize(new Dimension(900, 800));
-//        this.getContentPane().add(mapPanel, BorderLayout.CENTER);
-//		
+	
 		this.init();
-//		mainPanel = new MainPanel(backGround);
-//		//this.add(mainPanel);
-//                this.getContentPane().add(mainPanel, BorderLayout.WEST);
-//		RightSideBar rightSideBar = new RightSideBar(this);
-//                this.getContentPane().add(rightSideBar, BorderLayout.EAST);
-//		
-//                SecRightSideBar secRightSideBar = new SecRightSideBar(this);
-//                this.getContentPane().add(secRightSideBar, BorderLayout.CENTER);
-//        
-//		this.setSize(1280,920);
-//		this.setVisible(true);
-//		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		this.addMouseListener(mainPanel);
-//		
-                
-          
+
 	}
         public void init() throws SQLException{
             
@@ -123,6 +104,7 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
 	private JTextField endPointField;
         private JLabel profile;
         private JLabel exchange;
+        private JLabel search;
         
         private JButton searchButton;
 	private JMenu sideMenu;
@@ -174,6 +156,11 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
                 exchange = new JLabel();
                 exchange.setIcon(exchangeIcon);
                 
+                Image searchImage = new ImageIcon(this.getClass().getResource("/icons/search.png")).getImage();
+                ImageIcon searchIcon = new ImageIcon(searchImage);
+                search = new JLabel();
+                search.setIcon(searchIcon);
+                
 		startPointField = new JTextField();
 		endPointField = new JTextField();
 		searchButton = new JButton();
@@ -183,6 +170,7 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
 		this.add(startPointField);
 		this.add(endPointField);
 		this.add(searchButton);
+                this.add(search);
 		this.add(sideMenu);
                 this.add(profile);
                 this.add(exchange);
@@ -205,21 +193,14 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
 		endPointField.setText("End Point");
                 endPointField.setFont(font);
 		
-		searchButton.setBounds(380, 10, 100, 30);
-		searchButton.setText("Direction");
-                searchButton.setFont(font);
-		searchButton.setBackground(Color.BLUE);
-		searchButton.setForeground(Color.WHITE);
-               
-		searchButton.addActionListener(this);  // ×¢²á¼àÌý 
+		// adding Listener Here
+                search.addMouseListener(this);
+                exchange.addMouseListener(this);
+                
+                
+                search.setBounds(380,10,30,30);
                 profile.setBounds(10, 10, 30, 30);
                 exchange.setBounds(190, 10, 30, 30);
-		
-		sideMenu.setText("more options");
-	        sideMenu.setBounds(1200,0,70,800);
-	        sideMenu.setBackground(Color.GRAY);
-	    
-		// ³õÊ¼»¯map
 		
 		map1.mapID = 1;
 		map1.image = background;
@@ -353,45 +334,18 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		for(Location l: locationList){
-                if((e.getX() >= l.point.X - 10 || e.getX() <= l.point.X + 10 )
-                        && (e.getY() >= l.point.Y - 10 || e.getY() <= l.point.Y + 10))
-                {
-                    PopupMenu menu = new PopupMenu(l);
-                    
-                    menu.show(e.getComponent(), l.point.X, l.point.Y);
-                }   
-                }
-	}
-	@Override
-	public void mousePressed(MouseEvent e) {
-		
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-        
-        ArrayList<Edge> route;
-        
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+//		for(Location l: locationList){
+//                if((e.getX() >= l.point.X - 10 || e.getX() <= l.point.X + 10 )
+//                        && (e.getY() >= l.point.Y - 10 || e.getY() <= l.point.Y + 10))
+//                {
+//                    PopupMenu menu = new PopupMenu(l);
+//                    
+//                    menu.show(e.getComponent(), l.point.X, l.point.Y);
+//                }   
+//                }
+            
             System.out.println("search!");
-		if(e.getSource() == searchButton ){
+		if(e.getSource() == search ){
 			String startPointString = startPointField.getText();
 			String endPointString = endPointField.getText();
 			System.out.println("The start Point name:"+startPointString);
@@ -415,6 +369,79 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
                         showPins = false;
                         repaint();
 		}
+                
+                // exchange button 
+                if (e.getSource()== exchange){
+                String tmp = null;
+                tmp = startPointField.getText();
+                startPointField.setText(endPointField.getText());
+                endPointField.setText(tmp);
+
+                }
+	}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+            if(e.getSource() == search){
+                search.setToolTipText("Search Route");
+                search.setBounds(search.getX() - 3, search.getY() - 3, search.getWidth(), search.getHeight());
+            }
+            if(e.getSource() == exchange){
+                exchange.setToolTipText("Exchange StartingPoint and Destination");
+            }
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+            if(e.getSource() == search){
+                search.setBounds(search.getX() + 3, search.getY() + 3, search.getWidth(), search.getHeight());
+               // search.set
+            }
+		
+	}
+        
+        ArrayList<Edge> route;
+        
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+//            System.out.println("search!");
+//		if(e.getSource() == search ){
+//			String startPointString = startPointField.getText();
+//			String endPointString = endPointField.getText();
+//			System.out.println("The start Point name:"+startPointString);
+//			System.out.println("The end Point name:"+endPointString);
+//			if(startPointString.isEmpty()|| endPointString.isEmpty()){
+//                            JOptionPane.showMessageDialog(null, "Please input the location!");
+//        
+//                        }
+//                        
+//                        Location start, end;
+//                        start = end = null;
+//                        
+//                        for(Location l : locationList) {
+//                            if(l.name.equals(startPointString)) start = l;
+//                            else if(l.name.equals(endPointString)) end = l;
+//                        }
+//                        
+//                        Dijkstra algo = new Dijkstra(edgeList, pointList);
+//                        route = (ArrayList<Edge>) algo.calculate(start.point, end.point);
+//                        showRoute = true;
+//                        showPins = false;
+//                        repaint();
+//		}
 		
 	}
 	 
