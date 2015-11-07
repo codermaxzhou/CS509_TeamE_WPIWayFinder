@@ -31,7 +31,7 @@ public class MapPanel extends JScrollPane {
         //JLabel label = new JLabel(image);
         //this.getViewport().add(label);
     }
-
+    
     @Override
     public void paint(Graphics g) {
         super.paint(g);

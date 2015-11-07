@@ -5,12 +5,12 @@
  */
 package mapview;
 import adminmodule.Location;
+import adminmodule.Map;
 import adminmodule.MapInfo;
 import java.awt.BorderLayout;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import jdbc.JDBC;
-import javax.swing.WindowConstants;
-import static javax.swing.text.StyleConstants.Bold;
 
 /**
  *
@@ -53,8 +51,10 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
 //        ArrayList<JLabel> labelList = new ArrayList<JLabel>();
        
         JDBC db = new JDBC();
-        //System.out.println(Category);     
-        MapInfo info = db.getMapInfo(1);
+        //System.out.println(Category);  
+        Map m = new Map();
+        m.mapID = 1;
+        MapInfo info = db.getMapInfo(1, m);
         locationList = info.locations;
         labelList.clear();
         
@@ -64,8 +64,8 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
             
              switch(l.category)
                     {
-                        case DINING:
-                            if(category.equals("DINING")){
+                        case CLASSROOM:
+                            if(category.equals("CLASSROOM")){
                             JLabel label = new JLabel();
                             label.setText(l.name);
                            
@@ -75,9 +75,9 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
                             
                             }
                             break;
-                        case PARKING:
+                        case RESTROOM:
                            
-                            if(category.equals("PARKING")){
+                            if(category.equals("RESTROOM")){
                             JLabel label = new JLabel();
                             label.setText(l.name);
                             

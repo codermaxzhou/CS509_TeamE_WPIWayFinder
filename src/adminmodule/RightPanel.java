@@ -5,6 +5,7 @@
  */
 package adminmodule;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -120,9 +121,10 @@ public class RightPanel extends javax.swing.JPanel {
         try {
             // TODO add your handling code here:
             frame.loadMapInfo();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(RightPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
+        frame.button = AdminFrame.Button.NULL;
         frame.map.repaint();
     }//GEN-LAST:event_resetButtonActionPerformed
 
@@ -130,11 +132,8 @@ public class RightPanel extends javax.swing.JPanel {
         JDBC db = new JDBC();
         frame.button = AdminFrame.Button.NULL;
         try {
-            db.saveLocations(frame.locations);
-            db.savePoints(frame.points);
-            db.saveEdges(frame.edges);
-            db.updateLocation(frame.locations);
-        } catch (SQLException ex) {
+            db.addMap(frame.maps);
+        } catch (SQLException | IOException ex) {
             System.out.println("problem saving");
         }
     }//GEN-LAST:event_saveButtonActionPerformed
