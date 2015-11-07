@@ -47,13 +47,13 @@ public class AdminFrame extends JFrame implements MouseListener {
         map = new MapPanel(this);
         map.setPreferredSize(new Dimension(900, 800));
         //map.addMouseListener(this);
-        this.getContentPane().add(map, BorderLayout.WEST);
+        this.getContentPane().add(map, BorderLayout.CENTER);
 
         RightPanel right = new RightPanel(this);
         this.getContentPane().add(right, BorderLayout.EAST);
 
         LeftPanel left = new LeftPanel();
-        this.getContentPane().add(left, BorderLayout.CENTER);
+        this.getContentPane().add(left, BorderLayout.WEST);
 
         this.setVisible(true);
         Dimension d = new Dimension(1300, 850);

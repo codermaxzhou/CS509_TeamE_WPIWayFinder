@@ -105,6 +105,7 @@ public class MapView extends JFrame{
            // communicate bettween class 
             rightSideBar.mainPanel = mainPanel;
             rightSideBar.secRightSideBar = secRightSideBar;
+            secRightSideBar.mainPanel = mainPanel;
             
             this.addMouseListener(rightSideBar);
            // this.addMouseListener(secRightSideBar);
