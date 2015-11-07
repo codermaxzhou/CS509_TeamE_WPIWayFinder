@@ -70,14 +70,18 @@ public class MapView extends JFrame{
 //            mapPanel.setPreferredSize(new Dimension(900,800));
            // Image backGround = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_1.png")).getImage();
             MainPanel mainPanel = new MainPanel();
-            mainPanel.setPreferredSize(new Dimension(900,800));
+            mainPanel.setPreferredSize(new Dimension(980,800));
             
             this.getContentPane().add(mainPanel, BorderLayout.WEST);
             RightSideBar rightSideBar = new RightSideBar();
+            rightSideBar.setPreferredSize(new Dimension(150,800));
+            
             this.getContentPane().add(rightSideBar, BorderLayout.EAST);
 	    SecRightSideBar secRightSideBar = new SecRightSideBar();
+            secRightSideBar.setPreferredSize(new Dimension(170,800));
             this.getContentPane().add(secRightSideBar, BorderLayout.CENTER);
             this.setVisible(true);
+            
             Dimension d = new Dimension(1300, 850);
             this.setSize(d);
             this.setResizable(false);

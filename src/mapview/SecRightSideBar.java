@@ -98,7 +98,7 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
            
             Font font = new Font("Roboto", Font.BOLD, 16);
             j.setFont(font);
-            j.setBounds(60, 90 + y, 160, 30);
+            j.setBounds(30, 90 + y, 160, 30);
             j.setForeground(Color.white);
             j.addMouseListener(this);
             
@@ -135,17 +135,18 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setBackground(new java.awt.Color(255, 255, 255));
+        setBackground(new java.awt.Color(153, 153, 255));
+        setPreferredSize(new java.awt.Dimension(170, 800));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 102, Short.MAX_VALUE)
+            .addGap(0, 169, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 558, Short.MAX_VALUE)
+            .addGap(0, 800, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
