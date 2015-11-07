@@ -11,6 +11,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.filechooser.*;   
 import javax.swing.*;  
@@ -84,7 +85,9 @@ import javax.swing.*;
             @Override
             public void actionPerformed ( ActionEvent e )
             {
-                
+                ms.edgeList = new ArrayList<Edge>();
+                ms.pointList = new ArrayList<Point>();
+                ms.locList = new ArrayList<Location>();
                 ms.image = bi;
                 ms.name = Name.getText();
                 ms.description = Description.getText();

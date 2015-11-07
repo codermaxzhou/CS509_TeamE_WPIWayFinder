@@ -120,7 +120,7 @@ public class RightPanel extends javax.swing.JPanel {
         try {
             // TODO add your handling code here:
             frame.loadMapInfo();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(RightPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
         frame.button = AdminFrame.Button.NULL;

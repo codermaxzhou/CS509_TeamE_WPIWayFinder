@@ -11,41 +11,50 @@ import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import jdbc.JDBC;
 
 /**
  *
  * @author Yihao
  */
-public class AdminFrame extends JFrame implements MouseListener {
+public class AdminFrame extends JFrame implements MouseListener, ListSelectionListener {
 
     public enum Button {POINT, LOCATION, EDGE, NULL};
     public MapInfo mapinfo = new MapInfo();
-    public ArrayList<Point> points = new ArrayList<Point>();
-    public ArrayList<Location> locations = new ArrayList<Location>();
-    public ArrayList<Edge> edges = new ArrayList<Edge>();
+    
+    public ArrayList<Point> points = new ArrayList<>();
+    public ArrayList<Location> locations = new ArrayList<>();
+    public ArrayList<Edge> edges = new ArrayList<>();
+    public ArrayList<Map> maps = new ArrayList<>();
+    
     public Button button = Button.NULL;
+    
     public JDBC db = new JDBC();
     int radius = 10;
+    
     MapPanel map ;
     LeftPanel left;
     Point startpoint = null;
     Point endpoint = null;
 
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, IOException {
         System.out.println("start...");
         AdminFrame f = new AdminFrame();
         f.init();
     }
 
-    public void init() throws SQLException {
-        loadMapInfo();
+    public void init() throws SQLException, IOException {
+        
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         map = new MapPanel(this);
         map.setPreferredSize(new Dimension(900, 800));
@@ -57,6 +66,7 @@ public class AdminFrame extends JFrame implements MouseListener {
 
 
         left = new LeftPanel(this);
+        left.mapList.getSelectionModel().addListSelectionListener(this);
         this.getContentPane().add(left, BorderLayout.WEST);
 
         this.setVisible(true);
@@ -65,27 +75,41 @@ public class AdminFrame extends JFrame implements MouseListener {
         this.setSize(d);
         this.setResizable(false);
         map.addMouseListener(this);
+        loadMapInfo();
         //map.addMouseListener(new PopupTriggerListener());
     }
 
     
-    public void loadMapInfo() throws SQLException {
-        mapinfo = db.getMapInfo(1);
-        points = mapinfo.points;
-        locations = mapinfo.locations;
-        edges = mapinfo.edges;
+    public void loadMapInfo() throws SQLException, IOException {
+        maps = db.showAllMap();
+        
+        for(Map m : maps) {
+            left.model.addElement(m.name);
+        }
+        
+        //mapinfo = db.getMapInfo(1);
+        points = maps.get(0).pointList;
+        locations = maps.get(0).locList;
+        edges = maps.get(0).edgeList;
+    }
+    
+    public void mapChanged(int index) {
+        map.image = maps.get(index).image;
+        
+        points = maps.get(index).pointList;
+        locations = maps.get(index).locList;
+        edges = maps.get(index).edgeList;
+        repaint();
     }
 
     public  void PassValue(Map p)
     {
         
-        map.image = p.image;
+        //map.image = p.image;
 //        look for method in JList that adds or appends item
          //left.mapList.setListData(new String[] {"Hello"});
         left.model.addElement(p.name);
-        
-        
-        repaint();
+        maps.add(p);
         
     }
 
@@ -227,6 +251,12 @@ public class AdminFrame extends JFrame implements MouseListener {
                     break;
             }
         }
+    }
+    
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        int sIndex = left.mapList.getSelectedIndex();
+        this.mapChanged(sIndex);
     }
 
     @Override

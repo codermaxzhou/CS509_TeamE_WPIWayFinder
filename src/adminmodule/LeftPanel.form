@@ -21,7 +21,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="addMapButton" pref="114" max="32767" attributes="0"/>
+                          <Component id="addMapButton" max="32767" attributes="0"/>
                           <Component id="deleteMapButton" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -112,7 +112,7 @@
                 </Property>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="model = new DefaultListModel();&#xa;model.addElement(&quot;Element&quot;);&#xa;JList list = new JList(model);"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="model = new DefaultListModel();&#xa;JList list = new JList(model);"/>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
