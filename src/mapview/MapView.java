@@ -197,8 +197,8 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
 		searchButton.setBounds(380, 10, 100, 30);
 		searchButton.setText("Direction");
                 searchButton.setFont(font);
-		searchButton.setBackground(Color.MAGENTA);
-		searchButton.setForeground(Color.BLUE);
+		searchButton.setBackground(Color.BLUE);
+		searchButton.setForeground(Color.WHITE);
                
 		searchButton.addActionListener(this);  // ×¢²á¼àÌý 
                 profile.setBounds(10, 10, 30, 30);
