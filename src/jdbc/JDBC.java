@@ -98,6 +98,8 @@ public class JDBC {
                               break;
                case "ATM": temp.category = Location.Category.ATM;
                            break;
+               case "CLASSROOM": temp.category = Location.Category.CLASSROOM;
+               case "RESTROOM": temp.category = Location.Category.RESTROOM;
                default: temp.category = Location.Category.PARKING;
            }
            
