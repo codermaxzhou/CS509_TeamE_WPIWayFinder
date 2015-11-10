@@ -17,7 +17,7 @@ import java.awt.BasicStroke;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-
+import java.awt.Graphics2D;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -458,7 +458,7 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
                     edge = route.get(index);
                     Graphics g = this.getGraphics();
                     g.setColor(Color.red);
-                   // Stroke stroke  = new BasicStroke(3.0f);
+                    ((Graphics2D)g).setStroke(new BasicStroke(2.0f));
                    
                     if(index == 0){
                     
