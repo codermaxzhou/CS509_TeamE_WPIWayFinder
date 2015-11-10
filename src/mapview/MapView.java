@@ -129,7 +129,7 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
         
         Image pinImage = new ImageIcon(this.getClass().getResource("/icons/marker.png")).getImage();
         
-        private ArrayList<Point> pins = new ArrayList<>();
+        private ArrayList<Location> pins = new ArrayList<>();
         private boolean showRoute = false;
         private boolean showPins = false;
         private boolean drawRoutes = false;
@@ -246,8 +246,11 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
               
                  
                  if(showPins) {
-                     for(Point p : pins) {
-                         g.drawImage(pinImage, p.X - 5, p.Y - 5, 20, 20, null);
+                     for(Location p : pins) {
+                         g.drawImage(pinImage, p.point.X - 5, p.point.Y - 5, 20, 20, null);
+                         g.drawString(p.point.location.name,p.point.X - 30 , p.point.Y - 10);
+                         
+                         //g.drawString(TOOL_TIP_TEXT_KEY, index, WIDTH);
                      }
                  }
                  if(showRoute){
@@ -262,6 +265,8 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
                  if(showAllPins){
                      for(Location l: locationList){
                          g.drawImage(pinImage,l.point.X - 5, l.point.Y - 5, 20, 20, null);
+                         g.drawString(l.point.location.name,l.point.X - 30 , l.point.Y - 10);
+                         
                      }
                  }
 		
@@ -283,12 +288,13 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
             
             for(Location p: locationList){
                 if(p.name.equals(name)) {
-                    pins.add(p.point);
+                    pins.add(p);
                     break;
                 }
             }
             repaint();
         }
+        
         
         public void showLocationPin(String category){
             
@@ -304,12 +310,12 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
                     switch (p.category) {
                         case CLASSROOM:
                             if (category.equals("CLASSROOM")) { 
-                                pins.add(p.point);
+                                pins.add(p);
                             }
                             break;
                         case RESTROOM:
                             if (category.equals("RESTROOM")) {
-                                pins.add(p.point);
+                                pins.add(p);
                             }
                             break;
                         default:
