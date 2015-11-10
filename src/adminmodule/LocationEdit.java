@@ -45,6 +45,8 @@ public class LocationEdit extends JFrame {
             panel.add(Description = new JTextField(""));    
             panel.add(new JLabel("Category:"));
             JComboBox box = new JComboBox(options);
+            if (l.locationID != -1)
+                box.setSelectedItem(l.category.toString());
             panel.add(box);
 
             /*jrb1.setActionCommand("DINING");

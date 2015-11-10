@@ -82,8 +82,10 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
         maps = db.showAllMap();
         
         for(Map m : maps) {
-            left.model.addElement(m.name);
+            if(!left.model.contains(m.name))
+                left.model.addElement(m.name);
         }
+
         //mapinfo = db.getMapInfo(1);
         
         if(maps.size() > 0) {
