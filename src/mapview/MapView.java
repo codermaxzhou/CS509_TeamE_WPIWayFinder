@@ -461,7 +461,7 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
                    // Stroke stroke  = new BasicStroke(3.0f);
                    
                     if(index == 0){
-                    	((Graphics2D)g).setStroke(new BasicStroke(3.0f));
+                    
                         g.drawString(startLocation.name, startLocation.point.X - 30, startLocation.point.Y - 30);
                         g.drawImage(pinImage, startLocation.point.X - 5, startLocation.point.Y - 20,20,20,null);
                     }
