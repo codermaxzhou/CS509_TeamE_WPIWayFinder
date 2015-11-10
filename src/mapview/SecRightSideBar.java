@@ -98,7 +98,7 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
            
             Font font = new Font("Roboto", Font.BOLD, 16);
             j.setFont(font);
-            j.setBounds(60, 90 + y, 160, 30);
+            j.setBounds(30, 90 + y, 160, 30);
             j.setForeground(Color.white);
             j.addMouseListener(this);
             
@@ -135,17 +135,18 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setBackground(new java.awt.Color(255, 255, 255));
+        setBackground(new java.awt.Color(153, 153, 255));
+        setPreferredSize(new java.awt.Dimension(170, 800));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 201, Short.MAX_VALUE)
+            .addGap(0, 169, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 558, Short.MAX_VALUE)
+            .addGap(0, 800, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -165,12 +166,13 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
         int n = 0;
         int m = 0;
         JLabel pinLabel = new JLabel();
-        
-        for(JLabel j: labelList){
+        // set all label to null
+        for(JLabel j: pinList){
+           // j.setIcon(null);
             j.setIcon(null);
             
         }
-        mainPanel.validate();
+//        mainPanel.validate();
         
         
         for (m= 0; m < labelList.size(); m++) {
@@ -187,14 +189,14 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
                 
 
                 pinLabel.setText(labelList.get(n).getText());
-                
+                pinLabel.setBackground(Color.GRAY);
                 pinLabel.setBounds(locationList.get(n).point.X, locationList.get(n).point.Y, 100, 30);
                 pinList.add(pinLabel);
                 
                 //System.out.println(locationList.get(n).point.X +","+ locationList.get(n).point.Y);
                 mainPanel.add(pinLabel);
-                //mainPanel.validate();
-                mainPanel.repaint();  
+                mainPanel.validate();
+                //mainPanel.repaint();  
                 
                 
                 Image pinImage = new ImageIcon(this.getClass().getResource("/icons/marker.png")).getImage();
