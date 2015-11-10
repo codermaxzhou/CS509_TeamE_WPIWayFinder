@@ -15,9 +15,9 @@ import adminmodule.Point;
 import adminmodule.PopupMenu;
 
 import java.awt.BorderLayout;
-
-
 import java.awt.Color;
+
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -28,6 +28,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import static javafx.scene.paint.Color.color;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -37,6 +38,7 @@ import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import jdbc.JDBC;
 
@@ -55,6 +57,7 @@ public class MapView extends JFrame{
 	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
                 MapView mapView = new MapView();
+                
     
 		
 	}
@@ -69,6 +72,9 @@ public class MapView extends JFrame{
 //            mapPanel = new MapPanel(this);
 //            mapPanel.setPreferredSize(new Dimension(900,800));
            // Image backGround = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_1.png")).getImage();
+           
+            
+            
             MainPanel mainPanel = new MainPanel();
             mainPanel.setPreferredSize(new Dimension(980,800));
             
@@ -116,23 +122,33 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
 	private ArrayList<Point> pointList = new ArrayList<>();
 	private ArrayList<Edge> edgeList = new ArrayList<>();
 	private ArrayList<Location> locationList = new ArrayList<>(); // Ëã·¨·µ»ØµÄedges
+        private ArrayList<Edge> route = new ArrayList<>();
 	private ArrayList<JLabel> pinList = new ArrayList<JLabel>();
 	public Map map1 = new Map();
 	public Dijkstra dijstra = new Dijkstra(edgeList,pointList);
         
         Image pinImage = new ImageIcon(this.getClass().getResource("/icons/marker.png")).getImage();
         
-        private ArrayList<Point> pins = new ArrayList<>();
-        public boolean showRoute = false;
+        private ArrayList<Location> pins = new ArrayList<>();
+        private boolean showRoute = false;
         private boolean showPins = false;
-        
+        private boolean drawRoutes = false;
+        private boolean showAllPins = false;
+        public Timer timer;
+        private int index = 0;
 	
         //private boolean drawDiningPins = false;
 //	private final SLPanel panel = new SLPanel();
 //	private final ThePanel p1 = new ThePanel("1", "data/img1.jpg");
 
-	MainPanel() throws SQLException{
-                JDBC db = new JDBC();
+	MainPanel() throws SQLException {
+            
+            this.init();
+          
+	}
+        
+         public void init() throws SQLException{
+             JDBC db = new JDBC();
                 
                 Map m = new Map();
                 m.mapID = 1;
@@ -211,13 +227,13 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
 		map1.name = "Project Center1";
 		map1.pointList = pointList;
                 
+                timer = new Timer(100,this);
+                timer.setInitialDelay(300);
+                
                 this.setVisible(true);
                
                 
-		
-		
-		
-	}
+         }
 	 public void paintComponent(Graphics g) {  
 	       g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);  
 //	        System.out.println(this.getHeight());
@@ -227,11 +243,30 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
 		 super.paint(g);
 		 //g.draw3DRect(10, 100, 10, 10, true);
 	
-                 if(showRoute) drawManyRoute(route, g);
+              
                  
                  if(showPins) {
-                     for(Point p : pins) {
-                         g.drawImage(pinImage, p.X - 5, p.Y - 5, 20, 20, null);
+                     for(Location p : pins) {
+                         g.drawImage(pinImage, p.point.X - 5, p.point.Y - 5, 20, 20, null);
+                         g.drawString(p.point.location.name,p.point.X - 30 , p.point.Y - 10);
+                         
+                         //g.drawString(TOOL_TIP_TEXT_KEY, index, WIDTH);
+                     }
+                 }
+                 if(showRoute){
+                     this.timer.start();
+                    // for(Edge e : route) {
+//                    g.fillOval(e.startPoint.X - 5, e.startPoint.Y - 5, 10, 10);
+//                    g.fillOval(e.endPoint.X - 5, e.endPoint.Y - 5, 10, 10);
+//                    g.drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
+                    
+              //  }
+                 }
+                 if(showAllPins){
+                     for(Location l: locationList){
+                         g.drawImage(pinImage,l.point.X - 5, l.point.Y - 5, 20, 20, null);
+                         g.drawString(l.point.location.name,l.point.X - 30 , l.point.Y - 10);
+                         
                      }
                  }
 		
@@ -241,46 +276,26 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
 	 // ¿ªÊ¼»­Ïß ÕâÀïÊÇÓÃº¯ÊýÀ´ÊµÏÖÂð£¿ Ö»ÄÜ»­Á½µãÖ®¼äµÄÏß Èç¹ûÒª»­Ò»ÏµÁÐµãµÄÏß¿ÉÒÔÁ¬Ðøµ÷ÓÃÕâ¸ö·½·¨
 	public void drawRoute(Point start, Point end){
 		 
-		//this.getGraphics().drawLine(420, 305, 564, 280);
-		 // repaint ÊÇÖØÐÂµ÷ÓÃpaint£¨£©º¯Êý ²»ÄÜÂÒÓÃ 
+ 
 		 
 	}
 	
-	// give Edges from Algorithms then draw route
-	public void drawManyRoute(ArrayList<Edge> resultEdge, Graphics g){
-		/*ArrayList<Point> resultPoint = new ArrayList<Point>();
-		resultPoint = edgeToPoint(resultEdge);
-		// PointList ÊÇ»­µãµÄÊý¾Ý½á¹¹ ÔÚÕâÀï¿ÉÒÔ»»Ò»¸ö
-		for(int i = 0; i < resultPoint.size() -1 ; i++){
-                        
-                        
-                    
-			System.out.println("result.size:"+resultPoint.size());
-			this.getGraphics().drawLine(resultPoint.get(i).X, resultPoint.get(i).Y, resultPoint.get(i+1).X, resultPoint.get(i+1).Y);
-			
-		}*/
 	
-                for(Edge e : resultEdge) {
-                    g.fillOval(e.startPoint.X - 5, e.startPoint.Y - 5, 10, 10);
-                    g.fillOval(e.endPoint.X - 5, e.endPoint.Y - 5, 10, 10);
-                    g.drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
-                    
-                }
-	}
-        
         public void showSinglePin(String name) {
             this.showRoute = false;
             this.showPins = true;
+            this.showAllPins = false;
             pins.clear();
             
             for(Location p: locationList){
                 if(p.name.equals(name)) {
-                    pins.add(p.point);
+                    pins.add(p);
                     break;
                 }
             }
             repaint();
         }
+        
         
         public void showLocationPin(String category){
             
@@ -296,12 +311,12 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
                     switch (p.category) {
                         case CLASSROOM:
                             if (category.equals("CLASSROOM")) { 
-                                pins.add(p.point);
+                                pins.add(p);
                             }
                             break;
                         case RESTROOM:
                             if (category.equals("RESTROOM")) {
-                                pins.add(p.point);
+                                pins.add(p);
                             }
                             break;
                         default:
@@ -332,7 +347,14 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
         public void clearPins() {
             showRoute = false;
             showPins = false;
+            showAllPins = false;
             repaint();
+        }
+        
+        public void showPins(){
+            
+           showAllPins = true;
+           repaint();
         }
 	
 	
@@ -350,6 +372,8 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
             
             System.out.println("search!");
 		if(e.getSource() == search ){
+                        
+                        
 			String startPointString = startPointField.getText();
 			String endPointString = endPointField.getText();
 			System.out.println("The start Point name:"+startPointString);
@@ -371,6 +395,7 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
                         route = (ArrayList<Edge>) algo.calculate(start.point, end.point);
                         showRoute = true;
                         showPins = false;
+                        
                         repaint();
 		}
                 
@@ -416,37 +441,25 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
 		
 	}
         
-        ArrayList<Edge> route;
+        
         
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-//            System.out.println("search!");
-//		if(e.getSource() == search ){
-//			String startPointString = startPointField.getText();
-//			String endPointString = endPointField.getText();
-//			System.out.println("The start Point name:"+startPointString);
-//			System.out.println("The end Point name:"+endPointString);
-//			if(startPointString.isEmpty()|| endPointString.isEmpty()){
-//                            JOptionPane.showMessageDialog(null, "Please input the location!");
-//        
-//                        }
-//                        
-//                        Location start, end;
-//                        start = end = null;
-//                        
-//                        for(Location l : locationList) {
-//                            if(l.name.equals(startPointString)) start = l;
-//                            else if(l.name.equals(endPointString)) end = l;
-//                        }
-//                        
-//                        Dijkstra algo = new Dijkstra(edgeList, pointList);
-//                        route = (ArrayList<Edge>) algo.calculate(start.point, end.point);
-//                        showRoute = true;
-//                        showPins = false;
-//                        repaint();
-//		}
-		
+                if(e.getSource() == timer){
+                    Edge edge = new Edge();
+                    
+                    edge = route.get(index);
+                    this.getGraphics().fillOval(edge.startPoint.X - 5, edge.startPoint.Y - 5, 10, 10);
+                    this.getGraphics().fillOval(edge.endPoint.X - 5, edge.endPoint.Y - 5, 10, 10);
+                    this.getGraphics().drawLine(edge.startPoint.X, edge.startPoint.Y, edge.endPoint.X, edge.endPoint.Y);
+                    
+                    index ++;
+                    if(index == route.size()){
+                        this.timer.stop();
+                        index = 0;
+                    }
+                }
 	}
 	 
 }

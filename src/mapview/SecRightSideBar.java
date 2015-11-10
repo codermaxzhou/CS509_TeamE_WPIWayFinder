@@ -18,8 +18,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.TimerTask;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.Timer;
 import jdbc.JDBC;
 
 /**
@@ -31,16 +33,23 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
    private     ArrayList<Location> locationList = new ArrayList<Location>();
    private     ArrayList<JLabel> labelList = new ArrayList<JLabel>();
    private     ArrayList<JLabel> pinList = new ArrayList<JLabel>();
-   private Boolean click = false;
-   public MainPanel mainPanel ;
+   private     Boolean click = false;
+   public      MainPanel mainPanel ;
+   public     Timer timer;
+   private    int index  = 0;
     /**
      * Creates new form SecRightSideBar
      */
     public SecRightSideBar() {
         initComponents();
+        timer = new Timer(100,this);
+        timer.setInitialDelay(200);
+      
+        
+        
         
     }
-   
+    
    
         
  
@@ -94,36 +103,37 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
            
         }
         int y = 0;
-        for(JLabel j: labelList){
-           
-            Font font = new Font("Roboto", Font.BOLD, 16);
-            j.setFont(font);
-            j.setBounds(30, 90 + y, 160, 30);
-            j.setForeground(Color.white);
-            j.addMouseListener(this);
-            
-            this.add(j);
-            
-            y = y + 30;
+//        for(JLabel j: labelList){
+//           
+//            Font font = new Font("Roboto", Font.BOLD, 16);
+//            j.setFont(font);
+//            j.setBounds(30, 90 + y, 160, 30);
+//            j.setForeground(Color.white);
+//            j.addMouseListener(this);
+//            
+//            this.add(j);
+//            
+//        BorderLayout layout;
+//        layout = new BorderLayout();
+//        this.setLayout(layout);
+//        
+//      
+//        this.validate();
+//        this.repaint();
+//        
+//            
+//            y = y + 30;
+//       
+//        }
        
-        }
-       
-//        JLabel label = new JLabel();
-//        Font font = new Font("Roboto", Font.BOLD, 16);
-//        label.setFont(font);
-//        label.setBounds(60, 60, 160, 30);
-//        label.setForeground(Color.white);
-        //label.setFont(Font.BOLD);
-        //label.setText("Just Testing");
-        
-        //this.add(label);
-        BorderLayout layout;
-        layout = new BorderLayout();
-        this.setLayout(layout);
-        
-        
-        this.validate();
-        this.repaint();
+
+//        BorderLayout layout;
+//        layout = new BorderLayout();
+//        this.setLayout(layout);
+//        
+//        
+//        this.validate();
+//        this.repaint();
         
     }
     /**
@@ -135,7 +145,7 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setBackground(new java.awt.Color(153, 153, 255));
+        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(170, 800));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -275,6 +285,42 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(e.getSource() == timer){
+        System.out.print("timer !");
+        int y = index * 30; // hieght change 
+        
+        
+        JLabel label = labelList.get(index);
+        
+           
+        Font font = new Font("Roboto", Font.BOLD, 16);
+        label.setFont(font);
+        label.setBounds(30, 90 + y, 160, 30);
+        label.setForeground(Color.white);
+        label.addMouseListener(this);
+            
+        this.add(label);
+            
+        BorderLayout layout;
+        layout = new BorderLayout();
+        this.setLayout(layout);
+        
+      
+        this.validate();
+        this.repaint();
+        
+            
+        index ++;
+        if(index == labelList.size()){
+            this.timer.stop();
+            index = 0;
+        }
+       
+        
+        }
+        
+        
+        
     }
 }
