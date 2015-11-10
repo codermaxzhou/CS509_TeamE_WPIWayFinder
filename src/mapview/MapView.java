@@ -13,6 +13,7 @@ import adminmodule.MapInfo;
 
 import adminmodule.Point;
 import adminmodule.PopupMenu;
+import java.awt.BasicStroke;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,6 +23,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -136,6 +138,9 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
         private boolean showAllPins = false;
         public Timer timer;
         private int index = 0;
+        private Location startLocation = null ;
+        private Location endLocation = null  ;               
+                        
 	
         //private boolean drawDiningPins = false;
 //	private final SLPanel panel = new SLPanel();
@@ -243,7 +248,8 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
 		 super.paint(g);
 		 //g.draw3DRect(10, 100, 10, 10, true);
 	
-              
+                
+                 
                  
                  if(showPins) {
                      for(Location p : pins) {
@@ -255,6 +261,8 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
                  }
                  if(showRoute){
                      this.timer.start();
+                     
+                     
                     // for(Edge e : route) {
 //                    g.fillOval(e.startPoint.X - 5, e.startPoint.Y - 5, 10, 10);
 //                    g.fillOval(e.endPoint.X - 5, e.endPoint.Y - 5, 10, 10);
@@ -383,16 +391,14 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
         
                         }
                         
-                        Location start, end;
-                        start = end = null;
-                        
+                      
                         for(Location l : locationList) {
-                            if(l.name.equals(startPointString)) start = l;
-                            else if(l.name.equals(endPointString)) end = l;
+                            if(l.name.equals(startPointString)) startLocation = l;
+                            else if(l.name.equals(endPointString)) endLocation = l;
                         }
                         
                         Dijkstra algo = new Dijkstra(edgeList, pointList);
-                        route = (ArrayList<Edge>) algo.calculate(start.point, end.point);
+                        route = (ArrayList<Edge>) algo.calculate(startLocation.point, endLocation.point);
                         showRoute = true;
                         showPins = false;
                         
@@ -450,10 +456,26 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
                     Edge edge = new Edge();
                     
                     edge = route.get(index);
-                    this.getGraphics().fillOval(edge.startPoint.X - 5, edge.startPoint.Y - 5, 10, 10);
-                    this.getGraphics().fillOval(edge.endPoint.X - 5, edge.endPoint.Y - 5, 10, 10);
-                    this.getGraphics().drawLine(edge.startPoint.X, edge.startPoint.Y, edge.endPoint.X, edge.endPoint.Y);
+                    Graphics g = this.getGraphics();
+                    g.setColor(Color.red);
+                   // Stroke stroke  = new BasicStroke(3.0f);
+                   
+                    if(index == 0){
+                        g.drawString(startLocation.name, startLocation.point.X - 30, startLocation.point.Y - 30);
+                        g.drawImage(pinImage, startLocation.point.X - 5, startLocation.point.Y - 20,20,20,null);
+                    }
+                    if(index == route.size() - 1){
+                        g.drawString(endLocation.name, endLocation.point.X - 30, endLocation.point.Y - 30);
+                        g.drawImage(pinImage, endLocation.point.X - 5, endLocation.point.Y - 20,20,20,null);
+                    }
+//                    
+                    g.fillOval(edge.startPoint.X - 5, edge.startPoint.Y - 5, 10, 10);
+                    g.fillOval(edge.endPoint.X - 5, edge.endPoint.Y - 5, 10, 10);
                     
+                    
+                    
+                    g.drawLine(edge.startPoint.X, edge.startPoint.Y, edge.endPoint.X, edge.endPoint.Y);
+                   // System.out.print("color" + this.getGraphics().getColor());
                     index ++;
                     if(index == route.size()){
                         this.timer.stop();
