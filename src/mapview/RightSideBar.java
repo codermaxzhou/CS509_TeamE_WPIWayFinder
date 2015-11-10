@@ -68,6 +68,11 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
         });
 
         showButton.setText("Show Pins");
+        showButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                showButtonMouseClicked(evt);
+            }
+        });
 
         classroomLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/classrooml.png"))); // NOI18N
         classroomLabel.setBounds(new java.awt.Rectangle(100, 200, 45, 16));
@@ -152,6 +157,7 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
     private void classroomLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_classroomLabelMouseClicked
         // TODO add your handling code here:
        //System.out.println("classroom clicked");
+        secRightSideBar.setVisible(true);
         // change the color of Second Right side bar 
         secRightSideBar.setBackground(new java.awt.Color(231,0,102)); // 1 for red
         // show pins of selected locations in the map 
@@ -160,6 +166,7 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
         // show list of location name in second right side bar
         try {
             secRightSideBar.ShowLocationName("CLASSROOM");
+            secRightSideBar.timer.start();
         } catch (SQLException ex) {
             Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -171,7 +178,8 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
     private void restroomLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_restroomLabelMouseClicked
         // TODO add your handling code here:
        // System.out.println("restroom clicked");
-        
+        secRightSideBar.setVisible(true);
+       
         secRightSideBar.setBackground(new java.awt.Color(38,195,194)); // 2 for yellow
         
         //mainPanel.repaint();
@@ -180,6 +188,7 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
         try {
             
             secRightSideBar.ShowLocationName("RESTROOM");
+            secRightSideBar.timer.start();
         } catch (SQLException ex) {
             Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -192,7 +201,8 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
 
     private void backLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backLabelMouseClicked
         // TODO add your handling code here:
-        secRightSideBar.setBackground(Color.white);
+//        secRightSideBar.setBackground(Color.white);
+        secRightSideBar.setVisible(false);
     }//GEN-LAST:event_backLabelMouseClicked
 
     private void clearButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearButtonMouseClicked
@@ -230,6 +240,11 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
            this.restroomLabel.getHeight() , this.restroomLabel.getWidth() );
         this.repaint();
     }//GEN-LAST:event_restroomLabelMouseExited
+
+    private void showButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showButtonMouseClicked
+        // TODO add your handling code here:
+        mainPanel.showPins();
+    }//GEN-LAST:event_showButtonMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
