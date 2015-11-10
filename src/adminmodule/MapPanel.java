@@ -27,11 +27,11 @@ public class MapPanel extends JScrollPane {
         this.frame = frame;
         this.setLayout(new ScrollPaneLayout());
         image = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_1.png")).getImage();
-
+        
         //JLabel label = new JLabel(image);
         //this.getViewport().add(label);
     }
-
+    
     @Override
     public void paint(Graphics g) {
         super.paint(g);
