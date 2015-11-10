@@ -362,6 +362,7 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
         public void showPins(){
             
            showAllPins = true;
+           showRoute = false;
            repaint();
         }
 	
