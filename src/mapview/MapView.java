@@ -136,6 +136,9 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
         private boolean showAllPins = false;
         public Timer timer;
         private int index = 0;
+        private Location startLocation = null ;
+        private Location endLocation = null  ;               
+                        
 	
         //private boolean drawDiningPins = false;
 //	private final SLPanel panel = new SLPanel();
@@ -255,6 +258,8 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
                  }
                  if(showRoute){
                      this.timer.start();
+                     
+                     
                     // for(Edge e : route) {
 //                    g.fillOval(e.startPoint.X - 5, e.startPoint.Y - 5, 10, 10);
 //                    g.fillOval(e.endPoint.X - 5, e.endPoint.Y - 5, 10, 10);
@@ -383,16 +388,14 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
         
                         }
                         
-                        Location start, end;
-                        start = end = null;
-                        
+                      
                         for(Location l : locationList) {
-                            if(l.name.equals(startPointString)) start = l;
-                            else if(l.name.equals(endPointString)) end = l;
+                            if(l.name.equals(startPointString)) startLocation = l;
+                            else if(l.name.equals(endPointString)) endLocation = l;
                         }
                         
                         Dijkstra algo = new Dijkstra(edgeList, pointList);
-                        route = (ArrayList<Edge>) algo.calculate(start.point, end.point);
+                        route = (ArrayList<Edge>) algo.calculate(startLocation.point, endLocation.point);
                         showRoute = true;
                         showPins = false;
                         
@@ -450,10 +453,21 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
                     Edge edge = new Edge();
                     
                     edge = route.get(index);
+                    if(index == 0){
+                        this.getGraphics().drawString(startLocation.name, startLocation.point.X - 30, startLocation.point.Y - 30);
+                        this.getGraphics().drawImage(pinImage, startLocation.point.X - 5, startLocation.point.Y - 20,20,20,null);
+                    }
+                    if(index == route.size() - 1){
+                        this.getGraphics().drawString(endLocation.name, endLocation.point.X - 30, endLocation.point.Y - 30);
+                        this.getGraphics().drawImage(pinImage, endLocation.point.X - 5, endLocation.point.Y - 20,20,20,null);
+                    }
+//                    
                     this.getGraphics().fillOval(edge.startPoint.X - 5, edge.startPoint.Y - 5, 10, 10);
                     this.getGraphics().fillOval(edge.endPoint.X - 5, edge.endPoint.Y - 5, 10, 10);
-                    this.getGraphics().drawLine(edge.startPoint.X, edge.startPoint.Y, edge.endPoint.X, edge.endPoint.Y);
+                    this.getGraphics().setColor(Color.red);
                     
+                    this.getGraphics().drawLine(edge.startPoint.X, edge.startPoint.Y, edge.endPoint.X, edge.endPoint.Y);
+                   // System.out.print("color" + this.getGraphics().getColor());
                     index ++;
                     if(index == route.size()){
                         this.timer.stop();
