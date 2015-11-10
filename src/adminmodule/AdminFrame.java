@@ -37,6 +37,7 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     
     public JDBC db = new JDBC();
     int radius = 10;
+    int sIndex = 0;
     
     
     MapPanel map ;
@@ -52,7 +53,7 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     }
 
     public void init() throws SQLException, IOException {
-        
+        this.setTitle("Administrator Module");
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         map = new MapPanel(this);
         map.setPreferredSize(new Dimension(900, 800));
@@ -89,11 +90,11 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
         //mapinfo = db.getMapInfo(1);
         
         if(maps.size() > 0) {
-            points = maps.get(0).pointList;
-            locations = maps.get(0).locList;
-            edges = maps.get(0).edgeList;
+            points = maps.get(sIndex).pointList;
+            locations = maps.get(sIndex).locList;
+            edges = maps.get(sIndex).edgeList;
 
-            left.mapList.setSelectedIndex(0);
+            left.mapList.setSelectedIndex(sIndex);
         }
     }
     
@@ -265,7 +266,7 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        int sIndex = left.mapList.getSelectedIndex();
+        sIndex = left.mapList.getSelectedIndex();
         this.mapChanged(sIndex);
     }
 

@@ -43,7 +43,7 @@ import javax.swing.*;
         panel.add(Name = new JTextField(""));
         panel.add(new JLabel("Description:"));
         panel.add(Description = new JTextField(""));
-        panel.add(new JLabel("Type:"));
+        panel.add(new JLabel("Building:"));
         panel.add(box);
         panel.add(new JLabel("InteriorMap"));
         panel.add(ckbox);
