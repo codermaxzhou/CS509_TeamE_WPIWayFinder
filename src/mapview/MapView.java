@@ -13,6 +13,7 @@ import adminmodule.MapInfo;
 
 import adminmodule.Point;
 import adminmodule.PopupMenu;
+import java.awt.BasicStroke;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,6 +23,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -246,7 +248,8 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
 		 super.paint(g);
 		 //g.draw3DRect(10, 100, 10, 10, true);
 	
-              
+                
+                 
                  
                  if(showPins) {
                      for(Location p : pins) {
@@ -453,20 +456,25 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
                     Edge edge = new Edge();
                     
                     edge = route.get(index);
+                    Graphics g = this.getGraphics();
+                    g.setColor(Color.red);
+                   // Stroke stroke  = new BasicStroke(3.0f);
+                   
                     if(index == 0){
-                        this.getGraphics().drawString(startLocation.name, startLocation.point.X - 30, startLocation.point.Y - 30);
-                        this.getGraphics().drawImage(pinImage, startLocation.point.X - 5, startLocation.point.Y - 20,20,20,null);
+                        g.drawString(startLocation.name, startLocation.point.X - 30, startLocation.point.Y - 30);
+                        g.drawImage(pinImage, startLocation.point.X - 5, startLocation.point.Y - 20,20,20,null);
                     }
                     if(index == route.size() - 1){
-                        this.getGraphics().drawString(endLocation.name, endLocation.point.X - 30, endLocation.point.Y - 30);
-                        this.getGraphics().drawImage(pinImage, endLocation.point.X - 5, endLocation.point.Y - 20,20,20,null);
+                        g.drawString(endLocation.name, endLocation.point.X - 30, endLocation.point.Y - 30);
+                        g.drawImage(pinImage, endLocation.point.X - 5, endLocation.point.Y - 20,20,20,null);
                     }
 //                    
-                    this.getGraphics().fillOval(edge.startPoint.X - 5, edge.startPoint.Y - 5, 10, 10);
-                    this.getGraphics().fillOval(edge.endPoint.X - 5, edge.endPoint.Y - 5, 10, 10);
-                    this.getGraphics().setColor(Color.red);
+                    g.fillOval(edge.startPoint.X - 5, edge.startPoint.Y - 5, 10, 10);
+                    g.fillOval(edge.endPoint.X - 5, edge.endPoint.Y - 5, 10, 10);
                     
-                    this.getGraphics().drawLine(edge.startPoint.X, edge.startPoint.Y, edge.endPoint.X, edge.endPoint.Y);
+                    
+                    
+                    g.drawLine(edge.startPoint.X, edge.startPoint.Y, edge.endPoint.X, edge.endPoint.Y);
                    // System.out.print("color" + this.getGraphics().getColor());
                     index ++;
                     if(index == route.size()){
