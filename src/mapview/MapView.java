@@ -284,6 +284,7 @@ class MainPanel extends JPanel implements MouseListener, ActionListener{
         public void showSinglePin(String name) {
             this.showRoute = false;
             this.showPins = true;
+            this.showAllPins = false;
             pins.clear();
             
             for(Location p: locationList){
