@@ -350,8 +350,13 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
                             try {
                                 mapIndex = 1;
                                 mainPanel.setMapIndex(mapIndex);
+                                mainPanel.setShowAllPins(false);
+                                mainPanel.setShowPins(false);
+                                mainPanel.setDrawRoutes(false);
+                                mainPanel.setShowRoute(false);
                                 mainPanel.init();
                                 mainPanel.repaint();
+                               
                             } catch (SQLException ex) {
                                 Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -361,8 +366,13 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
                             try {
                                 mapIndex = 2;
                                 mainPanel.setMapIndex(mapIndex);
+                                mainPanel.setShowAllPins(false);
+                                mainPanel.setShowPins(false);
+                                mainPanel.setDrawRoutes(false);
+                                mainPanel.setShowRoute(false);
                                 mainPanel.init();
                                 mainPanel.repaint();
+                               
                             } catch (SQLException ex) {
                                 Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
                             }

@@ -39,13 +39,13 @@ import jdbc.JDBC;
 public class MainPanel extends JPanel implements MouseListener, ActionListener{
 	// UI varaibles
 	private Image background;
-	private JTextField startPointField;
-	private JTextField endPointField;
-        private JLabel profile;
-        private JLabel exchange;
-        private JLabel search;
-        private JButton searchButton;
-	private JMenu sideMenu;
+	private JTextField startPointField = new JTextField();
+	private JTextField endPointField = new JTextField();
+        private JLabel profile = new JLabel();
+        private JLabel exchange = new JLabel();
+        private JLabel search = new JLabel();
+        private JButton searchButton = new JButton();
+	
         private ArrayList<JLabel> pinList = new ArrayList<JLabel>();
         private Image pinImage = new ImageIcon(this.getClass().getResource("/icons/marker.png")).getImage();
     
@@ -108,31 +108,27 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
                 
                 Image profileImage = new ImageIcon(this.getClass().getResource("/icons/user.png")).getImage();
                 ImageIcon profileIcon = new ImageIcon(profileImage);
-                profile = new JLabel();
+                
                 profile.setIcon(profileIcon);
                 
                 Image exchangeImage = new ImageIcon(this.getClass().getResource("/icons/exchange.png")).getImage();
                 ImageIcon exchangeIcon = new ImageIcon(exchangeImage);
-                exchange = new JLabel();
+               
                 exchange.setIcon(exchangeIcon);
                 
                 Image searchImage = new ImageIcon(this.getClass().getResource("/icons/search.png")).getImage();
                 ImageIcon searchIcon = new ImageIcon(searchImage);
-                search = new JLabel();
+                
                 search.setIcon(searchIcon);
                 
-		startPointField = new JTextField();
-		endPointField = new JTextField();
-		searchButton = new JButton();
-		sideMenu = new JMenu();
+		
 		
 		
 		this.add(startPointField);
 		this.add(endPointField);
 		this.add(searchButton);
                 this.add(search);
-		this.add(sideMenu);
-                this.add(profile);
+		this.add(profile);
                 this.add(exchange);
                 
 		
@@ -177,7 +173,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
 	 public void paint(Graphics g){
 		 super.paint(g);
 		
-                 if(showPins) {
+                 if(isShowPins()) {
                      for(Location p : pins) {
                          g.drawImage(pinImage, p.point.X - 5, p.point.Y - 5, 20, 20, null);
                          g.drawString(p.point.location.name,p.point.X - 30 , p.point.Y - 10);
@@ -185,7 +181,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
                          //g.drawString(TOOL_TIP_TEXT_KEY, index, WIDTH);
                      }
                  }
-                 if(showRoute){
+                 if(isShowRoute()){
                      this.timer.start();
                      
                      
@@ -196,7 +192,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
                     
               //  }
                  }
-                 if(showAllPins){
+                 if(isShowAllPins()){
                      for(Location l: locationList){
                          g.drawImage(pinImage,l.point.X - 5, l.point.Y - 5, 20, 20, null);
                          g.drawString(l.point.location.name,l.point.X - 30 , l.point.Y - 10);
@@ -216,9 +212,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
 	
 	
         public void showSinglePin(String name) {
-            this.showRoute = false;
-            this.showPins = true;
-            this.showAllPins = false;
+            this.setShowRoute(false);
+            this.setShowPins(true);
+            this.setShowAllPins(false);
             pins.clear();
             
             for(Location p: locationList){
@@ -235,8 +231,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
             
             
             
-            this.showRoute = false;
-            this.showPins = true;
+            this.setShowRoute(false);
+            this.setShowPins(true);
             
             Graphics g = this.getGraphics();
             pins.clear();
@@ -275,16 +271,16 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
 	}
         
         public void clearPins() {
-            showRoute = false;
-            showPins = false;
-            showAllPins = false;
+            setShowRoute(false);
+            setShowPins(false);
+            setShowAllPins(false);
             repaint();
         }
         
         public void showPins(){
             
-           showAllPins = true;
-           showRoute = false;
+           setShowAllPins(true);
+           setShowRoute(false);
            repaint();
         }
 	
@@ -328,8 +324,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
 
                         Dijkstra algo = new Dijkstra(edgeList, pointList);
                         route = (ArrayList<Edge>) algo.calculate(startLocation.point, endLocation.point);
-                        showRoute = true;
-                        showPins = false;
+                        setShowRoute(true);
+                        setShowPins(false);
 
                         repaint();
                     }
@@ -337,7 +333,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
             }
                 
                 // exchange button 
-                if (e.getSource()== exchange){
+                if (e.getSource() == exchange){
                 String tmp = null;
                 tmp = startPointField.getText();
                 startPointField.setText(endPointField.getText());
@@ -365,6 +361,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
             }
             if(e.getSource() == exchange){
                 exchange.setToolTipText("Exchange StartingPoint and Destination");
+                exchange.setBounds(exchange.getX() - 1, exchange.getY() - 1, exchange.getWidth(), exchange.getHeight());
+                
             }
 		
 	}
@@ -374,6 +372,10 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
             if(e.getSource() == search){
                 search.setBounds(search.getX() + 3, search.getY() + 3, search.getWidth(), search.getHeight());
                // search.set
+            }
+            if(e.getSource() == exchange){
+                exchange.setToolTipText("Exchange StartingPoint and Destination");
+                exchange.setBounds(exchange.getX() + 1, exchange.getY() + 1, exchange.getWidth(), exchange.getHeight());
             }
 		
 	}
@@ -425,6 +427,62 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
      */
     public void setMapIndex(int mapIndex) {
         this.mapIndex = mapIndex;
+    }
+
+    /**
+     * @return the showRoute
+     */
+    public boolean isShowRoute() {
+        return showRoute;
+    }
+
+    /**
+     * @param showRoute the showRoute to set
+     */
+    public void setShowRoute(boolean showRoute) {
+        this.showRoute = showRoute;
+    }
+
+    /**
+     * @return the showPins
+     */
+    public boolean isShowPins() {
+        return showPins;
+    }
+
+    /**
+     * @param showPins the showPins to set
+     */
+    public void setShowPins(boolean showPins) {
+        this.showPins = showPins;
+    }
+
+    /**
+     * @return the drawRoutes
+     */
+    public boolean isDrawRoutes() {
+        return drawRoutes;
+    }
+
+    /**
+     * @param drawRoutes the drawRoutes to set
+     */
+    public void setDrawRoutes(boolean drawRoutes) {
+        this.drawRoutes = drawRoutes;
+    }
+
+    /**
+     * @return the showAllPins
+     */
+    public boolean isShowAllPins() {
+        return showAllPins;
+    }
+
+    /**
+     * @param showAllPins the showAllPins to set
+     */
+    public void setShowAllPins(boolean showAllPins) {
+        this.showAllPins = showAllPins;
     }
 	 
 }
