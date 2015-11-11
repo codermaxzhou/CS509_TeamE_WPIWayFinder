@@ -60,7 +60,11 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
 	public Dijkstra dijstra = new Dijkstra(edgeList,pointList);
         private ArrayList<Location> pins = new ArrayList<>();
         private Location startLocation = null ;
-        private Location endLocation = null  ;               
+        private Location endLocation = null  ; 
+        private JDBC db = new JDBC();
+                
+        private Map map = new Map();
+        public int mapIndex;
                         
         // boolean varaibels 
         private boolean showRoute = false;
@@ -79,25 +83,29 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
 
 	MainPanel() throws SQLException {
             
-            this.init();
+            mapIndex = 1;  // default is mapID 1
+            this.init(mapIndex);
           
 	}
         
-         public void init() throws SQLException{
-                JDBC db = new JDBC();
+         public void init(int mapIndex) throws SQLException{
                 
-                Map m = new Map();
-                m.mapID = 1;
+                map.mapID = mapIndex;
                 
-                MapInfo info = db.getMapInfo(1, m);
+                MapInfo info = db.getMapInfo(mapIndex, map);
                 pointList = info.points;
                 edgeList = info.edges;
                 locationList = info.locations;
                  
                 
-                 
-		background = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_1.png")).getImage();
-		
+                if(mapIndex == 1){
+		     background = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_1.png")).getImage();
+                }
+                else if(mapIndex == 2){
+                      background = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_2.png")).getImage();
+                }
+                
+                
                 Image profileImage = new ImageIcon(this.getClass().getResource("/icons/user.png")).getImage();
                 ImageIcon profileIcon = new ImageIcon(profileImage);
                 profile = new JLabel();
