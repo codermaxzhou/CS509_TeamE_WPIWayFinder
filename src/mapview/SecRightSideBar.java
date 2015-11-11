@@ -55,11 +55,9 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
  
     public void ShowLocationName(String category) throws SQLException{
         this.removeAll();
-//        ArrayList<Location> locationList = new ArrayList<Location>();
-//        ArrayList<JLabel> labelList = new ArrayList<JLabel>();
-       
+
         JDBC db = new JDBC();
-        //System.out.println(Category);  
+        
         Map m = new Map();
         m.mapID = 1;
         MapInfo info = db.getMapInfo(1, m);
@@ -103,37 +101,7 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
            
         }
         int y = 0;
-//        for(JLabel j: labelList){
-//           
-//            Font font = new Font("Roboto", Font.BOLD, 16);
-//            j.setFont(font);
-//            j.setBounds(30, 90 + y, 160, 30);
-//            j.setForeground(Color.white);
-//            j.addMouseListener(this);
-//            
-//            this.add(j);
-//            
-//        BorderLayout layout;
-//        layout = new BorderLayout();
-//        this.setLayout(layout);
-//        
-//      
-//        this.validate();
-//        this.repaint();
-//        
-//            
-//            y = y + 30;
-//       
-//        }
-       
 
-//        BorderLayout layout;
-//        layout = new BorderLayout();
-//        this.setLayout(layout);
-//        
-//        
-//        this.validate();
-//        this.repaint();
         
     }
     /**
@@ -182,7 +150,7 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
             j.setIcon(null);
             
         }
-//        mainPanel.validate();
+
         
         
         for (m= 0; m < labelList.size(); m++) {
@@ -195,28 +163,7 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
         for (n = 0; n < labelList.size(); n++) {
             if (e.getSource().equals(labelList.get(n))) {
                 
-                /*labelList.get(n).setForeground(Color.black);
                 
-
-                pinLabel.setText(labelList.get(n).getText());
-                pinLabel.setBackground(Color.GRAY);
-                pinLabel.setBounds(locationList.get(n).point.X, locationList.get(n).point.Y, 100, 30);
-                pinList.add(pinLabel);
-                
-                //System.out.println(locationList.get(n).point.X +","+ locationList.get(n).point.Y);
-                mainPanel.add(pinLabel);
-                mainPanel.validate();
-                //mainPanel.repaint();  
-                
-                
-                Image pinImage = new ImageIcon(this.getClass().getResource("/icons/marker.png")).getImage();
-               
-               
-                
-                mainPanel.getGraphics().drawImage(pinImage,locationList.get(n).point.X - 5 , locationList.get(n).point.Y -5,20,20, null);
-                  
-                
-                this.repaint();*/
                 mainPanel.showSinglePin(labelList.get(n).getText());
                 
                 

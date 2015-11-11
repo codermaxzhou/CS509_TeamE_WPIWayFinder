@@ -23,9 +23,14 @@ import javax.swing.JLabel;
  * @author GaoYifei
  */
 public class RightSideBar extends JPanel implements MouseListener, ActionListener{
-
+    // interface
     public MainPanel mainPanel = null;
     public SecRightSideBar secRightSideBar = null;
+    public HigginsPanel higginsPanel = null;
+    public MapView mapView = null;
+    
+    
+    
     private JLabel backButton;
     
     /**
@@ -52,6 +57,7 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
         classroomLabel = new javax.swing.JLabel();
         restroomLabel = new javax.swing.JLabel();
         backLabel = new javax.swing.JLabel();
+        goCampusButton = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(150, 800));
 
@@ -110,12 +116,26 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
             }
         });
 
+        goCampusButton.setText("Campus Map");
+        goCampusButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                goCampusButtonMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(showButton)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(goCampusButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addComponent(clearButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createSequentialGroup()
                             .addContainerGap()
@@ -125,12 +145,7 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
                             .addGap(38, 38, 38)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(restroomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(classroomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(showButton)
-                            .addComponent(clearButton))))
+                                .addComponent(classroomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -141,7 +156,9 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
                 .addComponent(classroomLabel)
                 .addGap(85, 85, 85)
                 .addComponent(restroomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 287, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
+                .addComponent(goCampusButton)
+                .addGap(18, 18, 18)
                 .addComponent(clearButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(showButton)
@@ -246,11 +263,21 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
         mainPanel.showPins();
     }//GEN-LAST:event_showButtonMouseClicked
 
+    private void goCampusButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_goCampusButtonMouseClicked
+        try {
+            // TODO add your handling code here:
+            mapView.init(higginsPanel);
+        } catch (SQLException ex) {
+            Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_goCampusButtonMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel backLabel;
     private javax.swing.JLabel classroomLabel;
     private javax.swing.JButton clearButton;
+    private javax.swing.JButton goCampusButton;
     private javax.swing.JLabel restroomLabel;
     private javax.swing.JButton showButton;
     // End of variables declaration//GEN-END:variables
