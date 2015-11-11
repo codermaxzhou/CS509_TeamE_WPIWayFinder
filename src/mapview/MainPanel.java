@@ -56,7 +56,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
 	private ArrayList<Edge> edgeList = new ArrayList<>();
 	private ArrayList<Location> locationList = new ArrayList<>(); // Ëã·¨·µ»ØµÄedges
         private ArrayList<Edge> route = new ArrayList<>();
-	public Map map1 = new Map();
+	
 	public Dijkstra dijstra = new Dijkstra(edgeList,pointList);
         private ArrayList<Location> pins = new ArrayList<>();
         private Location startLocation = null ;
@@ -64,7 +64,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
         private JDBC db = new JDBC();
                 
         private Map map = new Map();
-        public int mapIndex;
+        private int mapIndex;
                         
         // boolean varaibels 
         private boolean showRoute = false;
@@ -84,11 +84,11 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
 	MainPanel() throws SQLException {
             
             mapIndex = 1;  // default is mapID 1
-            this.init(mapIndex);
+            this.init();
           
 	}
         
-         public void init(int mapIndex) throws SQLException{
+         public void init() throws SQLException{
                 
                 map.mapID = mapIndex;
                 
@@ -162,11 +162,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
                 profile.setBounds(10, 10, 30, 30);
                 exchange.setBounds(190, 10, 30, 30);
 		
-		map1.mapID = 1;
-		map1.image = background;
-		map1.name = "Project Center1";
-		map1.pointList = pointList;
-                
+		
                 timer = new Timer(100,this);
                 timer.setInitialDelay(300);
                 
@@ -416,6 +412,20 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
                     }
                 }
 	}
+
+    /**
+     * @return the mapIndex
+     */
+    public int getMapIndex() {
+        return mapIndex;
+    }
+
+    /**
+     * @param mapIndex the mapIndex to set
+     */
+    public void setMapIndex(int mapIndex) {
+        this.mapIndex = mapIndex;
+    }
 	 
 }
 
