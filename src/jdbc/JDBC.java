@@ -109,8 +109,8 @@ public class JDBC {
            L.add(temp);
        }
        
-       query = "SELECT pointID, X, Y, locationID, mapID FROM Point WHERE MapID = " + MapID + ";";
-       stmt = conn.createStatement();
+       query = "SELECT pointID, X, Y, locationID, mapID, type FROM Point WHERE MapID = " + MapID + ";";
+       stmt = conn.createStatement();   
        rs = stmt.executeQuery(query);
 
        while(rs.next()) {
@@ -119,11 +119,21 @@ public class JDBC {
            temp.Y = rs.getInt("Y");
            Location partner = locMap.get(rs.getInt("pointID"));
            temp.location = partner;
-           if(partner != null) {
-               partner.point = temp;
-               temp.type = Point.Type.LOCATION;
-           } else
-               temp.type = Point.Type.WAYPOINT;
+//           if(partner != null) {
+//               partner.point = temp;
+//               temp.type = Point.Type.LOCATION;
+//           } else
+//               temp.type = Point.Type.WAYPOINT;
+           
+           switch(rs.getString("type")) {
+               case "LOCATION": temp.type = Point.Type.LOCATION;
+                              break;
+               case "CONNECTION": temp.type = Point.Type.CONNECTION;
+                           break;
+               case "WAYPOINT": temp.type = Point.Type.WAYPOINT;
+                           break;
+           }
+           
            temp.map = null;
            temp.pointID = rs.getInt("pointID");
            ptMap.put(rs.getInt("pointID"), temp);
@@ -169,9 +179,9 @@ public class JDBC {
            l.locationID = maxLocID;
            l.point.pointID = maxPointID;
            
-           query = "INSERT INTO Point (PointID, x, y, locationID, mapID) ";
+           query = "INSERT INTO Point (PointID, x, y, locationID, mapID, type) ";
            query += "VALUES(" + (maxPointID++) + ", " + l.point.X + ", " + 
-                    l.point.Y + ", " + (maxLocID++) + ", " + l.point.map.mapID + ");";
+                    l.point.Y + ", " + (maxLocID++) + ", " + l.point.map.mapID + ", \"" + l.point.type.toString() + "\");";
            
            stmt.executeUpdate(query);
        }
@@ -186,9 +196,9 @@ public class JDBC {
            Point p  = A.get(i);
            if(p.pointID != -1) continue;
            p.pointID = maxPointID;
-           query = "INSERT INTO Point (PointID, x, y, locationID, mapID) ";
+           query = "INSERT INTO Point (PointID, x, y, locationID, mapID, type) ";
            query += "VALUES(" + (maxPointID++) + ", " + p.X + ", " + 
-                    p.Y + ", " + -1 + ", " + p.map.mapID + ");";
+                    p.Y + ", " + -1 + ", " + p.map.mapID + ", \"" + p.type.toString() + "\");";
            Statement stmt = conn.createStatement();
            stmt.executeUpdate(query);
        }
@@ -219,6 +229,22 @@ public class JDBC {
             query="UPDATE Location SET ";
             query+="locationID="+l.locationID+",category=\""+l.category+"\",name=\""+l.name+"\",description=\""+l.description+"\",mapID="+ l.point.map.mapID;
             query+=" where locationID=" + l.locationID + ";";
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(query);
+           }
+       }
+       
+       return true;
+   }
+   
+   public boolean updatePoint(ArrayList<Point> A) throws SQLException{
+       String query = null;
+       for(int i=0;i<A.size();++i){
+           Point p=A.get(i);
+           if (p.pointID != -1) {
+            query="UPDATE Point SET ";
+            query+="pointID="+p.pointID+",X="+p.X+",Y="+p.Y+",mapID="+ p.map.mapID+",type=\""+p.type.toString()+"\"";
+            query+=" where pointID=" + p.pointID + ";";
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(query);
            }
@@ -274,6 +300,7 @@ public class JDBC {
            if(m.pointList != null) this.savePoints(m.pointList);
            if(m.edgeList != null) this.saveEdges(m.edgeList);
            if(m.locList != null) this.updateLocation(m.locList);
+           if(m.locList != null) this.updatePoint(m.pointList);
        }
            
        

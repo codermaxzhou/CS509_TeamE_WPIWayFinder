@@ -55,6 +55,10 @@ public class MapPanel extends JScrollPane {
                         g.fillRect(x-5, y-5, 10, 10);
                     }
                     break;
+                case CONNECTION:
+                    if (!(x < 0 || y < 0)) {
+                        g.draw3DRect(x-5, y-5, 10, 10, true);
+                    }
             }
         }
         for (Edge e : frame.edges) {
