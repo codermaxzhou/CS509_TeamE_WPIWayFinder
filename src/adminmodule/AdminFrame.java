@@ -37,12 +37,14 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     
     public JDBC db = new JDBC();
     int radius = 10;
+    int sIndex = 0;
     
     
     MapPanel map ;
     LeftPanel left;
     Point startpoint = null;
     Point endpoint = null;
+    int tempMapID = -1;
 
 
     public static void main(String[] args) throws SQLException, IOException {
@@ -52,7 +54,7 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     }
 
     public void init() throws SQLException, IOException {
-        
+        this.setTitle("Administrator Module");
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         map = new MapPanel(this);
         map.setPreferredSize(new Dimension(900, 800));
@@ -82,16 +84,18 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
         maps = db.showAllMap();
         
         for(Map m : maps) {
-            left.model.addElement(m.name);
+            if(!left.model.contains(m.name))
+                left.model.addElement(m.name);
         }
+
         //mapinfo = db.getMapInfo(1);
         
         if(maps.size() > 0) {
-            points = maps.get(0).pointList;
-            locations = maps.get(0).locList;
-            edges = maps.get(0).edgeList;
+            points = maps.get(sIndex).pointList;
+            locations = maps.get(sIndex).locList;
+            edges = maps.get(sIndex).edgeList;
 
-            left.mapList.setSelectedIndex(0);
+            left.mapList.setSelectedIndex(sIndex);
         }
     }
     
@@ -152,13 +156,30 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
         
         /* right click on the map */
         if (e.isPopupTrigger()) {
-            for (Location temp : locations) {
-                if (!((x < (temp.point.getX() - radius))
-                        || (x > (temp.point.getX() + radius))
-                        || (y < (temp.point.getY() - radius))
-                        || (y > (temp.point.getY() + radius)))) {
+//            for (Location temp : locations) {
+//                if (!((x < (temp.point.getX() - radius))
+//                        || (x > (temp.point.getX() + radius))
+//                        || (y < (temp.point.getY() - radius))
+//                        || (y > (temp.point.getY() + radius)))) {
+//                        PopupMenu menu = new PopupMenu(temp);
+//                        menu.show(e.getComponent(), x, y);
+//                }
+//            }
+            
+            for (Point temp : points) {
+                if (!((x < (temp.getX() - radius))
+                        || (x > (temp.getX() + radius))
+                        || (y < (temp.getY() - radius))
+                        || (y > (temp.getY() + radius))) && (temp.location == null)) {
                         PopupMenu menu = new PopupMenu(temp);
                         menu.show(e.getComponent(), x, y);
+                } else if (!((x < (temp.getX() - radius))
+                        || (x > (temp.getX() + radius))
+                        || (y < (temp.getY() - radius))
+                        || (y > (temp.getY() + radius))) && (temp.location != null)) {
+                        PopupMenu menu = new PopupMenu(temp.location);
+                        menu.show(e.getComponent(), x, y);
+                    
                 }
             }
 
@@ -234,18 +255,21 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
                                 || (x > (temp.getX() + radius))
                                 || (y < (temp.getY() - radius))
                                 || (y > (temp.getY() + radius)))) {
+                           
 
                             if ((startpoint == null) && (endpoint == null)) {
                                 startpoint = temp;
+                                tempMapID = maps.get(left.mapList.getSelectedIndex()).mapID;
                                 return;
                             } else if ((startpoint != null) && (endpoint == null) && (temp != startpoint)) {
                                 endpoint = temp;
                                 newedge = new Edge(startpoint, endpoint);
                                 newedge.edgeID = -1;
-                                newedge.startMapID = maps.get(left.mapList.getSelectedIndex()).mapID;
+                                newedge.startMapID = tempMapID;
                                 newedge.endMapID = maps.get(left.mapList.getSelectedIndex()).mapID;
+                                if (newedge.startMapID != newedge.endMapID)
+                                    newedge.weight = 5;
                                 edges.add(newedge);
-                                System.out.println("add edge weight:" + newedge.weight);
                                 System.out.println("edge list size:" + edges.size());
                                 startpoint = null;
                                 endpoint = null;
@@ -263,7 +287,7 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        int sIndex = left.mapList.getSelectedIndex();
+        sIndex = left.mapList.getSelectedIndex();
         this.mapChanged(sIndex);
     }
 
