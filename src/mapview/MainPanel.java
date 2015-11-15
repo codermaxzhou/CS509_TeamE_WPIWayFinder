@@ -39,8 +39,8 @@ import jdbc.JDBC;
 public class MainPanel extends JPanel implements MouseListener, ActionListener{
 	// UI varaibles
 	private Image background;
-	private JTextField startPointField = new JTextField();
-	private JTextField endPointField = new JTextField();
+	public JTextField startPointField = new JTextField();
+	public JTextField endPointField = new JTextField();
         private JLabel profile = new JLabel();
         private JLabel exchange = new JLabel();
         private JLabel search = new JLabel();
@@ -56,7 +56,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
 	private ArrayList<Edge> edgeList = new ArrayList<>();
 	private ArrayList<Location> locationList = new ArrayList<>(); // Ëã·¨·µ»ØµÄedges
         private ArrayList<Edge> route = new ArrayList<>();
-	
+        
 	public Dijkstra dijstra = new Dijkstra(edgeList,pointList);
         private ArrayList<Location> pins = new ArrayList<>();
         private Location startLocation = null ;
@@ -71,10 +71,16 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
         private boolean showPins = false;
         private boolean drawRoutes = false;
         private boolean showAllPins = false;
+        private boolean clear = true;
+        private int clicked = 0;
+        private int radius = 50;
+      //  private boolean inrange = false;
+        
         
         // Timer 
         public Timer timer;
         private int index = 0;
+        
         
 	
         //private boolean drawDiningPins = false;
@@ -143,11 +149,13 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
 		startPointField.setBounds(40, 10, 150, 30);
 		startPointField.setText("Start Point");
                 startPointField.setFont(font);
+                startPointField.setForeground(Color.gray);
 		
 		endPointField.setColumns(20);
 		endPointField.setBounds(220, 10, 150, 30);
 		endPointField.setText("End Point");
                 endPointField.setFont(font);
+                endPointField.setForeground(Color.gray);
 		
 		// adding Listener Here
                 search.addMouseListener(this);
@@ -215,8 +223,10 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
             this.setShowRoute(false);
             this.setShowPins(true);
             this.setShowAllPins(false);
-            pins.clear();
             
+            if (clear){
+            pins.clear();
+            }
             for(Location p: locationList){
                 if(p.name.equals(name)) {
                     pins.add(p);
@@ -287,21 +297,73 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-//		for(Location l: locationList){
-//                if((e.getX() >= l.point.X - 10 || e.getX() <= l.point.X + 10 )
-//                        && (e.getY() >= l.point.Y - 10 || e.getY() <= l.point.Y + 10))
-//                {
-//                    PopupMenu menu = new PopupMenu(l);
-//                    
-//                    menu.show(e.getComponent(), l.point.X, l.point.Y);
-//                }   
-//                }
+
             
-            System.out.println("search!");
+         
+           // clicked++;  
+            int[] X = new int[100];
+            int[] Y = new int[100];
+            
+            
+            int i ;
+          
+            
+            
+            String startPointString = startPointField.getText();
+            String endPointString = endPointField.getText();
+            
+            int x = e.getX();
+            int y = e.getY();
+            
+          //  System.out.println( x + " " + y);
+            
+         for (i = 0; i < locationList.size(); i++)
+            {
+               if  ((x > (locationList.get(i).point.X - radius))
+                                && (x < (locationList.get(i).point.X + radius))
+                                && (y > (locationList.get(i).point.Y - radius))
+                                && (y < (locationList.get(i).point.Y + radius))
+                       ){
+               clicked ++;
+               //inrange = true;
+                   Popup menu = new Popup(locationList.get(i));
+                   menu.show(e.getComponent(), x, y);// mapview only two building will show the popup info
+             if (clicked % 2 == 1 ) {
+                        
+                        startPointField.setText(locationList.get(i).name); 
+                        clear = true;
+                        
+                        showSinglePin(locationList.get(i).name);
+                        
+                        
+                    } 
+                    else { 
+                        
+                        endPointField.setText(locationList.get(i).name);
+                        clear = false;
+                        showSinglePin(locationList.get(i).name);
+                          
+                    }
+                           
+      
+               }
+                     
+             // System.out.println(inrange);
+              System.out.println(locationList.get(i).point.X + " " + locationList.get(i).point.Y);
+            }
+            
+
+            System.out.println("clicked: " + clicked  );
+
+             
+            
+           
+            
+            
+           // System.out.println("search!");
             if (e.getSource() == search) {
 
-                String startPointString = startPointField.getText();
-                String endPointString = endPointField.getText();
+
                 System.out.println("The start Point name:" + startPointString);
                 System.out.println("The end Point name:" + endPointString);
                 if (startPointString.isEmpty() || endPointString.isEmpty()) {
@@ -340,11 +402,15 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
                 endPointField.setText(tmp);
 
                 }
+                
+                
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
-		// TODO Auto-generated method stub
+	
+
+            
+        
 		
 	}
 	@Override
@@ -371,6 +437,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
 		// TODO Auto-generated method stub
             if(e.getSource() == search){
                 search.setBounds(search.getX() + 3, search.getY() + 3, search.getWidth(), search.getHeight());
+                
                // search.set
             }
             if(e.getSource() == exchange){
@@ -384,6 +451,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
         
 	@Override
 	public void actionPerformed(ActionEvent e) {
+            
 		// TODO Auto-generated method stub
                 if(e.getSource() == timer){
                     Edge edge = new Edge();
@@ -414,6 +482,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
                     }
                 }
 	}
+        
 
     /**
      * @return the mapIndex

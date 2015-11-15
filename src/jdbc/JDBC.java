@@ -40,7 +40,7 @@ public class JDBC {
    String JDBC_DRIVER= "com.mysql.jdbc.Driver";  
    String DB_URL = "jdbc:mysql://localhost/map509";
    String USER = "root";
-   String PASS = "";
+   String PASS = "123456";
    
    int maxPointID = 0;
    int maxLocID = 0;

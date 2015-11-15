@@ -102,13 +102,14 @@ public class MapView extends JFrame{
             rightSideBar.higginsPanel = higginsPanel;
             rightSideBar.mapView = this;
             
-            secRightSideBar.mainPanel = panel
-                    ;
+            secRightSideBar.mainPanel = panel;
+             
             
             this.addMouseListener(rightSideBar);
            // this.addMouseListener(secRightSideBar);
                     
             this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         }
+ 
 }
 
