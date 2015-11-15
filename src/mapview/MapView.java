@@ -50,10 +50,13 @@ import jdbc.JDBC;
 
 
 
+
 public class MapView extends JFrame{
     
-	
-	
+	private MainPanel mainPanel = new MainPanel();
+	private RightSideBar rightSideBar = new RightSideBar();
+        private SecRightSideBar secRightSideBar = new SecRightSideBar();
+        private MapModel mapModel = new MapModel();
         
     
 	public static void main(String[] args) throws SQLException {
@@ -66,7 +69,7 @@ public class MapView extends JFrame{
 	// construction method 
 	public MapView() throws SQLException{
 	    // default panel load
-            MainPanel mainPanel = new MainPanel();
+//            MainPanel mainPanel = new MainPanel();
 	    this.init(mainPanel);
 
 	}
@@ -74,26 +77,22 @@ public class MapView extends JFrame{
           
             
             
-            panel.setPreferredSize(new Dimension(980,800));
-            
+            panel.setPreferredSize(new Dimension(980, 800));
+
             this.getContentPane().add(panel, BorderLayout.WEST);
-            RightSideBar rightSideBar = new RightSideBar();
-            rightSideBar.setPreferredSize(new Dimension(150,800));
-            
+            rightSideBar.setPreferredSize(new Dimension(150, 800));
+
             this.getContentPane().add(rightSideBar, BorderLayout.EAST);
-	    SecRightSideBar secRightSideBar = new SecRightSideBar();
-            secRightSideBar.setPreferredSize(new Dimension(170,800));
-           
+            secRightSideBar.setPreferredSize(new Dimension(170, 800));
+
             this.getContentPane().add(secRightSideBar, BorderLayout.CENTER);
-            
-            
+
             HigginsPanel higginsPanel = new HigginsPanel();
-            
+
             Dimension d = new Dimension(1300, 850);
             this.setSize(d);
             this.setResizable(false);
             this.setVisible(true);
-            
             this.addMouseListener(panel);
             
            // communicate bettween class 
@@ -101,9 +100,12 @@ public class MapView extends JFrame{
             rightSideBar.secRightSideBar = secRightSideBar;
             rightSideBar.higginsPanel = higginsPanel;
             rightSideBar.mapView = this;
+            rightSideBar.mapModel = mapModel;
             
-            secRightSideBar.mainPanel = panel
-                    ;
+            secRightSideBar.mainPanel = panel;
+            secRightSideBar.mapModel = mapModel;
+            
+            mainPanel.mapModel = mapModel;
             
             this.addMouseListener(rightSideBar);
            // this.addMouseListener(secRightSideBar);

@@ -31,15 +31,17 @@ import jdbc.JDBC;
 public class SecRightSideBar extends javax.swing.JPanel implements MouseListener,ActionListener {
    
     
-   private JDBC db = new JDBC();
-   private Map m = new Map();
-   private     ArrayList<Location> locationList = new ArrayList<Location>();
-   private     ArrayList<JLabel> labelList = new ArrayList<JLabel>();
-   private     ArrayList<JLabel> pinList = new ArrayList<JLabel>();
-   private     Boolean click = false;
-   public      MainPanel mainPanel ;
-   public     Timer timer;
-   private    int index  = 0;
+    private JDBC db = new JDBC();
+    private Map m = new Map();
+    private ArrayList<Location> locationList = new ArrayList<Location>();
+    private ArrayList<JLabel> labelList = new ArrayList<JLabel>();
+    private ArrayList<JLabel> pinList = new ArrayList<JLabel>();
+    private Boolean click = false;
+    public MainPanel mainPanel;
+    public Timer timer;
+    private int index = 0;
+   
+   public  MapModel mapModel = null;
     /**
      * Creates new form SecRightSideBar
      */
@@ -58,11 +60,12 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
  
     public void ShowLocationName(String category) throws SQLException{
         this.removeAll();
-
+        
         int mapIndex = mainPanel.getMapIndex();
         m.mapID = mapIndex;
         MapInfo info = db.getMapInfo(mapIndex, m);
-        locationList = info.locations;
+//        locationList = info.locations;
+        locationList = mapModel.getAllLocationList();
         labelList.clear();
         
         

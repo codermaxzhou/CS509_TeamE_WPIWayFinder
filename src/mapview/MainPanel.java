@@ -22,6 +22,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -76,6 +78,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
         public Timer timer;
         private int index = 0;
         
+        // other class
+        public MapModel mapModel = null;
+        
 	
         //private boolean drawDiningPins = false;
 //	private final SLPanel panel = new SLPanel();
@@ -97,7 +102,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
                 edgeList = info.edges;
                 locationList = info.locations;
                  
-                
+                // hardcoding, will be changed soon
                 if(mapIndex == 1){
 		     background = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_1.png")).getImage();
                 }
@@ -217,14 +222,35 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
             this.setShowAllPins(false);
             pins.clear();
             
-            for(Location p: locationList){
-                if(p.name.equals(name)) {
-                    pins.add(p);
-                    break;
+           for (Location p : mapModel.getAllLocationList()) {
+                // 判断location的mapID 就可以判断显示那张地图 
+
+            if (p.name.equals(name)) {
+
+                if (p.locationID <= 14 && mapIndex != 1) {
+                    mapIndex = 1;
+                    try {
+                        this.init();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
                 }
+                if (p.locationID >= 14 && mapIndex != 2) {
+                    mapIndex = 2;
+                    try {
+                        this.init();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+                pins.add(p);
+                break;
             }
-            repaint();
         }
+        repaint();
+    }
         
         
         public void showLocationPin(String category){

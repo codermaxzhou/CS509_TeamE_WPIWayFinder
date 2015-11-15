@@ -42,9 +42,9 @@ public class JDBC {
    String USER = "root";
    String PASS = "";
    
-   int maxPointID = 0;
-   int maxLocID = 0;
-   int maxMapID = 0;
+   private int maxPointID = 0;
+   private int maxLocID = 0;
+   private int maxMapID = 0;
    
    Connection conn = null;
    private Statement stmt;
@@ -161,13 +161,13 @@ public class JDBC {
            Location l = A.get(i);
            if(l.locationID != -1) continue;
            query = "INSERT INTO Location (LocationID, PointID, category, name, description, mapID) ";
-           query += "VALUES(" + maxLocID + ", " + maxPointID + ", \"" + l.category.toString() + "\", \"" + 
+           query += "VALUES(" + getMaxLocID() + ", " + getMaxPointID() + ", \"" + l.category.toString() + "\", \"" + 
                     l.name + "\", \"" + l.description + "\", " + l.point.map.mapID + ");";
            Statement stmt = conn.createStatement();
            stmt.executeUpdate(query);
            
-           l.locationID = maxLocID;
-           l.point.pointID = maxPointID;
+           l.locationID = getMaxLocID();
+           l.point.pointID = getMaxPointID();
            
            query = "INSERT INTO Point (PointID, x, y, locationID, mapID) ";
            query += "VALUES(" + (maxPointID++) + ", " + l.point.X + ", " + 
@@ -185,7 +185,7 @@ public class JDBC {
        for(int i = 0; i < A.size(); ++i) {
            Point p  = A.get(i);
            if(p.pointID != -1) continue;
-           p.pointID = maxPointID;
+           p.pointID = getMaxPointID();
            query = "INSERT INTO Point (PointID, x, y, locationID, mapID) ";
            query += "VALUES(" + (maxPointID++) + ", " + p.X + ", " + 
                     p.Y + ", " + -1 + ", " + p.map.mapID + ");";
@@ -243,27 +243,27 @@ public class JDBC {
                 int isBldgMap = m.isInteriorMap ? 1 : 0;
 
                 query = "INSERT INTO Map (mapID, name, description, isInteriorMap) ";
-                query += "VALUES(" + maxMapID + ", \"" + m.name + "\", \"" + m.description +"\", " + isBldgMap + ");";
+                query += "VALUES(" + getMaxMapID() + ", \"" + m.name + "\", \"" + m.description +"\", " + isBldgMap + ");";
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(query);
 
-                m.mapID = maxMapID;
+                m.mapID = getMaxMapID();
 
                 PreparedStatement ps = null;
                 conn.setAutoCommit(false);
                 File file = new File(m.path);
                 FileInputStream fis = new FileInputStream(file);
-                ps = conn.prepareStatement("UPDATE Map SET image = ? WHERE mapID = " + maxMapID);
+                ps = conn.prepareStatement("UPDATE Map SET image = ? WHERE mapID = " + getMaxMapID());
                 ps.setBinaryStream(1, fis, (int) file.length());
                 ps.executeUpdate();
                 conn.commit();
                 
                 for(Edge e : m.edgeList) {
-                    e.startMapID = maxMapID;
-                    e.endMapID = maxMapID;
+                    e.startMapID = getMaxMapID();
+                    e.endMapID = getMaxMapID();
                 }
 
-                maxMapID++;
+                setMaxMapID(getMaxMapID() + 1);
                 
                 ps.close();
                 fis.close();
@@ -422,6 +422,48 @@ public class JDBC {
    }//end try
    System.out.println("Goodbye!");*/
 
+    }
+
+    /**
+     * @return the maxPointID
+     */
+    public int getMaxPointID() {
+        return maxPointID;
+    }
+
+    /**
+     * @param maxPointID the maxPointID to set
+     */
+    public void setMaxPointID(int maxPointID) {
+        this.maxPointID = maxPointID;
+    }
+
+    /**
+     * @return the maxLocID
+     */
+    public int getMaxLocID() {
+        return maxLocID;
+    }
+
+    /**
+     * @param maxLocID the maxLocID to set
+     */
+    public void setMaxLocID(int maxLocID) {
+        this.maxLocID = maxLocID;
+    }
+
+    /**
+     * @return the maxMapID
+     */
+    public int getMaxMapID() {
+        return maxMapID;
+    }
+
+    /**
+     * @param maxMapID the maxMapID to set
+     */
+    public void setMaxMapID(int maxMapID) {
+        this.maxMapID = maxMapID;
     }
     
 }
