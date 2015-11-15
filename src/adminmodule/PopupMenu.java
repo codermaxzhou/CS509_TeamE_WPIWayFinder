@@ -49,4 +49,28 @@ public class PopupMenu extends JPopupMenu {
         this.add(item);
     }
 
+        public PopupMenu(Point point) {
+        JMenuItem item = new JMenuItem("Set Connection");
+        item.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                //System.out.println("Menu item Edit");
+                EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                       
+                    }
+
+                });
+            }
+        });
+        this.add(item);
+
+        item = new JMenuItem("Delete");
+        item.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Menu item Delete not complete yet");
+            }
+        });
+        this.add(item);
+    }
+    
 }

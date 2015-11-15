@@ -44,6 +44,7 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     LeftPanel left;
     Point startpoint = null;
     Point endpoint = null;
+    int tempMapID = -1;
 
 
     public static void main(String[] args) throws SQLException, IOException {
@@ -155,13 +156,30 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
         
         /* right click on the map */
         if (e.isPopupTrigger()) {
-            for (Location temp : locations) {
-                if (!((x < (temp.point.getX() - radius))
-                        || (x > (temp.point.getX() + radius))
-                        || (y < (temp.point.getY() - radius))
-                        || (y > (temp.point.getY() + radius)))) {
+//            for (Location temp : locations) {
+//                if (!((x < (temp.point.getX() - radius))
+//                        || (x > (temp.point.getX() + radius))
+//                        || (y < (temp.point.getY() - radius))
+//                        || (y > (temp.point.getY() + radius)))) {
+//                        PopupMenu menu = new PopupMenu(temp);
+//                        menu.show(e.getComponent(), x, y);
+//                }
+//            }
+            
+            for (Point temp : points) {
+                if (!((x < (temp.getX() - radius))
+                        || (x > (temp.getX() + radius))
+                        || (y < (temp.getY() - radius))
+                        || (y > (temp.getY() + radius))) && (temp.location == null)) {
                         PopupMenu menu = new PopupMenu(temp);
                         menu.show(e.getComponent(), x, y);
+                } else if (!((x < (temp.getX() - radius))
+                        || (x > (temp.getX() + radius))
+                        || (y < (temp.getY() - radius))
+                        || (y > (temp.getY() + radius))) && (temp.location != null)) {
+                        PopupMenu menu = new PopupMenu(temp.location);
+                        menu.show(e.getComponent(), x, y);
+                    
                 }
             }
 
@@ -237,18 +255,21 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
                                 || (x > (temp.getX() + radius))
                                 || (y < (temp.getY() - radius))
                                 || (y > (temp.getY() + radius)))) {
+                           
 
                             if ((startpoint == null) && (endpoint == null)) {
                                 startpoint = temp;
+                                tempMapID = maps.get(left.mapList.getSelectedIndex()).mapID;
                                 return;
                             } else if ((startpoint != null) && (endpoint == null) && (temp != startpoint)) {
                                 endpoint = temp;
                                 newedge = new Edge(startpoint, endpoint);
                                 newedge.edgeID = -1;
-                                newedge.startMapID = maps.get(left.mapList.getSelectedIndex()).mapID;
+                                newedge.startMapID = tempMapID;
                                 newedge.endMapID = maps.get(left.mapList.getSelectedIndex()).mapID;
+                                if (newedge.startMapID != newedge.endMapID)
+                                    newedge.weight = 5;
                                 edges.add(newedge);
-                                System.out.println("add edge weight:" + newedge.weight);
                                 System.out.println("edge list size:" + edges.size());
                                 startpoint = null;
                                 endpoint = null;
