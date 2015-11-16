@@ -242,30 +242,28 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
             this.repaint();
         }
 	
-        public void showSinglePin(String name) {
-            this.setShowRoute(false);
-            this.setShowPins(true);
-            this.setShowAllPins(false);
-            
-            
-           pins.clear();
-            
+      public void showSinglePin(String name) {
+        this.setShowRoute(false);
+        this.setShowPins(true);
+        this.setShowAllPins(false);
 
-           for (Location p : mapModel.getAllLocationList()) {
-                // 判断location的mapID 就可以判断显示那张地图 
+        pins.clear();
+
+        for (Location p : mapModel.getAllLocationList()) {
+            // 判断location的mapID 就可以判断显示那张地图 
 
             if (p.name.equals(name)) {
 
-                if (p.locationID <= 14 && mapIndex != 1) {
+                if (p.point.map.mapID == 1 && mapIndex != 1) {
                     mapIndex = 1;
                     try {
                         this.init();
                     } catch (SQLException ex) {
                         Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                }
 
-
-                if (p.locationID >= 14 && mapIndex != 2) {
+                if (p.point.map.mapID == 2 && mapIndex != 2) {
                     mapIndex = 2;
                     try {
                         this.init();
@@ -276,10 +274,10 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
                 }
                 pins.add(p);
                 break;
+
             }
+            repaint();
         }
-        repaint();
-    }
     }
         
     /**
