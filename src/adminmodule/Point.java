@@ -1,7 +1,7 @@
 package adminmodule;
 
 public class Point {
-    public enum Type { WAYPOINT, LOCATION };    // Enum for types of point, we can add more types later
+    public enum Type { WAYPOINT, LOCATION, CONNECTION };    // Enum for types of point, we can add more types later
     
     public Map map;                             // The map that the point belongs to
     public Type type;                           // Point type, right now there are two types
