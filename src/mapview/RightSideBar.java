@@ -17,15 +17,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
  * @author GaoYifei
  */
-public class RightSideBar extends JPanel implements MouseListener, ActionListener{
-
+public class RightSideBar extends JPanel implements MouseListener, ActionListener, ListSelectionListener{
+    // interface
     public MainPanel mainPanel = null;
     public SecRightSideBar secRightSideBar = null;
+    public HigginsPanel higginsPanel = null;
+    public MapView mapView = null;
+    public MapModel mapModel = null;
+    
+    
+    
     private JLabel backButton;
     
     /**
@@ -34,8 +42,12 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
      */
     public RightSideBar() {
         initComponents();
-        
+        init();
                 
+    }
+    
+    public void init(){
+        floorList.addListSelectionListener(this);
     }
 
     /**
@@ -52,6 +64,9 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
         classroomLabel = new javax.swing.JLabel();
         restroomLabel = new javax.swing.JLabel();
         backLabel = new javax.swing.JLabel();
+        goCampusButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        floorList = new javax.swing.JList();
 
         setPreferredSize(new java.awt.Dimension(150, 800));
 
@@ -110,28 +125,47 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
             }
         });
 
+        goCampusButton.setText("Campus Map");
+        goCampusButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                goCampusButtonMouseClicked(evt);
+            }
+        });
+
+        floorList.setBorder(javax.swing.BorderFactory.createTitledBorder("Floor "));
+        floorList.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Project Center 1st  Floor", "Project Center 2ed Floor", "" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        floorList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        floorList.setToolTipText("Choose Floor in Project Center");
+        jScrollPane1.setViewportView(floorList);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(backLabel)
-                            .addGap(77, 77, 77))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGap(38, 38, 38)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(restroomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(classroomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(backLabel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(restroomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(classroomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(showButton)
-                            .addComponent(clearButton))))
-                .addContainerGap(17, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(goCampusButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 123, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(clearButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(showButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,11 +175,15 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
                 .addComponent(classroomLabel)
                 .addGap(85, 85, 85)
                 .addComponent(restroomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 287, Short.MAX_VALUE)
-                .addComponent(clearButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(goCampusButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(clearButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(showButton)
-                .addGap(22, 22, 22))
+                .addGap(87, 87, 87))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -246,11 +284,24 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
         mainPanel.showPins();
     }//GEN-LAST:event_showButtonMouseClicked
 
+    private void goCampusButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_goCampusButtonMouseClicked
+        try {
+            // TODO add your handling code here:
+            mapView.init(higginsPanel);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_goCampusButtonMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel backLabel;
     private javax.swing.JLabel classroomLabel;
     private javax.swing.JButton clearButton;
+    private javax.swing.JList floorList;
+    private javax.swing.JButton goCampusButton;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel restroomLabel;
     private javax.swing.JButton showButton;
     // End of variables declaration//GEN-END:variables
@@ -282,6 +333,53 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if( e.getSource() == floorList && ! e.getValueIsAdjusting())
+		{
+			// Get the current selection and place it in the
+			// edit field
+			String stringValue = (String)floorList.getSelectedValue();
+			//System.out.println("list"+stringValue);
+                        int mapIndex;
+                        if(stringValue.equals("Project Center 1st  Floor")){
+                            System.out.print("1st ");
+                            try {
+                                mapIndex = 1;
+                                mainPanel.setMapIndex(mapIndex);
+                                mainPanel.setShowAllPins(false);
+                                mainPanel.setShowPins(false);
+                                mainPanel.setDrawRoutes(false);
+                                mainPanel.setShowRoute(false);
+                                mainPanel.init();
+                                mainPanel.repaint();
+                               
+                            } catch (SQLException ex) {
+                                Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        if(stringValue.equals("Project Center 2ed Floor")){
+                             System.out.print("2nd ");
+                            try {
+                                mapIndex = 2;
+                                mainPanel.setMapIndex(mapIndex);
+                                mainPanel.setShowAllPins(false);
+                                mainPanel.setShowPins(false);
+                                mainPanel.setDrawRoutes(false);
+                                mainPanel.setShowRoute(false);
+                                mainPanel.init();
+                                mainPanel.repaint();
+                               
+                            } catch (SQLException ex) {
+                                Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+				
+		}
+        
     }
 }

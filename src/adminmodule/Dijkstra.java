@@ -134,9 +134,14 @@ public class Dijkstra {
             iToPoint.put(i++, pt);
         }
         
+        // testing by Yifei for multiple routing
+        int j = 0;
         for(Edge e : edgeSet) {
             int x = pToIndex.get(e.startPoint);
             int y = pToIndex.get(e.endPoint);
+            // testing by Yifei for multiple routing
+            j++;
+            System.out.print("index j of edge" + j);
             
             kToEdge.put(x + "-" + y, e);
             kToEdge.put(y + "-" + x, e);
