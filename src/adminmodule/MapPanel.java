@@ -58,7 +58,8 @@ public class MapPanel extends JScrollPane {
             }
         }
         for (Edge e : frame.edges) {
-            g.drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
+            if(e.startMapID == e.endMapID)
+                g.drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
         }
     }
 
