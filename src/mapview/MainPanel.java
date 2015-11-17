@@ -227,6 +227,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
             g.setColor(Color.red);
             allEdgeList = mapModel.getAllEdgeList();
             allPointList = mapModel.getAllPointList();
+            // 临时补丁
+            allEdgeList.get(14).endPoint = allPointList.get(24);
             Dijkstra algo = new Dijkstra(allEdgeList, allPointList);
             multiRoute = (ArrayList<Edge>) algo.calculate(start.point, end.point);
 

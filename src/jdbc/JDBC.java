@@ -131,17 +131,20 @@ public class JDBC {
            temp.map = map;
        }
        
-       query = "SELECT edgeID, startpointID, endpointID, weight, startmapID, endmapID FROM Edge WHERE startmapID = " + MapID + " AND endmapID = " + MapID + ";";
+//       modified the sql by Yifei (select edge by start point mapID instead of start point mapID and end point mapID )
+       query = "SELECT edgeID, startpointID, endpointID, weight, startmapID, endmapID FROM Edge WHERE startmapID = " + MapID + ";";
        stmt = conn.createStatement();
        rs = stmt.executeQuery(query);
 
        while(rs.next()) {
            Edge temp = new Edge();
            temp.weight = rs.getDouble("weight");
-           temp.endMapID = map.mapID;
+           // modified by Yifei , get endMapID from database instead of map.mapID
+           temp.endMapID = rs.getInt("endmapID");
            temp.startMapID = map.mapID;
            temp.startPoint = ptMap.get(rs.getInt("startpointID"));
-           temp.endPoint   = ptMap.get(rs.getInt("endpointID"));
+           // cannot access for the connection point  24th point since the endPoint belong to the other map which not in the ptMap
+           temp.endPoint   = ptMap.get(rs.getInt("endpointID")); 
            temp.edgeID = rs.getInt("edgeID");
            E.add(temp);
        }
