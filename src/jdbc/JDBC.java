@@ -105,7 +105,7 @@ public class JDBC {
                default: temp.category = Location.Category.PARKING;
            }
            
-           locMap.put(rs.getInt("pointID"), temp);
+           locMap.put(rs.getInt("pointID"), temp); //Why is this "pointID", not "locationID"?
            L.add(temp);
        }
        
@@ -127,6 +127,7 @@ public class JDBC {
            
            switch(rs.getString("type")) {
                case "LOCATION": temp.type = Point.Type.LOCATION;
+                                partner.point = temp;
                               break;
                case "CONNECTION": temp.type = Point.Type.CONNECTION;
                            break;
@@ -153,7 +154,7 @@ public class JDBC {
            temp.endMapID = rs.getInt("endmapID");
            temp.startMapID = map.mapID;
            temp.startPoint = ptMap.get(rs.getInt("startpointID"));
-           // cannot access for the connection point  24th point since the endPoint belong to the other map which not in the ptMap
+           //TODO: cannot access for the connection point  24th point since the endPoint belong to the other map which not in the ptMap
            temp.endPoint   = ptMap.get(rs.getInt("endpointID")); 
            temp.edgeID = rs.getInt("edgeID");
            E.add(temp);
@@ -199,7 +200,7 @@ public class JDBC {
            Point p  = A.get(i);
            if(p.pointID != -1) continue;
            p.pointID = getMaxPointID();
-           query = "INSERT INTO Point (PointID, x, y, locationID, mapID) ";
+           query = "INSERT INTO Point (PointID, x, y, locationID, mapID, type) ";
            query += "VALUES(" + (maxPointID++) + ", " + p.X + ", " + 
                     p.Y + ", " + -1 + ", " + p.map.mapID + ", \"" + p.type.toString() + "\");";
            Statement stmt = conn.createStatement();
