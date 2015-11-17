@@ -58,6 +58,11 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
 	private ArrayList<Edge> edgeList = new ArrayList<>();
 	private ArrayList<Location> locationList = new ArrayList<>(); // Ëã·¨·µ»ØµÄedges
         private ArrayList<Edge> route = new ArrayList<>();
+        private ArrayList<Edge> multiRoute = new ArrayList<>();
+        
+        private ArrayList<Location> allLocationList = new ArrayList<>();
+        private ArrayList<Edge> allEdgeList = new ArrayList<>();
+        private ArrayList<Point> allPointList = new ArrayList<>();
         
 	public Dijkstra dijstra = new Dijkstra(edgeList,pointList);
         private ArrayList<Location> pins = new ArrayList<>();
@@ -83,7 +88,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
         
         
         // other class
-        public MapModel mapModel = null;
+        public MapModel mapModel ;
         
 	
         //private boolean drawDiningPins = false;
@@ -105,6 +110,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
                 pointList = info.points;
                 edgeList = info.edges;
                 locationList = info.locations;
+               
                  
                 // hardcoding, will be changed soon
                 if(mapIndex == 1){
@@ -214,12 +220,36 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
 	 }
 	
 	 
-	 
-	public void drawRoute(Point start, Point end){
-		 
- 
+	 // multi map routing 
+	public void drawMultiRoute(Location start, Location end){
+            //System.out.print("enter");
+            Graphics g = this.getGraphics();
+            g.setColor(Color.red);
+            allEdgeList = mapModel.getAllEdgeList();
+            allPointList = mapModel.getAllPointList();
+            Dijkstra algo = new Dijkstra(allEdgeList, allPointList);
+            multiRoute = (ArrayList<Edge>) algo.calculate(start.point, end.point);
+
+            for (int i = 0; i <= multiRoute.size() - 1; i++) {
+                Edge e = multiRoute.get(i);
+                        //String type = route.get(i).startPoint.type.equals("CONNECTION");
+
+                g.drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
+                if (multiRoute.get(i).startPoint.type.equals("CONNECTION")) {
+                    break;
+                }
+            }
+
+            setShowRoute(false);
+            setShowPins(false);
+
+           
 		 
 	}
+        
+        public void drawRoute(Location start, Location end){
+            
+        }
 	
         
         public void showClickPin(String name){
@@ -249,7 +279,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
 
         pins.clear();
 
-        for (Location p : mapModel.getAllLocationList()) {
+        for (Location p : allLocationList) {
             // 判断location的mapID 就可以判断显示那张地图 
 
             if (p.name.equals(name)) {
@@ -347,7 +377,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
 
             int radius = 50;
             boolean inrange = false;
-   
+            
+            
+            
             String startPointString = startPointField.getText();
             String endPointString = endPointField.getText();
        
@@ -387,37 +419,55 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
            // System.out.println("search!");
             if (e.getSource() == search) {
 
-
+                this.setShowRoute(false);
+                startLocation = null;
+                endLocation = null;
+                allLocationList = mapModel.getAllLocationList();
+                allEdgeList = mapModel.getAllEdgeList();
+                allPointList = mapModel.getAllPointList();
+                
                 System.out.println("The start Point name:" + startPointString);
                 System.out.println("The end Point name:" + endPointString);
                 if (startPointString.isEmpty() || endPointString.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please input the location!");
 
                 } else {
-
-                    for (Location l : locationList) {
+                    
+                    // 为什么换为 allLocationList 后不可以呢?
+                    for (Location l : allLocationList) {
                         if (l.name.equals(startPointString)) {
                             startLocation = l;
+                            
                         } else if (l.name.equals(endPointString)) {
                             endLocation = l;
                         }
                     }
+//                System.out.println("The start Point name:" + startLocation.name);
+//                System.out.println("The end Point name:" + endLocation.name);
+                    
 
                     if (startLocation == null || endLocation == null) {
                         JOptionPane.showMessageDialog(null, "Wrong Location !");
 
-                    } else {
-
-                        Dijkstra algo = new Dijkstra(edgeList, pointList);
+                    }
+//                     multi map route 
+                    else if (startLocation.point.map.mapID != endLocation.point.map.mapID) {
+                        drawMultiRoute(startLocation, endLocation);
+                      
+                    } 
+                    else if (startLocation.point.map.mapID == endLocation.point.map.mapID) {
+                        
+                        
+                        Dijkstra algo = new Dijkstra(allEdgeList, allPointList);
                         route = (ArrayList<Edge>) algo.calculate(startLocation.point, endLocation.point);
                         setShowRoute(true);
                         setShowPins(false);
 
                         repaint();
                     }
+
                 }
-            }
-                
+
                 // exchange button 
                 if (e.getSource() == exchange){
                 String tmp = null;
@@ -429,6 +479,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
                 
                 
 	}
+        }
 	@Override
 	public void mousePressed(MouseEvent e) {
 		

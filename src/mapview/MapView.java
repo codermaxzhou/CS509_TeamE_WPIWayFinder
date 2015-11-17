@@ -52,11 +52,12 @@ import jdbc.JDBC;
 
 
 public class MapView extends JFrame{
-    
+        
+        private MapModel mapModel = new MapModel();
 	private MainPanel mainPanel = new MainPanel();
 	private RightSideBar rightSideBar = new RightSideBar();
         private SecRightSideBar secRightSideBar = new SecRightSideBar();
-        private MapModel mapModel = new MapModel();
+      
         
     
 	public static void main(String[] args) throws SQLException {
