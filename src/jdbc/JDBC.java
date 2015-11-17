@@ -125,13 +125,18 @@ public class JDBC {
 //           } else
 //               temp.type = Point.Type.WAYPOINT;
            
-           switch(rs.getString("type")) {
-               case "LOCATION": temp.type = Point.Type.LOCATION;
-                              break;
-               case "CONNECTION": temp.type = Point.Type.CONNECTION;
-                           break;
-               case "WAYPOINT": temp.type = Point.Type.WAYPOINT;
-                           break;
+           switch (rs.getString("type")) {
+               case "LOCATION":
+                   partner.point = temp;
+                   temp.type = Point.Type.LOCATION;
+
+                   break;
+               case "CONNECTION":
+                   temp.type = Point.Type.CONNECTION;
+                   break;
+               case "WAYPOINT":
+                   temp.type = Point.Type.WAYPOINT;
+                   break;
            }
            
            temp.map = null;
