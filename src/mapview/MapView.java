@@ -5,44 +5,13 @@
  */
 package mapview;
 
-import adminmodule.Dijkstra;
-import adminmodule.Edge;
-import adminmodule.Location;
-import adminmodule.Map;
-import adminmodule.MapInfo;
-
-import adminmodule.Point;
-import adminmodule.PopupMenu;
-import java.awt.BasicStroke;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Graphics2D;
 
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Stroke;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import static javafx.scene.paint.Color.color;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.Timer;
 import javax.swing.WindowConstants;
-import jdbc.JDBC;
 
 
 //import aurelienribon.slidinglayout.SLPanel;

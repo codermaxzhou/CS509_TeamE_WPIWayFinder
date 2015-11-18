@@ -11,6 +11,7 @@
 package jdbc;
 
 import adminmodule.Edge;
+import adminmodule.GlobalMapInfo;
 import adminmodule.Location;
 import adminmodule.Map;
 import adminmodule.MapInfo;
@@ -147,7 +148,7 @@ public class JDBC {
        }
        
 //       modified the sql by Yifei (select edge by start point mapID instead of start point mapID and end point mapID )
-       query = "SELECT edgeID, startpointID, endpointID, weight, startmapID, endmapID FROM Edge WHERE startmapID = " + MapID + ";";
+       query = "SELECT edgeID, startpointID, endpointID, weight, startmapID, endmapID FROM Edge WHERE startmapID = " + MapID + " AND endmapID = " + MapID + ";";
        stmt = conn.createStatement();
        rs = stmt.executeQuery(query);
 
@@ -315,6 +316,39 @@ public class JDBC {
        
        
        return true;
+   }
+   
+   public GlobalMapInfo getGlobalMapInfo() throws SQLException, IOException {
+       ArrayList<Map> maps = showAllMap();
+       ArrayList<Edge> interMapEdges = new ArrayList<>();
+       HashMap<Integer, Point> dictionary = new HashMap<>();
+       
+       for(Map m : maps) {
+           for(Point p : m.pointList) {
+               dictionary.put(p.pointID, p);
+           }
+       }
+       
+       String query= "SELECT startpointID, endpointID, weight, startmapID, endmapID From edge WHERE startmapID != endmapID;";
+       Statement stmt = conn.createStatement();
+       ResultSet rs = stmt.executeQuery(query);
+       
+       while(rs.next()){
+           Edge temp = new Edge();
+           temp.endMapID = rs.getInt("endmapID");
+           temp.startMapID = rs.getInt("startmapID");
+           temp.startPoint = dictionary.get(rs.getInt("startpointID"));
+           temp.endPoint = dictionary.get(rs.getInt("endpointID"));
+           temp.weight = rs.getDouble("weight");
+           
+           interMapEdges.add(temp);
+       }
+       
+       GlobalMapInfo gm = new GlobalMapInfo();
+       gm.interMapEdges = interMapEdges;
+       gm.maps = maps;
+       
+       return gm;
    }
    
    public ArrayList<Map> showAllMap() throws SQLException, MalformedURLException, IOException{
