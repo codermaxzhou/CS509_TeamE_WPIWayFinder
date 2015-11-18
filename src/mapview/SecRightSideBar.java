@@ -39,6 +39,7 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
    private     Boolean click = false;
    public      MainPanel mainPanel ;
    public     Timer timer;
+   public     MapModel mapModel;
    private    int index  = 0;
     /**
      * Creates new form SecRightSideBar

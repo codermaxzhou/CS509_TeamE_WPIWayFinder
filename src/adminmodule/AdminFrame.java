@@ -267,8 +267,11 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
                                 newedge.edgeID = -1;
                                 newedge.startMapID = tempMapID;
                                 newedge.endMapID = maps.get(left.mapList.getSelectedIndex()).mapID;
-                                if (newedge.startMapID != newedge.endMapID)
+                                if (newedge.startMapID != newedge.endMapID) {
                                     newedge.weight = 5;
+                                    newedge.startPoint.type = Point.Type.CONNECTION;
+                                    newedge.endPoint.type = Point.Type.CONNECTION;
+                                }
                                 edges.add(newedge);
                                 System.out.println("edge list size:" + edges.size());
                                 startpoint = null;

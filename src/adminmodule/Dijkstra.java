@@ -134,9 +134,11 @@ public class Dijkstra {
             iToPoint.put(i++, pt);
         }
         
+        int j = 0;
         for(Edge e : edgeSet) {
             int x = pToIndex.get(e.startPoint);
             int y = pToIndex.get(e.endPoint);
+            
             
             kToEdge.put(x + "-" + y, e);
             kToEdge.put(y + "-" + x, e);

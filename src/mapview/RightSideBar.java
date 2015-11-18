@@ -30,6 +30,7 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
     public SecRightSideBar secRightSideBar = null;
     public HigginsPanel higginsPanel = null;
     public MapView mapView = null;
+    public MapModel mapModel = null;
     
     
     
