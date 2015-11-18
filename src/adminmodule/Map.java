@@ -14,6 +14,7 @@ public class Map {
     public String name;
     public String description;
     public Image image;                     // Map's image
+    public int floor;
     
    
     public Boolean isInteriorMap;           // Flag indicating whether this is the campus map or a building map

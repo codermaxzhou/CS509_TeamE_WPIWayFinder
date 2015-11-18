@@ -45,6 +45,7 @@ public class JDBC {
    private int maxPointID = 0;
    private int maxLocID = 0;
    private int maxMapID = 0;
+   private int maxEdgeID = 0;
    
    Connection conn = null;
    private Statement stmt;
@@ -272,8 +273,8 @@ public class JDBC {
                 String query = "";
                 int isBldgMap = m.isInteriorMap ? 1 : 0;
 
-                query = "INSERT INTO Map (mapID, name, description, isInteriorMap) ";
-                query += "VALUES(" + getMaxMapID() + ", \"" + m.name + "\", \"" + m.description +"\", " + isBldgMap + ");";
+                query = "INSERT INTO Map (mapID, name, description, path, floor, isInteriorMap) ";
+                query += "VALUES('" + maxMapID + "', '" + m.name + "', '" + m.description + "', '" + m.path + "', " + m.floor+","+isBldgMap + ");";
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(query);
 
@@ -314,7 +315,7 @@ public class JDBC {
    }
    
    public ArrayList<Map> showAllMap() throws SQLException, MalformedURLException, IOException{
-       String query= "SELECT MapID, name, description, isInteriorMap, image From Map;";
+       String query= "SELECT MapID, name, description, path, floor, isInteriorMap, image From Map;";
        Statement stmt = conn.createStatement();
        ResultSet rs = stmt.executeQuery(query);
        
@@ -327,11 +328,12 @@ public class JDBC {
            temp.name = rs.getString("name");
            int isBldgMap = rs.getInt("isInteriorMap");
            temp.isInteriorMap = (isBldgMap == 1);
-           temp.path = "from database";
+           temp.path = rs.getString("path");
+           temp.floor = rs.getInt("floor");
            
-      
-           InputStream binaryStream = rs.getBinaryStream("image");
-           temp.image = ImageIO.read(binaryStream);
+           //TODO remove
+           //InputStream binaryStream = rs.getBinaryStream("image");
+           temp.image = ImageIO.read(new FileInputStream(temp.path));
            
            MapInfo info = this.getMapInfo(temp.mapID, temp);
            temp.edgeList = info.edges;
@@ -344,7 +346,7 @@ public class JDBC {
    }
    public Map showMap(int searchID) throws SQLException, IOException{
        String query;
-       query="SELECT name,description,isInteriorMap,path FROM Map";
+       query="SELECT name,description,isInteriorMap,floor,path FROM Map";
        query+="WHERE mapID="+searchID+";";
        Statement stmt = conn.createStatement();
        ResultSet rs = stmt.executeQuery(query);
