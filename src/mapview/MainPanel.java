@@ -560,6 +560,3 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener{
 
 
 
-
-
->>>>>>> bd33ec58093447b203b76d7d581c1ff67b58645a
