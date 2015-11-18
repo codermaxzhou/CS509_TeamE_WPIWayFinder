@@ -6,6 +6,7 @@
 package mapview;
 
 import adminmodule.Edge;
+import adminmodule.GlobalMapInfo;
 import adminmodule.Location;
 import adminmodule.Map;
 import adminmodule.Point;
@@ -54,7 +55,9 @@ public class MapModel {
 //          
 //       }
        
-       this.setMapList(dataBase.showAllMap()); 
+       GlobalMapInfo gm = dataBase.getGlobalMapInfo();
+       this.setMapList(gm.maps); 
+       getAllEdgeList().addAll(gm.interMapEdges);
        // store all data in one data structure 
        for(Map m : getMapList()){
             getAllLocationList().addAll(m.locList);
@@ -62,7 +65,7 @@ public class MapModel {
             getAllEdgeList().addAll(m.edgeList);
 
        }
-    
+       System.out.println();
     }
 
     /**
