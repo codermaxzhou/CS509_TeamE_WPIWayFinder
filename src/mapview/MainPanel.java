@@ -11,6 +11,7 @@ import adminmodule.Location;
 import adminmodule.Map;
 import adminmodule.MapInfo;
 import adminmodule.Point;
+import adminmodule.PopupMenu;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -59,6 +60,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private ArrayList<Location> locationList = new ArrayList<>(); // Ëã·¨·µ»ØµÄedges
     private ArrayList<Edge> route = new ArrayList<>();
     private ArrayList<Edge> multiRoute = new ArrayList<>();
+    private ArrayList<Integer> multiMapIndex = new ArrayList<>();
 
     private ArrayList<Location> allLocationList = new ArrayList<>();
     private ArrayList<Edge> allEdgeList = new ArrayList<>();
@@ -72,6 +74,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
     private Map map = new Map();
     private int mapIndex;
+    private int connectionX;
+    private int connectionY;
+                    
 
     // boolean varaibels 
     private boolean showRoute = false;
@@ -223,21 +228,25 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                 Edge e = multiRoute.get(i);
                 //String type = route.get(i).startPoint.type.equals("CONNECTION");
 
-                g.drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
-                
+                if(e.startMapID == mapIndex || e.endMapID == mapIndex) {
+                    g.drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
+                } 
+                    
                 if (multiRoute.get(i).startPoint.type.name().equals("CONNECTION")) {
                     //System.out.print("this is the connection of edge !");
 
                     g.drawImage(pinImage, e.startPoint.X, e.startPoint.Y, 20, 20, null);
                     g.drawString("Connection", e.startPoint.X - 5, e.startPoint.Y - 5);
-
-                    nextButton.setBounds(e.startPoint.X - 5, e.startPoint.Y - 20, 50, 50);
-                    this.add(nextButton);
-                    nextButton.addMouseListener(this);
-                    multiRoute.remove(e);
-                    break;
+                   // g.drawOval(e.startPoint.X, e.endPoint.Y, 30, 30);
+                    connectionX =  e.startPoint.X;
+                    connectionY = e.startPoint.Y;
+                    
+//                    nextButton.setBounds(e.startPoint.X - 5, e.startPoint.Y - 20, 50, 50);
+//                    this.add(nextButton);
+//                    nextButton.addMouseListener(this);
+                    
                 }
-                multiRoute.remove(e);
+                
                 
             }
             drawMultiRoutes = false;
@@ -252,7 +261,21 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         Graphics g = this.getGraphics();
         g.setColor(Color.red);
         
+        multiMapIndex.clear();
         multiRoute = (ArrayList<Edge>) algo.calculate(start.point, end.point);
+        
+        for(Edge e: multiRoute){
+            if(!multiMapIndex.contains(e.startMapID)){
+                multiMapIndex.add(e.startMapID);
+            }
+            if(!multiMapIndex.contains(e.endMapID)){
+                multiMapIndex.add(e.endMapID);
+            }
+            
+            
+        }
+        
+      
         drawMultiRoutes = true;
         
 
@@ -382,7 +405,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
         String startPointString = startPointField.getText();
         String endPointString = endPointField.getText();
-
+        
+        
         if (e.getSource() != search && e.getSource() != exchange) {
             int radius = 50;
             boolean inrange = false;
@@ -447,6 +471,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
                 } //                     multi map route 
                 else if (startLocation.point.map.mapID != endLocation.point.map.mapID) {
+                    
+                  
                     drawMultiRoute(startLocation, endLocation);
 
                 } else if (startLocation.point.map.mapID == endLocation.point.map.mapID) {
@@ -474,7 +500,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         }
 
         if (e.getSource() == nextButton) {
-            System.out.print("next Button Clicked");
+           // System.out.print("next Button Clicked");
             mapIndex = 2;
             this.setMapIndex(mapIndex);
             drawMultiRoutes = true;
@@ -488,7 +514,34 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                 Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
             this.repaint();
+            this.remove(nextButton);
         }
+        
+        if(e.getX() < connectionX + 20 && e.getX() > connectionX - 20 && e.getY() < connectionY + 20 && e.getY() > connectionY - 20){
+            System.out.print("click the connection button");
+        }
+        // right click 
+        if(e.isMetaDown()){
+            
+            int x = e.getX();
+            int y = e.getY();
+            int radius = 20;
+            for (Location temp : allLocationList) {
+                if (!((x < (temp.point.getX() - radius))
+                        || (x > (temp.point.getX() + radius))
+                        || (y < (temp.point.getY() - radius))
+                        || (y > (temp.point.getY() + radius))) ) {
+                        PopupMenu menu = new PopupMenu(temp);
+                        menu.show(e.getComponent(), x, y);
+                } 
+            }
+            
+            }
+            
+            
+        
+        
+        
 
 
     }
