@@ -175,7 +175,7 @@ public class JDBC {
        return info;
    }
    
-   public boolean saveLocations(ArrayList<Location> A) throws SQLException {
+   public boolean saveLocations(ArrayList<Location> A, int mid) throws SQLException {
        String query;
        
        for(int i = 0; i < A.size(); ++i) {
@@ -197,10 +197,30 @@ public class JDBC {
            stmt.executeUpdate(query);
        }
        
+       query = "SELECT pointID FROM Location WHERE MapID = " + mid + ";";
+       Statement stmt = conn.createStatement();
+       ResultSet rs = stmt.executeQuery(query);
+       while(rs.next()){
+           int temp = rs.getInt("pointID");
+           int flag = 0;
+           for (Location l : A) {
+               if(l.point.pointID == temp) {
+                   flag = 1;
+                   break;
+               }
+           }
+           if(flag == 0) {
+               query = "DELETE FROM Location WHERE pointID="+temp+";";
+               stmt = conn.createStatement();
+               stmt.executeUpdate(query);
+           }
+       }
+       
        return true;
    }
    
-   public boolean savePoints(ArrayList<Point> A) throws SQLException {
+   public boolean savePoints(ArrayList<Point> A, int mid) throws SQLException {
+       
        String query;
        
        for(int i = 0; i < A.size(); ++i) {
@@ -214,19 +234,60 @@ public class JDBC {
            stmt.executeUpdate(query);
        }
        
+                  
+       query = "SELECT pointID FROM Point WHERE MapID = " + mid + ";";
+       Statement stmt = conn.createStatement();
+       ResultSet rs = stmt.executeQuery(query);
+       while(rs.next()){
+           int temp = rs.getInt("pointID");
+           int flag = 0;
+           for (Point p : A) {
+               if(p.pointID == temp) {
+                   flag = 1;
+                   break;
+               }
+           }
+           if(flag == 0) {
+               query = "DELETE FROM Point WHERE pointID="+temp+";";
+               stmt = conn.createStatement();
+               stmt.executeUpdate(query);
+           }
+       }
+       
        return true;
    }
    
-   public boolean saveEdges(ArrayList<Edge> A) throws SQLException {
+   public boolean saveEdges(ArrayList<Edge> A, int mid) throws SQLException {
        String query;
        
        for(Edge e : A) {
            if(e.edgeID != -1) continue;
+           e.edgeID = getMaxEdgeID();
            query = "INSERT INTO Edge (edgeID, startpointID, endpointID, weight, startmapID, endmapID) ";
            query += "VALUES(" + (maxEdgeID++) + ", " + e.startPoint.pointID + ", " + e.endPoint.pointID + ", " + 
                     e.weight + ", " + e.startMapID + ", " + e.endMapID + ");";
            Statement stmt = conn.createStatement();
            stmt.executeUpdate(query);
+       }
+       
+       
+       query = "SELECT edgeID FROM Edge WHERE startmapID = " + mid + " OR endmapID = " + mid +";";
+       Statement stmt = conn.createStatement();
+       ResultSet rs = stmt.executeQuery(query);
+       while(rs.next()){
+           int temp = rs.getInt("edgeID");
+           int flag = 0;
+           for (Edge e : A) {
+               if(e.edgeID == temp) {
+                   flag = 1;
+                   break;
+               }
+           }
+           if(flag == 0) {
+               query = "DELETE FROM Edge WHERE edgeID="+temp+";";
+               stmt = conn.createStatement();
+               stmt.executeUpdate(query);
+           }
        }
        
        return true;
@@ -311,13 +372,13 @@ public class JDBC {
            
            
            if(m.locList != null) 
-               this.saveLocations(m.locList);
+               this.saveLocations(m.locList, m.mapID);
 
            if(m.pointList != null) 
-               this.savePoints(m.pointList);
+               this.savePoints(m.pointList, m.mapID);
 
            if(m.edgeList != null) 
-               this.saveEdges(m.edgeList);
+               this.saveEdges(m.edgeList, m.mapID);
            
            if(m.locList != null) this.updateLocation(m.locList);
            if(m.locList != null) this.updatePoint(m.pointList);
@@ -445,6 +506,13 @@ public class JDBC {
         list.add(m);
         db.addMap(list);
         
+    }
+    
+     /**
+     * @return the maxPointID
+     */
+    public int getMaxEdgeID() {
+        return maxEdgeID;
     }
 
     /**
