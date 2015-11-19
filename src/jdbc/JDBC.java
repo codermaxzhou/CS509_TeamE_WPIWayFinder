@@ -175,7 +175,7 @@ public class JDBC {
        return info;
    }
    
-   public boolean saveLocations(ArrayList<Location> A, int mid) throws SQLException {
+   public boolean saveLocations(ArrayList<Location> A, int mid, String condition) throws SQLException {
        String query;
        
        for(int i = 0; i < A.size(); ++i) {
@@ -197,29 +197,16 @@ public class JDBC {
            stmt.executeUpdate(query);
        }
        
-       query = "SELECT pointID FROM Location WHERE MapID = " + mid + ";";
-       Statement stmt = conn.createStatement();
-       ResultSet rs = stmt.executeQuery(query);
-       while(rs.next()){
-           int temp = rs.getInt("pointID");
-           int flag = 0;
-           for (Location l : A) {
-               if(l.point.pointID == temp) {
-                   flag = 1;
-                   break;
-               }
-           }
-           if(flag == 0) {
-               query = "DELETE FROM Location WHERE pointID="+temp+";";
-               stmt = conn.createStatement();
-               stmt.executeUpdate(query);
-           }
+       if(!condition.equals("")) {
+           query = "DELETE FROM Location WHERE " + condition + ";";
+           stmt = conn.createStatement();
+           stmt.executeUpdate(query);
        }
        
        return true;
    }
    
-   public boolean savePoints(ArrayList<Point> A, int mid) throws SQLException {
+   public boolean savePoints(ArrayList<Point> A, int mid, String condition) throws SQLException {
        
        String query;
        
@@ -233,31 +220,17 @@ public class JDBC {
            Statement stmt = conn.createStatement();
            stmt.executeUpdate(query);
        }
-       
-                  
-       query = "SELECT pointID FROM Point WHERE MapID = " + mid + ";";
-       Statement stmt = conn.createStatement();
-       ResultSet rs = stmt.executeQuery(query);
-       while(rs.next()){
-           int temp = rs.getInt("pointID");
-           int flag = 0;
-           for (Point p : A) {
-               if(p.pointID == temp) {
-                   flag = 1;
-                   break;
-               }
-           }
-           if(flag == 0) {
-               query = "DELETE FROM Point WHERE pointID="+temp+";";
-               stmt = conn.createStatement();
-               stmt.executeUpdate(query);
-           }
+        
+       if(!condition.equals("")) {
+           query = "DELETE FROM Point WHERE " + condition + ";";
+           stmt = conn.createStatement();
+           stmt.executeUpdate(query);
        }
        
        return true;
    }
    
-   public boolean saveEdges(ArrayList<Edge> A, int mid) throws SQLException {
+   public boolean saveEdges(ArrayList<Edge> A, int mid, String condition) throws SQLException {
        String query;
        
        for(Edge e : A) {
@@ -270,24 +243,10 @@ public class JDBC {
            stmt.executeUpdate(query);
        }
        
-       
-       query = "SELECT edgeID FROM Edge WHERE startmapID = " + mid + " OR endmapID = " + mid +";";
-       Statement stmt = conn.createStatement();
-       ResultSet rs = stmt.executeQuery(query);
-       while(rs.next()){
-           int temp = rs.getInt("edgeID");
-           int flag = 0;
-           for (Edge e : A) {
-               if(e.edgeID == temp) {
-                   flag = 1;
-                   break;
-               }
-           }
-           if(flag == 0) {
-               query = "DELETE FROM Edge WHERE edgeID="+temp+";";
-               stmt = conn.createStatement();
-               stmt.executeUpdate(query);
-           }
+       if(!condition.equals("")) {
+           query = "DELETE FROM Edge WHERE " + condition + ";";
+           stmt = conn.createStatement();
+           stmt.executeUpdate(query);
        }
        
        return true;
@@ -372,18 +331,18 @@ public class JDBC {
            }
            
            
-           if(m.locList.size() > 0) 
-               this.saveLocations(m.locList, m.mapID);
+               this.saveLocations(m.locList, m.mapID, m.deletedLocation);
 
-           if(m.pointList.size() > 0) 
-               this.savePoints(m.pointList, m.mapID);
+               this.savePoints(m.pointList, m.mapID, m.deletedPoint);
 
-           if(m.edgeList.size() > 0) 
-               this.saveEdges(m.edgeList, m.mapID);
+               this.saveEdges(m.edgeList, m.mapID, m.deletedEdge);
            
            if(m.locList != null) this.updateLocation(m.locList);
            if(m.locList != null) this.updatePoint(m.pointList);
            
+           m.deletedEdge = "";
+           m.deletedLocation = "";
+           m.deletedPoint = "";
        }
            
        query = "SELECT mapID FROM map;";
@@ -417,7 +376,6 @@ public class JDBC {
                stmt.executeUpdate(query);
            }
        }
-       
        
        return true;
    }
