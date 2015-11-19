@@ -302,8 +302,14 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        sIndex = left.mapList.getSelectedIndex();
-        this.mapChanged(sIndex);
+        
+        final Object selectedValue = left.mapList.getSelectedValue();
+        if ( selectedValue != null ) {
+            sIndex = left.mapList.getSelectedIndex();
+            this.mapChanged(sIndex);
+        }
+        
+        System.out.println(maps);
     }
 
     @Override

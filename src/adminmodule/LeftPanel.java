@@ -127,6 +127,7 @@ public class LeftPanel extends javax.swing.JPanel {
         int result  =JOptionPane.showConfirmDialog(null,"Are you sure to delete this map?",null,JOptionPane.YES_NO_OPTION);
         if(result==JOptionPane.YES_OPTION)
         {
+            //System.out.println("select map index: " + mapList.getSelectedIndex());
             mainFrame.deleteMap(mainFrame.maps.get(mapList.getSelectedIndex()));
             
             model.remove(mapList.getSelectedIndex());

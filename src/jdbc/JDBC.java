@@ -336,10 +336,10 @@ public class JDBC {
    
    
    public boolean addMap(ArrayList<Map> maps) throws SQLException, FileNotFoundException, IOException{       
-       
+       String query;
        for(Map m : maps) {
            if(m.mapID == -1) {
-                String query = "";
+                query = "";
                 int isBldgMap = m.isInteriorMap ? 1 : 0;
 
                 query = "INSERT INTO Map (mapID, name, description, path, floor, isInteriorMap) ";
@@ -349,6 +349,7 @@ public class JDBC {
 
                 m.mapID = getMaxMapID();
 
+                /* QUESTION:should these be removed? */
                 PreparedStatement ps = null;
                 conn.setAutoCommit(false);
                 File file = new File(m.path);
@@ -371,13 +372,13 @@ public class JDBC {
            }
            
            
-           if(m.locList != null) 
+           if(m.locList.size() > 0) 
                this.saveLocations(m.locList, m.mapID);
 
-           if(m.pointList != null) 
+           if(m.pointList.size() > 0) 
                this.savePoints(m.pointList, m.mapID);
 
-           if(m.edgeList != null) 
+           if(m.edgeList.size() > 0) 
                this.saveEdges(m.edgeList, m.mapID);
            
            if(m.locList != null) this.updateLocation(m.locList);
@@ -385,7 +386,37 @@ public class JDBC {
            
        }
            
-       
+       query = "SELECT mapID FROM map;";
+       Statement stmt = conn.createStatement();
+       ResultSet rs = stmt.executeQuery(query);
+       while(rs.next()){
+           int temp = rs.getInt("mapID");
+           int flag = 0;
+           for (Map m : maps) {
+               if(m.mapID == temp) {
+                   flag = 1;
+                   break;
+               }
+           }
+           if(flag == 0) {
+               
+               query = "DELETE FROM map WHERE mapID="+temp+";";
+               stmt = conn.createStatement();
+               stmt.executeUpdate(query);
+               
+               query = "DELETE FROM Point WHERE mapID="+temp+";";
+               stmt = conn.createStatement();
+               stmt.executeUpdate(query);
+               
+               query = "DELETE FROM location WHERE mapID="+temp+";";
+               stmt = conn.createStatement();
+               stmt.executeUpdate(query);
+               
+               query = "DELETE FROM edge WHERE startmapID = " + temp + " OR endmapID = " + temp +";";
+               stmt = conn.createStatement();
+               stmt.executeUpdate(query);
+           }
+       }
        
        
        return true;
