@@ -64,7 +64,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private ArrayList<Edge> allEdgeList = new ArrayList<>();
     private ArrayList<Point> allPointList = new ArrayList<>();
 
-    public Dijkstra dijstra = new Dijkstra(edgeList, pointList);
+    private Dijkstra algo ;
     private ArrayList<Location> pins = new ArrayList<>();
     private Location startLocation = null;
     private Location endLocation = null;
@@ -107,6 +107,12 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         pointList = info.points;
         edgeList = info.edges;
         locationList = info.locations;
+        
+        mapModel = new MapModel();
+        allEdgeList = mapModel.getAllEdgeList();
+        allPointList = mapModel.getAllPointList();
+        allLocationList = mapModel.getAllLocationList();
+        algo = new Dijkstra(allEdgeList, allPointList);
 
         // hardcoding, will be changed soon
         if (mapIndex == 1) {
@@ -208,8 +214,10 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         
         if (drawMultiRoutes) {
 
-            g.drawImage(pinImage, multiRoute.get(0).startPoint.X, multiRoute.get(0).startPoint.X, 20, 20, null);
+            g.drawImage(pinImage, multiRoute.get(0).startPoint.X, multiRoute.get(0).startPoint.Y, 20, 20, null);
             
+            
+            // some bugs in there need to be fixed 
             int size = multiRoute.size();
             for (int i = 0; i <= size - 1; i++) {
                 Edge e = multiRoute.get(i);
@@ -226,9 +234,10 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                     nextButton.setBounds(e.startPoint.X - 5, e.startPoint.Y - 20, 50, 50);
                     this.add(nextButton);
                     nextButton.addMouseListener(this);
-
+                    multiRoute.remove(e);
                     break;
                 }
+                multiRoute.remove(e);
                 
             }
             drawMultiRoutes = false;
@@ -242,37 +251,10 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         //System.out.print("enter");
         Graphics g = this.getGraphics();
         g.setColor(Color.red);
-        allEdgeList = mapModel.getAllEdgeList();
-        allPointList = mapModel.getAllPointList();
-        // 临时补丁
-        //allEdgeList.get(14).endPoint = allPointList.get(24);
-        Dijkstra algo = new Dijkstra(allEdgeList, allPointList);
+        
         multiRoute = (ArrayList<Edge>) algo.calculate(start.point, end.point);
         drawMultiRoutes = true;
         
-//        g.drawImage(pinImage, multiRoute.get(0).startPoint.X, multiRoute.get(0).startPoint.X,20,20, null);
-//        
-//        for (int i = 0; i <= multiRoute.size() - 1; i++) {
-//            Edge e = multiRoute.get(i);
-//            //String type = route.get(i).startPoint.type.equals("CONNECTION");
-//
-//            g.drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
-//            if (multiRoute.get(i).startPoint.type.name().equals("CONNECTION")) {
-//                System.out.print("this is the connection of edge !");
-//                
-//                
-//                g.drawImage(pinImage, e.startPoint.X, e.startPoint.Y,20,20, null);
-//                g.drawString("Connection", e.startPoint.X - 5, e.startPoint.Y - 5);
-//                
-//                nextButton.setBounds(e.startPoint.X - 5, e.startPoint.Y - 20 , 50, 50);
-//                this.add(nextButton);
-//                nextButton.addMouseListener(this);
-//               
-//                
-//                
-//                break;
-//            }
-//        }
 
         setShowRoute(false);
         setShowPins(false);
@@ -373,7 +355,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     }
 
     public ArrayList<Point> edgeToPoint(ArrayList<Edge> edgeList) {
-        ArrayList<Point> resultPointList = new ArrayList<Point>();
+        ArrayList<Point> resultPointList = new ArrayList<>();
         for (int i = 0; i < edgeList.size(); i++) {
             //System.out.println(i);
             resultPointList.add(edgeList.get(i).startPoint);
@@ -440,9 +422,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             this.setShowRoute(false);
             startLocation = null;
             endLocation = null;
-            allLocationList = mapModel.getAllLocationList();
-            allEdgeList = mapModel.getAllEdgeList();
-            allPointList = mapModel.getAllPointList();
+            
+            
 
             System.out.println("The start Point name:" + startPointString);
             System.out.println("The end Point name:" + endPointString);
@@ -450,8 +431,6 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                 JOptionPane.showMessageDialog(null, "Please input the location!");
 
             } else {
-
-                // 为什么换为 allLocationList 后不可以呢?
                 for (Location l : allLocationList) {
                     if (l.name.equals(startPointString)) {
                         startLocation = l;
@@ -472,9 +451,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
                 } else if (startLocation.point.map.mapID == endLocation.point.map.mapID) {
                     // edgeList 取出来的edge里的connecion edge的endpoint有问题 所以算法无法使用 
-                     // just for testing avoid the connetctioin edge 
+                    // just for testing avoid the connetctioin edge 
 
-                    Dijkstra algo = new Dijkstra(allEdgeList, allPointList);
+                   
                     route = (ArrayList<Edge>) algo.calculate(startLocation.point, endLocation.point);
                     setShowRoute(true);
                     setShowPins(false);
