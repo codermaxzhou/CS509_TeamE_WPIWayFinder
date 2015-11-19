@@ -124,7 +124,16 @@ public class LeftPanel extends javax.swing.JPanel {
 
     private void deleteMapButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMapButtonActionPerformed
         // TODO add your handling code here:
-        
+        int result  =JOptionPane.showConfirmDialog(null,"Are you sure to delete this map?",null,JOptionPane.YES_NO_OPTION);
+        if(result==JOptionPane.YES_OPTION)
+        {
+            mainFrame.deleteMap(mainFrame.maps.get(mapList.getSelectedIndex()));
+            
+            model.remove(mapList.getSelectedIndex());
+            
+//        System.out.println("Yes!!!");
+        }
+    
     }//GEN-LAST:event_deleteMapButtonActionPerformed
 
     private void addMapButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMapButtonActionPerformed

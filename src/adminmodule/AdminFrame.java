@@ -103,6 +103,8 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
         }
     }
     
+    
+    
     public void mapChanged(int index) {
         map.image = maps.get(index).image;
         
@@ -125,6 +127,12 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
         
     }
     
+    public void deleteMap(Map mp) {
+        
+         maps.remove(mp);
+        //System.out.println(deletedPoints);
+    }
+        
     public void deletePoint(Point pt) {
         ArrayList<Edge> copy = new ArrayList<>();
         copy = (ArrayList<Edge>) edges.clone();
@@ -169,7 +177,7 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
         int y = e.getY();
         
         /* right click on the map */
-        if (e.isPopupTrigger()) {
+        if (e.isMetaDown()) {
             for (Point temp : points) {
                 if (!((x < (temp.getX() - radius))
                         || (x > (temp.getX() + radius))
