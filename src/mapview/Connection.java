@@ -19,62 +19,51 @@ import javax.swing.JPopupMenu;
  *
  * @author GaoYifei
  */
-public class Connection extends JPopupMenu{
-    
+public class Connection extends JPopupMenu {
+
     public MainPanel mainPanel;
-    
-     public Connection(Point point) {
-         
-       JMenuItem next = new JMenuItem("NextMap");
-       
-       
-       JMenuItem pre = new JMenuItem("PreMap");
-       
-         
-      ActionListener popListener = new ActionListener() {
-          
-          
-      public void actionPerformed(ActionEvent event) {
-        
-          if(event.getSource() == next){
-              mainPanel.setMapIndex(2);
-              
-                try {
-                    mainPanel.init();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+
+    public Connection(Point point) {
+
+        JMenuItem next = new JMenuItem("NextMap");
+
+        JMenuItem pre = new JMenuItem("PreMap");
+
+        ActionListener popListener = new ActionListener() {
+
+            public void actionPerformed(ActionEvent event) {
+
+                if (event.getSource() == next) {
+                    mainPanel.setMapIndex(2);
+
+                    try {
+                        mainPanel.init();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    mainPanel.setDrawMultiRoutes(true);
+                    mainPanel.repaint();
+
                 }
-                 mainPanel.setDrawMultiRoutes(true);
-                 mainPanel.repaint();
-                
-          }
-          if(event.getSource() == pre){
-              mainPanel.setMapIndex(1);
-              
-                try {
-                    mainPanel.init();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+                if (event.getSource() == pre) {
+                    mainPanel.setMapIndex(1);
+
+                    try {
+                        mainPanel.init();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    mainPanel.setDrawMultiRoutes(true);
+                    mainPanel.repaint();
+
                 }
-                mainPanel.setDrawMultiRoutes(true);
-                mainPanel.repaint();
-              
-          }
-      }
-    };
-      next.addActionListener(popListener);
-      this.add(next);
-      pre.addActionListener(popListener);
-      this.add(pre);
-       
-         
-         
-         
-         
-         
-     }
-     
+            }
+        };
+        next.addActionListener(popListener);
+        this.add(next);
+        pre.addActionListener(popListener);
+        this.add(pre);
+
+    }
+
 }
-
-    
-
