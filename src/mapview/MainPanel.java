@@ -217,7 +217,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             }
         }
         
-        if (drawMultiRoutes) {
+        if (isDrawMultiRoutes()) {
 
             g.drawImage(pinImage, multiRoute.get(0).startPoint.X, multiRoute.get(0).startPoint.Y, 20, 20, null);
             
@@ -249,7 +249,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                 
                 
             }
-            drawMultiRoutes = false;
+            setDrawMultiRoutes(false);
 
         }
 
@@ -276,7 +276,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         }
         
       
-        drawMultiRoutes = true;
+        setDrawMultiRoutes(true);
         
 
         setShowRoute(false);
@@ -503,7 +503,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
            // System.out.print("next Button Clicked");
             mapIndex = 2;
             this.setMapIndex(mapIndex);
-            drawMultiRoutes = true;
+            setDrawMultiRoutes(true);
             this.setShowAllPins(false);
             this.setShowPins(false);
             this.setDrawRoutes(false);
@@ -517,32 +517,28 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             this.remove(nextButton);
         }
         
-        if(e.getX() < connectionX + 20 && e.getX() > connectionX - 20 && e.getY() < connectionY + 20 && e.getY() > connectionY - 20){
-            System.out.print("click the connection button");
-        }
+//        if(e.getX() < connectionX + 20 && e.getX() > connectionX - 20 && e.getY() < connectionY + 20 && e.getY() > connectionY - 20){
+//            System.out.print("click the connection button");
+//        }
         // right click 
-        if(e.isMetaDown()){
-            
+        if (e.isMetaDown()) {
+
             int x = e.getX();
             int y = e.getY();
-            int radius = 20;
-            for (Location temp : allLocationList) {
-                if (!((x < (temp.point.getX() - radius))
-                        || (x > (temp.point.getX() + radius))
-                        || (y < (temp.point.getY() - radius))
-                        || (y > (temp.point.getY() + radius))) ) {
-                        PopupMenu menu = new PopupMenu(temp);
-                        menu.show(e.getComponent(), x, y);
-                } 
+            int radius = 30;
+            for (Point temp : allPointList) {
+                if (!((x < (temp.getX() - radius))
+                        || (x > (temp.getX() + radius))
+                        || (y < (temp.getY() - radius))
+                        || (y > (temp.getY() + radius)))&& temp.type.name() == "CONNECTION") {
+                    Connection connection = new Connection(temp);
+                    connection.mainPanel = this;
+                    connection.show(e.getComponent(), x, y);
+                    
+                }
             }
-            
-            }
-            
-            
-        
-        
-        
 
+        }
 
     }
 
@@ -689,6 +685,20 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
      */
     public void setShowAllPins(boolean showAllPins) {
         this.showAllPins = showAllPins;
+    }
+
+    /**
+     * @return the drawMultiRoutes
+     */
+    public boolean isDrawMultiRoutes() {
+        return drawMultiRoutes;
+    }
+
+    /**
+     * @param drawMultiRoutes the drawMultiRoutes to set
+     */
+    public void setDrawMultiRoutes(boolean drawMultiRoutes) {
+        this.drawMultiRoutes = drawMultiRoutes;
     }
 
 }
