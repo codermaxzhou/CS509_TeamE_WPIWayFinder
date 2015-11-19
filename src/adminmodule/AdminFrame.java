@@ -32,6 +32,10 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     public ArrayList<Location> locations = new ArrayList<>();
     public ArrayList<Edge> edges = new ArrayList<>();
     public ArrayList<Map> maps = new ArrayList<>();
+    //delete point
+    public ArrayList<Point> deletedPoints = new ArrayList<>();
+    public ArrayList<Location> deletedLocations = new ArrayList<>();
+    public ArrayList<Edge> deletedEdges = new ArrayList<>();
     
     public Button button = Button.NULL;
     
@@ -120,25 +124,35 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
         if(maps.size() == 1) left.mapList.setSelectedIndex(0);
         
     }
+    
+    public void deletePoint(Point pt) {
+        ArrayList<Edge> copy = new ArrayList<>();
+        copy = (ArrayList<Edge>) edges.clone();
+        deletedPoints.add(pt);
+        points.remove(pt);
+   
+        for (Edge e : copy) {
+            if (e.startPoint.equals(pt)) {
+                deletedEdge(e);
+            }
+            if(e.endPoint.equals(pt)) {
+                deletedEdge(e);
+            }
+        }
+        //System.out.println(deletedPoints);
+    }
+    
+    public void deletedLocation(Location lc) {
+        deletedLocations.add(lc);
+        locations.remove(lc);
+        deletePoint(lc.point);
+    }
+    
+    public void deletedEdge(Edge ed) {
+        deletedEdges.add(ed);
+        edges.remove(ed);
+    }
 
-
-    /*
-     class PopupTriggerListener extends MouseAdapter {
-     public void mousePressed(MouseEvent ev) {
-     if (ev.isPopupTrigger()) {
-     menu.show(ev.getComponent(), ev.getX(), ev.getY());
-     }
-     }
-
-     public void mouseReleased(MouseEvent ev) {
-     if (ev.isPopupTrigger()) {
-     menu.show(ev.getComponent(), ev.getX(), ev.getY());
-     }
-     }
-
-     public void mouseClicked(MouseEvent ev) {
-     }
-     } */
     @Override
     public void mouseClicked(MouseEvent e) {
 
@@ -156,28 +170,18 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
         
         /* right click on the map */
         if (e.isPopupTrigger()) {
-//            for (Location temp : locations) {
-//                if (!((x < (temp.point.getX() - radius))
-//                        || (x > (temp.point.getX() + radius))
-//                        || (y < (temp.point.getY() - radius))
-//                        || (y > (temp.point.getY() + radius)))) {
-//                        PopupMenu menu = new PopupMenu(temp);
-//                        menu.show(e.getComponent(), x, y);
-//                }
-//            }
-            
             for (Point temp : points) {
                 if (!((x < (temp.getX() - radius))
                         || (x > (temp.getX() + radius))
                         || (y < (temp.getY() - radius))
                         || (y > (temp.getY() + radius))) && (temp.location == null)) {
-                        PopupMenu menu = new PopupMenu(temp);
+                        PopupMenu menu = new PopupMenu(temp, this);
                         menu.show(e.getComponent(), x, y);
                 } else if (!((x < (temp.getX() - radius))
                         || (x > (temp.getX() + radius))
                         || (y < (temp.getY() - radius))
                         || (y > (temp.getY() + radius))) && (temp.location != null)) {
-                        PopupMenu menu = new PopupMenu(temp.location);
+                        PopupMenu menu = new PopupMenu(temp.location, this);
                         menu.show(e.getComponent(), x, y);
                     
                 }
