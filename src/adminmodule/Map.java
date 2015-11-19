@@ -11,15 +11,36 @@ public class Map {
     public ArrayList<Edge> edgeList;        // List of all edges on the map
     public ArrayList<Point> pointList;      // List of all points on the map
     public ArrayList<Location> locList;     // List of all locations on the map, we can use this to populate the sidebar later
+    public String name;
+    public String description;
     public Image image;                     // Map's image
-    public String name;                     // Map name
-    public String description;              // Map description
+    public int floor;
+    public String deletedEdge = "";
+    public String deletedLocation = "";
+    public String deletedPoint = "";
+    
+   
     public Boolean isInteriorMap;           // Flag indicating whether this is the campus map or a building map
     public int mapID;                       // Map's ID
     public String path;
     
     public Map() {}
     
+    public void addDeletedPointID(int id) {
+        if(deletedPoint.equals("")) deletedPoint += "pointID = " + id;
+        else deletedPoint += " OR pointID = " + id; 
+    }
+    
+    public void addDeletedEdgeID(int id) {
+        if(deletedEdge.equals("")) deletedEdge += "edgeID = " + id;
+        else deletedEdge += " OR edgeID = " + id; 
+    }
+    
+    public void addDeletedLocID(int id) {
+        if(deletedLocation.equals("")) deletedLocation += "locationID = " + id;
+        else deletedLocation += " OR locationID = " + id; 
+    }
+
     public Map(String name,String desc,Boolean isInteriorMap,String path) throws MalformedURLException, IOException{
       //  this.mapID=mapID;
         this.name=name;

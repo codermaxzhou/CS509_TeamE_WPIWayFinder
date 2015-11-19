@@ -27,11 +27,11 @@ public class MapPanel extends JScrollPane {
         this.frame = frame;
         this.setLayout(new ScrollPaneLayout());
         image = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_1.png")).getImage();
-
+        
         //JLabel label = new JLabel(image);
         //this.getViewport().add(label);
     }
-
+    
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -55,10 +55,15 @@ public class MapPanel extends JScrollPane {
                         g.fillRect(x-5, y-5, 10, 10);
                     }
                     break;
+                case CONNECTION:
+                    if (!(x < 0 || y < 0)) {
+                        g.draw3DRect(x-5, y-5, 10, 10, true);
+                    }
             }
         }
         for (Edge e : frame.edges) {
-            g.drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
+            if(e.startMapID == e.endMapID)
+                g.drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
         }
     }
 
