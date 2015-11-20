@@ -23,10 +23,12 @@ import javax.swing.*;
     BufferedImage bi = null;
     private JTextField Name;
     private JTextField Description;
+    private JTextField Floor;
     private JComboBox box = new JComboBox();
     private JCheckBox ckbox = new JCheckBox();
     JToolBar tb = new JToolBar();  
     AdminFrame admin;
+    private String fileName;
     public OpenFile (AdminFrame admin)
     {
         final JFileChooser chooser = new JFileChooser ();
@@ -38,11 +40,13 @@ import javax.swing.*;
         
         this.admin = admin;
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(4, 50));
+        panel.setLayout(new GridLayout(5, 50));
         panel.add(new JLabel("Name:"));
         panel.add(Name = new JTextField(""));
         panel.add(new JLabel("Description:"));
         panel.add(Description = new JTextField(""));
+        panel.add(new JLabel("Floor"));
+        panel.add(Floor=new JTextField(""));
         panel.add(new JLabel("Building:"));
         panel.add(box);
         panel.add(new JLabel("InteriorMap"));
@@ -70,6 +74,9 @@ import javax.swing.*;
                     try
                     {
                         bi = ImageIO.read (new File (chooser.getSelectedFile ().getAbsolutePath ()));
+                        String path = chooser.getSelectedFile ().getAbsolutePath ();
+                        String [] fileNames = path.split("/");
+                        fileName = fileNames[fileNames.length-1];
                         
                         repaint ();
                     }
@@ -99,6 +106,7 @@ import javax.swing.*;
                     ms.isInteriorMap = true;
                 else ms.isInteriorMap = false;
                 ms.description = Description.getText();
+                ms.floor = Integer.parseInt(Floor.getText());
                 ms.path = chooser.getSelectedFile ().getAbsolutePath ();
                 System.out.println(ms.path);
                 System.out.println("Name = " + ms.name + ", Description = "

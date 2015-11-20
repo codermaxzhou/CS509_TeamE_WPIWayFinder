@@ -19,3 +19,4 @@ public class Edge {
         this.weight = Math.sqrt((Math.abs(startPoint.getX()-endPoint.getX()))^2 + (Math.abs(startPoint.getY()-endPoint.getY()))^2);
     }
 }
+    

@@ -27,8 +27,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -85,6 +85,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private boolean clear = true;
     private boolean drawMultiRoutes = false;
     private int clicked = 0;
+    
+    AutoSuggestor startAutoSuggestor;
+    AutoSuggestor endAutoSuggestor;
 
     // Timer 
     public Timer timer;
@@ -92,12 +95,21 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
     // other class
     public MapModel mapModel;
+    JFrame frame;
 
     //private boolean drawDiningPins = false;
 //	private final SLPanel panel = new SLPanel();
 //	private final ThePanel p1 = new ThePanel("1", "data/img1.jpg");
-    MainPanel() throws SQLException {
+    MainPanel(JFrame frame) throws SQLException {
 
+        this.frame = frame;
+        mapIndex = 1;  // default is mapID 1
+        this.init();
+
+    }
+    
+    MainPanel() throws SQLException {
+        
         mapIndex = 1;  // default is mapID 1
         this.init();
 
@@ -159,12 +171,16 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         startPointField.setText("Start Point");
         startPointField.setFont(font);
         startPointField.setForeground(Color.gray);
+        
+        startAutoSuggestor = new AutoSuggestor(startPointField, frame, null, Color.WHITE.brighter(), Color.BLUE, Color.RED, 1f);
 
         endPointField.setColumns(20);
         endPointField.setBounds(220, 10, 150, 30);
         endPointField.setText("End Point");
         endPointField.setFont(font);
         endPointField.setForeground(Color.gray);
+        
+        endAutoSuggestor = new AutoSuggestor(endPointField, frame, null, Color.WHITE.brighter(), Color.BLUE, Color.RED, 1f);
 
         // adding Listener Here
         search.addMouseListener(this);
@@ -179,6 +195,19 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
         this.setVisible(true);
 
+    }
+    
+    public void setMapModel(MapModel model) {
+        this.mapModel = model;
+        
+        ArrayList<String> suggestions = new ArrayList<>();
+        
+        for(Location l : model.getAllLocationList()) {
+            suggestions.add(l.name);
+        }
+        
+        startAutoSuggestor.setDictionary(suggestions);
+        endAutoSuggestor.setDictionary(suggestions);
     }
 
     @Override

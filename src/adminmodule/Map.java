@@ -14,6 +14,10 @@ public class Map {
     public String name;
     public String description;
     public Image image;                     // Map's image
+    public int floor;
+    public String deletedEdge = "";
+    public String deletedLocation = "";
+    public String deletedPoint = "";
     
    
     public Boolean isInteriorMap;           // Flag indicating whether this is the campus map or a building map
@@ -21,6 +25,21 @@ public class Map {
     public String path;
     
     public Map() {}
+    
+    public void addDeletedPointID(int id) {
+        if(deletedPoint.equals("")) deletedPoint += "pointID = " + id;
+        else deletedPoint += " OR pointID = " + id; 
+    }
+    
+    public void addDeletedEdgeID(int id) {
+        if(deletedEdge.equals("")) deletedEdge += "edgeID = " + id;
+        else deletedEdge += " OR edgeID = " + id; 
+    }
+    
+    public void addDeletedLocID(int id) {
+        if(deletedLocation.equals("")) deletedLocation += "locationID = " + id;
+        else deletedLocation += " OR locationID = " + id; 
+    }
 
     public Map(String name,String desc,Boolean isInteriorMap,String path) throws MalformedURLException, IOException{
       //  this.mapID=mapID;

@@ -10,10 +10,12 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Line2D;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -25,27 +27,33 @@ import jdbc.JDBC;
  */
 public class AdminFrame extends JFrame implements MouseListener, ListSelectionListener {
 
-    public enum Button {POINT, LOCATION, EDGE, NULL};
+    public enum Button {
+
+        POINT, LOCATION, EDGE, NULL
+    };
     public MapInfo mapinfo = new MapInfo();
-    
+
     public ArrayList<Point> points = new ArrayList<>();
     public ArrayList<Location> locations = new ArrayList<>();
     public ArrayList<Edge> edges = new ArrayList<>();
     public ArrayList<Map> maps = new ArrayList<>();
-    
+    //delete point
+    public ArrayList<Point> deletedPoints = new ArrayList<>();
+    public ArrayList<Location> deletedLocations = new ArrayList<>();
+    public ArrayList<Edge> deletedEdges = new ArrayList<>();
+
     public Button button = Button.NULL;
-    
+
     public JDBC db = new JDBC();
     int radius = 10;
     int sIndex = 0;
-    
-    
-    MapPanel map ;
+    int boxSize = 10;
+
+    MapPanel map;
     LeftPanel left;
     Point startpoint = null;
     Point endpoint = null;
     int tempMapID = -1;
-
 
     public static void main(String[] args) throws SQLException, IOException {
         System.out.println("start...");
@@ -64,7 +72,6 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
         RightPanel right = new RightPanel(this);
         this.getContentPane().add(right, BorderLayout.EAST);
 
-
         left = new LeftPanel(this);
         left.mapList.getSelectionModel().addListSelectionListener(this);
         this.getContentPane().add(left, BorderLayout.WEST);
@@ -79,18 +86,17 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
         //map.addMouseListener(new PopupTriggerListener());
     }
 
-    
     public void loadMapInfo() throws SQLException, IOException {
         maps = db.showAllMap();
-        
-        for(Map m : maps) {
-            if(!left.model.contains(m.name))
+
+        for (Map m : maps) {
+            if (!left.model.contains(m.name)) {
                 left.model.addElement(m.name);
+            }
         }
 
         //mapinfo = db.getMapInfo(1);
-        
-        if(maps.size() > 0) {
+        if (maps.size() > 0) {
             points = maps.get(sIndex).pointList;
             locations = maps.get(sIndex).locList;
             edges = maps.get(sIndex).edgeList;
@@ -98,54 +104,93 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
             left.mapList.setSelectedIndex(sIndex);
         }
     }
-    
+
     public void mapChanged(int index) {
         map.image = maps.get(index).image;
-        
+
         points = maps.get(index).pointList;
         locations = maps.get(index).locList;
         edges = maps.get(index).edgeList;
         repaint();
     }
 
-    public  void PassValue(Map p)
-    {
-        
+    public void PassValue(Map p) {
+
         //map.image = p.image;
 //        look for method in JList that adds or appends item
-         //left.mapList.setListData(new String[] {"Hello"});
+        //left.mapList.setListData(new String[] {"Hello"});
         left.model.addElement(p.name);
         maps.add(p);
-        
-        if(maps.size() == 1) left.mapList.setSelectedIndex(0);
-        
+
+        if (maps.size() == 1) {
+            left.mapList.setSelectedIndex(0);
+        }
+
     }
 
+    public void deleteMap(Map mp) {
 
-    /*
-     class PopupTriggerListener extends MouseAdapter {
-     public void mousePressed(MouseEvent ev) {
-     if (ev.isPopupTrigger()) {
-     menu.show(ev.getComponent(), ev.getX(), ev.getY());
-     }
-     }
+        maps.remove(mp);
+        //System.out.println(deletedPoints);
+    }
 
-     public void mouseReleased(MouseEvent ev) {
-     if (ev.isPopupTrigger()) {
-     menu.show(ev.getComponent(), ev.getX(), ev.getY());
-     }
-     }
+    public void deletePoint(Point pt) {
+        ArrayList<Edge> copy = new ArrayList<>();
+        copy = (ArrayList<Edge>) edges.clone();
 
-     public void mouseClicked(MouseEvent ev) {
-     }
-     } */
+        maps.get(left.mapList.getSelectedIndex()).addDeletedPointID(pt.pointID);
+        
+        for (Edge e : copy) {
+            if (e.startPoint.equals(pt)) {
+                deleteEdge(e);
+            }
+            if (e.endPoint.equals(pt)) {
+                deleteEdge(e);
+            }
+        }
+        
+        if(pt.type == Point.Type.CONNECTION) {
+            for(int i = 0; i < maps.size(); ++i) {
+                copy = (ArrayList<Edge>) maps.get(i).edgeList.clone();
+                for(Edge e : copy) {
+                    if (e.startPoint.equals(pt)) {
+                        e.endPoint.type = Point.Type.WAYPOINT;
+                        maps.get(i).edgeList.remove(e);
+                    }
+                    if (e.endPoint.equals(pt)) {
+                        e.startPoint.type = Point.Type.WAYPOINT;
+                        maps.get(i).edgeList.remove(e);
+                    }
+                }
+            }
+        }
+
+        points.remove(pt);
+    }
+
+    public void deleteLocation(Location lc) {
+        //deletedLocations.add(lc);
+        maps.get(left.mapList.getSelectedIndex()).addDeletedLocID(lc.locationID);
+        locations.remove(lc);
+        deletePoint(lc.point);
+    }
+
+    public void deleteEdge(Edge ed) {
+        //deletedEdges.add(ed);
+        maps.get(left.mapList.getSelectedIndex()).addDeletedEdgeID(ed.edgeID);
+        if(ed.startMapID != ed.endMapID) {
+            ed.startPoint.type = Point.Type.WAYPOINT;
+            ed.endPoint.type = Point.Type.WAYPOINT;
+        }
+        edges.remove(ed);
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
 
     }
-    
-    //CREATE METHOD HERE THAT YOUR FRAME WILL CALL WHEN IT IS CLOSING
 
+    //CREATE METHOD HERE THAT YOUR FRAME WILL CALL WHEN IT IS CLOSING
     @Override
     public void mousePressed(MouseEvent e) {
         Point newpoint;
@@ -153,33 +198,42 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
         Edge newedge;
         int x = e.getX();
         int y = e.getY();
-        
+
         /* right click on the map */
-        if (e.isPopupTrigger()) {
-//            for (Location temp : locations) {
-//                if (!((x < (temp.point.getX() - radius))
-//                        || (x > (temp.point.getX() + radius))
-//                        || (y < (temp.point.getY() - radius))
-//                        || (y > (temp.point.getY() + radius)))) {
-//                        PopupMenu menu = new PopupMenu(temp);
-//                        menu.show(e.getComponent(), x, y);
-//                }
-//            }
-            
+        if (e.isMetaDown()) {
+            boolean wasPointArea = false;
+
             for (Point temp : points) {
                 if (!((x < (temp.getX() - radius))
                         || (x > (temp.getX() + radius))
                         || (y < (temp.getY() - radius))
                         || (y > (temp.getY() + radius))) && (temp.location == null)) {
-                        PopupMenu menu = new PopupMenu(temp);
-                        menu.show(e.getComponent(), x, y);
+                    PopupMenu menu = new PopupMenu(temp, this);
+                    wasPointArea = true;
+                    menu.show(e.getComponent(), x, y);
+                    break;
                 } else if (!((x < (temp.getX() - radius))
                         || (x > (temp.getX() + radius))
                         || (y < (temp.getY() - radius))
                         || (y > (temp.getY() + radius))) && (temp.location != null)) {
-                        PopupMenu menu = new PopupMenu(temp.location);
+                    PopupMenu menu = new PopupMenu(temp.location, this);
+                    wasPointArea = true;
+                    menu.show(e.getComponent(), x, y);
+                    break;
+
+                }
+            }
+
+            if (!wasPointArea) {
+                for (Edge edge : edges) {
+                    Line2D line = new Line2D.Double(edge.endPoint.X, edge.endPoint.Y, edge.startPoint.X, edge.startPoint.Y);
+                    int boxX = x - boxSize / 2;
+                    int boxY = y - boxSize / 2;
+                    if (line.intersects(boxX, boxY, boxSize, boxSize)) {
+                        PopupMenu menu = new PopupMenu(edge, this);
                         menu.show(e.getComponent(), x, y);
-                    
+                        break;
+                    }
                 }
             }
 
@@ -255,7 +309,6 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
                                 || (x > (temp.getX() + radius))
                                 || (y < (temp.getY() - radius))
                                 || (y > (temp.getY() + radius)))) {
-                           
 
                             if ((startpoint == null) && (endpoint == null)) {
                                 startpoint = temp;
@@ -268,11 +321,19 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
                                 newedge.startMapID = tempMapID;
                                 newedge.endMapID = maps.get(left.mapList.getSelectedIndex()).mapID;
                                 if (newedge.startMapID != newedge.endMapID) {
-                                    newedge.weight = 5;
-                                    newedge.startPoint.type = Point.Type.CONNECTION;
-                                    newedge.endPoint.type = Point.Type.CONNECTION;
+                                    int result = JOptionPane.showConfirmDialog(null, "Are you sure to add connection between two maps?", null, JOptionPane.YES_NO_OPTION);
+                                    if (result == JOptionPane.YES_OPTION) {
+                                        newedge.weight = 5;
+                                        newedge.startPoint.type = Point.Type.CONNECTION;
+                                        newedge.endPoint.type = Point.Type.CONNECTION;
+                                        edges.add(newedge);
+                                    }
+
+                                } else {
+
+                                    edges.add(newedge);
                                 }
-                                edges.add(newedge);
+
                                 System.out.println("edge list size:" + edges.size());
                                 startpoint = null;
                                 endpoint = null;
@@ -287,11 +348,17 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
             }
         }
     }
-    
+
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        sIndex = left.mapList.getSelectedIndex();
-        this.mapChanged(sIndex);
+
+        final Object selectedValue = left.mapList.getSelectedValue();
+        if (selectedValue != null) {
+            sIndex = left.mapList.getSelectedIndex();
+            this.mapChanged(sIndex);
+        }
+
+        System.out.println(maps);
     }
 
     @Override
@@ -301,12 +368,12 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        
+
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
 
     }
-          
+
 }

@@ -46,6 +46,7 @@ public class JDBC {
    private int maxPointID = 0;
    private int maxLocID = 0;
    private int maxMapID = 0;
+   private int maxEdgeID = 0;
    
    Connection conn = null;
    private Statement stmt;
@@ -68,6 +69,11 @@ public class JDBC {
            query = "SELECT MAX(pointID) AS MAXPOINT FROM Point;";
            rs = stmt.executeQuery(query);
            if(rs.next()) maxPointID = rs.getInt("MAXPOINT") + 1;
+           
+           query = "SELECT MAX(edgeID) AS MAXEDGE FROM Edge;";
+           rs = stmt.executeQuery(query);
+           if(rs.next()) maxEdgeID = rs.getInt("MAXEDGE") + 1;
+           
            query = "SELECT MAX(mapID) AS MAXPOINT FROM Map;";
            rs = stmt.executeQuery(query);
            if(rs.next()) maxMapID = rs.getInt("MAXPOINT") + 1;
@@ -106,7 +112,7 @@ public class JDBC {
                default: temp.category = Location.Category.PARKING;
            }
            
-           locMap.put(rs.getInt("pointID"), temp);
+           locMap.put(rs.getInt("pointID"), temp); //Why is this "pointID", not "locationID"?
            L.add(temp);
        }
        
@@ -126,18 +132,14 @@ public class JDBC {
 //           } else
 //               temp.type = Point.Type.WAYPOINT;
            
-           switch (rs.getString("type")) {
-               case "LOCATION":
-                   partner.point = temp;
-                   temp.type = Point.Type.LOCATION;
-
-                   break;
-               case "CONNECTION":
-                   temp.type = Point.Type.CONNECTION;
-                   break;
-               case "WAYPOINT":
-                   temp.type = Point.Type.WAYPOINT;
-                   break;
+           switch(rs.getString("type")) {
+               case "LOCATION": temp.type = Point.Type.LOCATION;
+                                partner.point = temp;
+                              break;
+               case "CONNECTION": temp.type = Point.Type.CONNECTION;
+                           break;
+               case "WAYPOINT": temp.type = Point.Type.WAYPOINT;
+                           break;
            }
            
            temp.map = null;
@@ -159,7 +161,7 @@ public class JDBC {
            temp.endMapID = rs.getInt("endmapID");
            temp.startMapID = map.mapID;
            temp.startPoint = ptMap.get(rs.getInt("startpointID"));
-           // cannot access for the connection point  24th point since the endPoint belong to the other map which not in the ptMap
+           //TODO: cannot access for the connection point  24th point since the endPoint belong to the other map which not in the ptMap
            temp.endPoint   = ptMap.get(rs.getInt("endpointID")); 
            temp.edgeID = rs.getInt("edgeID");
            E.add(temp);
@@ -173,7 +175,7 @@ public class JDBC {
        return info;
    }
    
-   public boolean saveLocations(ArrayList<Location> A) throws SQLException {
+   public boolean saveLocations(ArrayList<Location> A, int mid, String condition) throws SQLException {
        String query;
        
        for(int i = 0; i < A.size(); ++i) {
@@ -195,35 +197,55 @@ public class JDBC {
            stmt.executeUpdate(query);
        }
        
-       return true;
-   }
-   
-   public boolean savePoints(ArrayList<Point> A) throws SQLException {
-       String query;
-       
-       for(int i = 0; i < A.size(); ++i) {
-           Point p  = A.get(i);
-           if(p.pointID != -1) continue;
-           p.pointID = getMaxPointID();
-           query = "INSERT INTO Point (PointID, x, y, locationID, mapID) ";
-           query += "VALUES(" + (maxPointID++) + ", " + p.X + ", " + 
-                    p.Y + ", " + -1 + ", " + p.map.mapID + ", \"" + p.type.toString() + "\");";
-           Statement stmt = conn.createStatement();
+       if(!condition.equals("")) {
+           query = "DELETE FROM Location WHERE " + condition + ";";
+           stmt = conn.createStatement();
            stmt.executeUpdate(query);
        }
        
        return true;
    }
    
-   public boolean saveEdges(ArrayList<Edge> A) throws SQLException {
+   public boolean savePoints(ArrayList<Point> A, int mid, String condition) throws SQLException {
+       
+       String query;
+       
+       for(int i = 0; i < A.size(); ++i) {
+           Point p  = A.get(i);
+           if(p.pointID != -1) continue;
+           p.pointID = getMaxPointID();
+           query = "INSERT INTO Point (PointID, x, y, locationID, mapID, type) ";
+           query += "VALUES(" + (maxPointID++) + ", " + p.X + ", " + 
+                    p.Y + ", " + -1 + ", " + p.map.mapID + ", \"" + p.type.toString() + "\");";
+           Statement stmt = conn.createStatement();
+           stmt.executeUpdate(query);
+       }
+        
+       if(!condition.equals("")) {
+           query = "DELETE FROM Point WHERE " + condition + ";";
+           stmt = conn.createStatement();
+           stmt.executeUpdate(query);
+       }
+       
+       return true;
+   }
+   
+   public boolean saveEdges(ArrayList<Edge> A, int mid, String condition) throws SQLException {
        String query;
        
        for(Edge e : A) {
            if(e.edgeID != -1) continue;
-           query = "INSERT INTO Edge (startpointID, endpointID, weight, startmapID, endmapID) ";
-           query += "VALUES(" + e.startPoint.pointID + ", " + e.endPoint.pointID + ", " + 
+           e.edgeID = getMaxEdgeID();
+           query = "INSERT INTO Edge (edgeID, startpointID, endpointID, weight, startmapID, endmapID) ";
+           query += "VALUES(" + (maxEdgeID++) + ", " + e.startPoint.pointID + ", " + e.endPoint.pointID + ", " + 
                     e.weight + ", " + e.startMapID + ", " + e.endMapID + ");";
            Statement stmt = conn.createStatement();
+           stmt.executeUpdate(query);
+       }
+       
+       if(!condition.equals("")) {
+           query = "DELETE FROM Edge WHERE " + condition + ";";
+           stmt = conn.createStatement();
            stmt.executeUpdate(query);
        }
        
@@ -265,25 +287,28 @@ public class JDBC {
    
    public boolean deleteALL(String tableName) throws SQLException{
        String query=null;
-       query="DELETE FROM"+tableName+";";
+       query="TRUNCATE TABLE "+tableName+";";
        Statement stmt = conn.createStatement();
        stmt.executeUpdate(query);
        return true;
    }
    
-   public boolean addMap(ArrayList<Map> maps) throws SQLException, FileNotFoundException, IOException{
+   
+   public boolean addMap(ArrayList<Map> maps) throws SQLException, FileNotFoundException, IOException{       
+       String query;
        for(Map m : maps) {
            if(m.mapID == -1) {
-                String query = "";
+                query = "";
                 int isBldgMap = m.isInteriorMap ? 1 : 0;
 
-                query = "INSERT INTO Map (mapID, name, description, isInteriorMap) ";
-                query += "VALUES(" + getMaxMapID() + ", \"" + m.name + "\", \"" + m.description +"\", " + isBldgMap + ");";
+                query = "INSERT INTO Map (mapID, name, description, path, floor, isInteriorMap) ";
+                query += "VALUES('" + maxMapID + "', '" + m.name + "', '" + m.description + "', '" + m.path + "', " + m.floor+","+isBldgMap + ");";
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(query);
 
                 m.mapID = getMaxMapID();
 
+                /* QUESTION:should these be removed? */
                 PreparedStatement ps = null;
                 conn.setAutoCommit(false);
                 File file = new File(m.path);
@@ -305,15 +330,52 @@ public class JDBC {
                 conn.setAutoCommit(true);
            }
            
-           if(m.locList != null) this.saveLocations(m.locList);
-           if(m.pointList != null) this.savePoints(m.pointList);
-           if(m.edgeList != null) this.saveEdges(m.edgeList);
+           
+               this.saveLocations(m.locList, m.mapID, m.deletedLocation);
+
+               this.savePoints(m.pointList, m.mapID, m.deletedPoint);
+
+               this.saveEdges(m.edgeList, m.mapID, m.deletedEdge);
+           
            if(m.locList != null) this.updateLocation(m.locList);
            if(m.locList != null) this.updatePoint(m.pointList);
+           
+           m.deletedEdge = "";
+           m.deletedLocation = "";
+           m.deletedPoint = "";
        }
            
-       
-       
+       query = "SELECT mapID FROM map;";
+       Statement stmt = conn.createStatement();
+       ResultSet rs = stmt.executeQuery(query);
+       while(rs.next()){
+           int temp = rs.getInt("mapID");
+           int flag = 0;
+           for (Map m : maps) {
+               if(m.mapID == temp) {
+                   flag = 1;
+                   break;
+               }
+           }
+           if(flag == 0) {
+               
+               query = "DELETE FROM map WHERE mapID="+temp+";";
+               stmt = conn.createStatement();
+               stmt.executeUpdate(query);
+               
+               query = "DELETE FROM Point WHERE mapID="+temp+";";
+               stmt = conn.createStatement();
+               stmt.executeUpdate(query);
+               
+               query = "DELETE FROM location WHERE mapID="+temp+";";
+               stmt = conn.createStatement();
+               stmt.executeUpdate(query);
+               
+               query = "DELETE FROM edge WHERE startmapID = " + temp + " OR endmapID = " + temp +";";
+               stmt = conn.createStatement();
+               stmt.executeUpdate(query);
+           }
+       }
        
        return true;
    }
@@ -352,7 +414,7 @@ public class JDBC {
    }
    
    public ArrayList<Map> showAllMap() throws SQLException, MalformedURLException, IOException{
-       String query= "SELECT MapID, name, description, isInteriorMap, image From Map;";
+       String query= "SELECT MapID, name, description, path, floor, isInteriorMap, image From Map;";
        Statement stmt = conn.createStatement();
        ResultSet rs = stmt.executeQuery(query);
        
@@ -365,11 +427,12 @@ public class JDBC {
            temp.name = rs.getString("name");
            int isBldgMap = rs.getInt("isInteriorMap");
            temp.isInteriorMap = (isBldgMap == 1);
-           temp.path = "from database";
+           temp.path = rs.getString("path");
+           temp.floor = rs.getInt("floor");
            
-      
-           InputStream binaryStream = rs.getBinaryStream("image");
-           temp.image = ImageIO.read(binaryStream);
+           //TODO remove
+           //InputStream binaryStream = rs.getBinaryStream("image");
+           temp.image = ImageIO.read(new FileInputStream(temp.path));
            
            MapInfo info = this.getMapInfo(temp.mapID, temp);
            temp.edgeList = info.edges;
@@ -382,7 +445,7 @@ public class JDBC {
    }
    public Map showMap(int searchID) throws SQLException, IOException{
        String query;
-       query="SELECT name,description,isInteriorMap,path FROM Map";
+       query="SELECT name,description,isInteriorMap,floor,path FROM Map";
        query+="WHERE mapID="+searchID+";";
        Statement stmt = conn.createStatement();
        ResultSet rs = stmt.executeQuery(query);
@@ -432,65 +495,13 @@ public class JDBC {
         list.add(m);
         db.addMap(list);
         
-        //list = db.showAllMap();
-        
-   /*Statement stmt = null;
-   try{
-      //STEP 2: Register JDBC driver
-      
-      //insert data
-      
-
-      //STEP 4: Execute a query
-      System.out.println("Creating statement...");
-      stmt = conn.createStatement();
-      String sql,sql1,sql_delete;
-      sql1="INSERT INTO point (pointID, x,y,locationID,mapID)" + "VALUES (1, 2, 2,2,1)";
-      sql_delete="delete from  point";
-      stmt.executeUpdate(sql1);
-      sql = "SELECT pointID FROM point";
-      ResultSet rs = stmt.executeQuery(sql);
-
-      //STEP 5: Extract data from result set
-      while(rs.next()){
-         //Retrieve by column name
-         int id  = rs.getInt("pointID");
-         //String first = rs.getString("first");
-         //String last = rs.getString("last");
-
-         //Display values
-         System.out.print("ID: " + id);
-         //System.out.print(", Age: " + age);
-         //System.out.print(", First: " + first);
-         //System.out.println(", Last: " + last);
-      }
-      stmt.executeUpdate(sql_delete);
-      //STEP 6: Clean-up environment
-      rs.close();
-      stmt.close();
-      conn.close();
-   }catch(SQLException se){
-      //Handle errors for JDBC
-      se.printStackTrace();
-   }catch(Exception e){
-      //Handle errors for Class.forName
-      e.printStackTrace();
-   }finally{
-      //finally block used to close resources
-      try{
-         if(stmt!=null)
-            stmt.close();
-      }catch(SQLException se2){
-      }// nothing we can do
-      try{
-         if(conn!=null)
-            conn.close();
-      }catch(SQLException se){
-         se.printStackTrace();
-      }//end finally try
-   }//end try
-   System.out.println("Goodbye!");*/
-
+    }
+    
+     /**
+     * @return the maxPointID
+     */
+    public int getMaxEdgeID() {
+        return maxEdgeID;
     }
 
     /**
