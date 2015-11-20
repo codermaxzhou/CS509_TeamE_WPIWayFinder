@@ -88,6 +88,11 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
                 showButtonMouseClicked(evt);
             }
         });
+        showButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showButtonActionPerformed(evt);
+            }
+        });
 
         classroomLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/classrooml.png"))); // NOI18N
         classroomLabel.setBounds(new java.awt.Rectangle(100, 200, 45, 16));
@@ -293,6 +298,10 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
             Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_goCampusButtonMouseClicked
+
+    private void showButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_showButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

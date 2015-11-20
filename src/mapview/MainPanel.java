@@ -27,7 +27,6 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -84,6 +83,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
     // Timer 
     public Timer timer;
+    private Timer mouseTimer;
     private int index = 0;
 
     // other class
@@ -166,6 +166,10 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
         timer = new Timer(100, this);
         timer.setInitialDelay(300);
+        
+        mouseTimer = new Timer(500, this);
+        mouseTimer.setInitialDelay(500);
+        mouseTimer.start();
 
         this.setVisible(true);
 
@@ -205,18 +209,18 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
             }
         }
-        
+
         if (drawMultiRoutes) {
 
             g.drawImage(pinImage, multiRoute.get(0).startPoint.X, multiRoute.get(0).startPoint.X, 20, 20, null);
-            
+
             int size = multiRoute.size();
             for (int i = 0; i <= size - 1; i++) {
                 Edge e = multiRoute.get(i);
                 //String type = route.get(i).startPoint.type.equals("CONNECTION");
 
                 g.drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
-                
+
                 if (multiRoute.get(i).startPoint.type.name().equals("CONNECTION")) {
                     //System.out.print("this is the connection of edge !");
 
@@ -229,7 +233,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
                     break;
                 }
-                
+
             }
             drawMultiRoutes = false;
 
@@ -249,7 +253,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         Dijkstra algo = new Dijkstra(allEdgeList, allPointList);
         multiRoute = (ArrayList<Edge>) algo.calculate(start.point, end.point);
         drawMultiRoutes = true;
-        
+
 //        g.drawImage(pinImage, multiRoute.get(0).startPoint.X, multiRoute.get(0).startPoint.X,20,20, null);
 //        
 //        for (int i = 0; i <= multiRoute.size() - 1; i++) {
@@ -273,7 +277,6 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 //                break;
 //            }
 //        }
-
         setShowRoute(false);
         setShowPins(false);
         repaint();
@@ -472,7 +475,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
                 } else if (startLocation.point.map.mapID == endLocation.point.map.mapID) {
                     // edgeList 取出来的edge里的connecion edge的endpoint有问题 所以算法无法使用 
-                     // just for testing avoid the connetctioin edge 
+                    // just for testing avoid the connetctioin edge 
 
                     Dijkstra algo = new Dijkstra(allEdgeList, allPointList);
                     route = (ArrayList<Edge>) algo.calculate(startLocation.point, endLocation.point);
@@ -511,7 +514,6 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             this.repaint();
         }
 
-
     }
 
     @Override
@@ -528,6 +530,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
+
+        //System.out.println(e.getLocationOnScz zreen().x + "  " + e.getLocationOnScreen().y);
+
         // TODO Auto-generated method stub
         if (e.getSource() == search) {
             search.setToolTipText("Search Route");
@@ -536,9 +541,22 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         if (e.getSource() == exchange) {
             exchange.setToolTipText("Exchange StartingPoint and Destination");
             exchange.setBounds(exchange.getX() - 1, exchange.getY() - 1, exchange.getWidth(), exchange.getHeight());
-
+            System.out.println("exchange");
         }
+    }
 
+
+        
+
+    
+    //##################MXIE#######################
+    // Todo: when mouse enter the area of location, it shows a panel
+    public void mouseShowLocation(MouseEvent e) {
+        for (Location p : allLocationList) {
+            if (e.getX() < p.point.X + 20 & e.getX() > p.point.X - 20 & e.getY() > p.point.Y - 20 & e.getY() < p.point.Y + 20) {
+                System.out.println("good luck");
+            }
+        }
     }
 
     @Override
@@ -585,6 +603,25 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             if (index == route.size()) {
                 this.timer.stop();
                 index = 0;
+            }
+        } else if(e.getSource() == mouseTimer) {
+            java.awt.Point mp = this.getMousePosition();
+            
+            if(mp == null) return;
+            
+            int x = (int) mp.getLocation().getX();
+            int y = (int) mp.getLocation().getY();
+            
+            for (Location p : pins) {
+               //System.out.println(p.locationID);
+               //System.out.println(p.point.X + p.point.Y);
+
+               //System.out.println(p.point.X + " " + p.point.Y);
+               //System.out.println(x + " " + y);
+                
+               if (x < p.point.X + 20 && x > p.point.X - 20 && y > p.point.Y - 20 && y < p.point.Y + 20) {
+                   System.out.println("good luck");
+               }
             }
         }
     }

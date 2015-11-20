@@ -64,7 +64,7 @@ public class HigginsPanel extends MainPanel{
           System.out.print("Higgins !");
     }
      public void init(){
-        background = new ImageIcon(this.getClass().getResource("/maps/refined_higgins_floor_1.png")).getImage();
+       // background = new ImageIcon(this.getClass().getResource("/maps/refined_higgins_floor_1.png")).getImage();
 	this.setVisible(true);
     }
      
