@@ -23,7 +23,7 @@ import javax.swing.WindowConstants;
 public class MapView extends JFrame{
         
         private MapModel mapModel = new MapModel();
-	private MainPanel mainPanel = new MainPanel();
+	private MainPanel mainPanel = new MainPanel(this);
 	private RightSideBar rightSideBar = new RightSideBar();
         private SecRightSideBar secRightSideBar = new SecRightSideBar();
       
@@ -75,7 +75,7 @@ public class MapView extends JFrame{
             secRightSideBar.mainPanel = panel;
             secRightSideBar.mapModel = mapModel;
             
-            mainPanel.mapModel = mapModel;
+            mainPanel.setMapModel(mapModel);
             
             this.addMouseListener(rightSideBar);
            // this.addMouseListener(secRightSideBar);
