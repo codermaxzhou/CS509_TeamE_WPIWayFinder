@@ -137,7 +137,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         allPointList = mapModel.getAllPointList();
         allLocationList = mapModel.getAllLocationList();
         algo = new Dijkstra(allEdgeList, allPointList);
-        mapImage = allMapList.get(mapIndex - 1).image; // mapIndex - 1 is the actual index
+        //mapImage = allMapList.get(mapIndex - 1).image; // mapIndex - 1 is the actual index
         // hardcoding, will be changed soon
 //        if (mapIndex == 1) {
 //            
@@ -146,28 +146,28 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 //            background = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_2.png")).getImage();
 //        }
         
-//        for(Map m: allMapList){
-//   
-//            if(m.mapID == mapIndex){
-//                mapImage = m.image;
-//                
-//            }
-//        }
+        for(Map m: allMapList){
+   
+            if(m.mapID == mapIndex){
+                mapImage = m.image;
+                
+            }
+        }
 
-        Image profileImage = new ImageIcon(this.getClass().getResource("/icons/user.png")).getImage();
-        ImageIcon profileIcon = new ImageIcon(profileImage);
-
-        profile.setIcon(profileIcon);
-
-        Image exchangeImage = new ImageIcon(this.getClass().getResource("/icons/exchange.png")).getImage();
-        ImageIcon exchangeIcon = new ImageIcon(exchangeImage);
-
-        exchange.setIcon(exchangeIcon);
-
-        Image searchImage = new ImageIcon(this.getClass().getResource("/icons/search.png")).getImage();
-        ImageIcon searchIcon = new ImageIcon(searchImage);
-
-        search.setIcon(searchIcon);
+//        Image profileImage = new ImageIcon(this.getClass().getResource("/icons/user.png")).getImage();
+//        ImageIcon profileIcon = new ImageIcon(profileImage);
+//
+//        profile.setIcon(profileIcon);
+//
+//        Image exchangeImage = new ImageIcon(this.getClass().getResource("/icons/exchange.png")).getImage();
+//        ImageIcon exchangeIcon = new ImageIcon(exchangeImage);
+//
+//        exchange.setIcon(exchangeIcon);
+//
+//        Image searchImage = new ImageIcon(this.getClass().getResource("/icons/search.png")).getImage();
+//        ImageIcon searchIcon = new ImageIcon(searchImage);
+//
+//        search.setIcon(searchIcon);
 
         this.add(startPointField);
         this.add(endPointField);
@@ -181,31 +181,32 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         this.setLayout(layout);
         //this.setLayout(null);
 
-        Font font = new Font("Roboto", Font.PLAIN, 16);
-
-        startPointField.setColumns(20);
-        startPointField.setBounds(40, 10, 150, 30);
-        startPointField.setText("Start Point");
-        startPointField.setFont(font);
-        startPointField.setForeground(Color.gray);
+//        Font font = new Font("Roboto", Font.PLAIN, 16);
+//
+//        startPointField.setColumns(20);
+//        startPointField.setBounds(40, 10, 150, 30);
+//        startPointField.setText("Start Point");
+//        startPointField.setFont(font);
+//        startPointField.setForeground(Color.gray);
+//        
+       
+//
+//        endPointField.setColumns(20);
+//        endPointField.setBounds(220, 10, 150, 30);
+//        endPointField.setText("End Point");
+//        endPointField.setFont(font);
+//        endPointField.setForeground(Color.gray);
         
         startAutoSuggestor = new AutoSuggestor(startPointField, frame, null, Color.WHITE.brighter(), Color.BLUE, Color.RED, 1f);
-
-        endPointField.setColumns(20);
-        endPointField.setBounds(220, 10, 150, 30);
-        endPointField.setText("End Point");
-        endPointField.setFont(font);
-        endPointField.setForeground(Color.gray);
-        
         endAutoSuggestor = new AutoSuggestor(endPointField, frame, null, Color.WHITE.brighter(), Color.BLUE, Color.RED, 1f);
 
         // adding Listener Here
         search.addMouseListener(this);
         exchange.addMouseListener(this);
 
-        search.setBounds(380, 10, 30, 30);
-        profile.setBounds(10, 10, 30, 30);
-        exchange.setBounds(190, 10, 30, 30);
+//        search.setBounds(380, 10, 30, 30);
+//        profile.setBounds(10, 10, 30, 30);
+//        exchange.setBounds(190, 10, 30, 30);
 
         timer = new Timer(100, this);
         timer.setInitialDelay(300);
@@ -241,6 +242,41 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     @Override
     public void paintComponent(Graphics g) {
         g.drawImage(mapImage, 0, 0, this.getWidth(), this.getHeight(), this);
+        
+        Image profileImage = new ImageIcon(this.getClass().getResource("/icons/user.png")).getImage();
+        ImageIcon profileIcon = new ImageIcon(profileImage);
+
+        profile.setIcon(profileIcon);
+
+        Image exchangeImage = new ImageIcon(this.getClass().getResource("/icons/exchange.png")).getImage();
+        ImageIcon exchangeIcon = new ImageIcon(exchangeImage);
+
+        exchange.setIcon(exchangeIcon);
+
+        Image searchImage = new ImageIcon(this.getClass().getResource("/icons/search.png")).getImage();
+        ImageIcon searchIcon = new ImageIcon(searchImage);
+
+        search.setIcon(searchIcon);
+        
+        search.setBounds(380, 10, 30, 30);
+        profile.setBounds(10, 10, 30, 30);
+        exchange.setBounds(190, 10, 30, 30);
+        
+         Font font = new Font("Roboto", Font.PLAIN, 16);
+
+        startPointField.setColumns(20);
+        startPointField.setBounds(40, 10, 150, 30);
+        startPointField.setText("Start Point");
+        startPointField.setFont(font);
+        startPointField.setForeground(Color.gray);
+        
+        startAutoSuggestor = new AutoSuggestor(startPointField, frame, null, Color.WHITE.brighter(), Color.BLUE, Color.RED, 1f);
+
+        endPointField.setColumns(20);
+        endPointField.setBounds(220, 10, 150, 30);
+        endPointField.setText("End Point");
+        endPointField.setFont(font);
+        endPointField.setForeground(Color.gray);
 
     }
 
@@ -377,25 +413,18 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             // 判断location的mapID 就可以判断显示那张地图 
 
             if (p.name.equals(name)) {
-
-                if (p.point.map.mapID == 1 && mapIndex != 1) {
-                    mapIndex = 1;
-                    try {
-                        this.init();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
+                // hardcode need to be improved 
+                for(Map m: allMapList){
+                    if(p.point.map.mapID == m.mapID){
+                        mapIndex = m.mapID;
+                        try {
+                            this.init();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
-
-                if (p.point.map.mapID == 2 && mapIndex != 2) {
-                    mapIndex = 2;
-                    try {
-                        this.init();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
+            
                 pins.add(p);
                 break;
 
