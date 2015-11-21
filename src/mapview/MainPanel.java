@@ -124,8 +124,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     public void init() throws SQLException{
 
         map.mapID = mapIndex;
-
-        MapInfo info = db.getMapInfo(mapIndex, map);
+        MapInfo info = db.getMapInfo(mapIndex, map); // why do we need map as parameter?
+        
+        
         pointList = info.points;
         edgeList = info.edges;
         locationList = info.locations;
@@ -136,7 +137,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         allPointList = mapModel.getAllPointList();
         allLocationList = mapModel.getAllLocationList();
         algo = new Dijkstra(allEdgeList, allPointList);
-
+        mapImage = allMapList.get(mapIndex - 1).image; // mapIndex - 1 is the actual index
         // hardcoding, will be changed soon
 //        if (mapIndex == 1) {
 //            
@@ -145,16 +146,13 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 //            background = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_2.png")).getImage();
 //        }
         
-        for(Map m: allMapList){
-            String mapPath;
-            
-            if(m.mapID == mapIndex){
-                mapPath = m.path;
-                
-                mapImage = m.image;
-                
-            }
-        }
+//        for(Map m: allMapList){
+//   
+//            if(m.mapID == mapIndex){
+//                mapImage = m.image;
+//                
+//            }
+//        }
 
         Image profileImage = new ImageIcon(this.getClass().getResource("/icons/user.png")).getImage();
         ImageIcon profileIcon = new ImageIcon(profileImage);
@@ -227,6 +225,17 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         
         startAutoSuggestor.setDictionary(suggestions);
         endAutoSuggestor.setDictionary(suggestions);
+    }
+    
+    public void changeMap(int mapIndex){
+        for(Map m: allMapList){
+   
+            if(m.mapID == mapIndex){
+                mapImage = m.image;
+                
+            }
+        }
+        this.repaint();
     }
 
     @Override

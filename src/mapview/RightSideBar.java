@@ -354,17 +354,18 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
             for (Map m : allMapList) {
                 if (stringValue.equals(m.name)) {
                     
-                    mainPanel.setMapIndex(m.mapID);
+                    mainPanel.changeMap(m.mapID);
+//                    mainPanel.setMapIndex(m.mapID);
                     mainPanel.setShowAllPins(false);
                     mainPanel.setShowPins(false);
                     mainPanel.setDrawRoutes(false);
                     mainPanel.setShowRoute(false);
-                    try {
-                        mainPanel.init();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    mainPanel.repaint();
+//                    try {
+//                        mainPanel.init();
+//                    } catch (SQLException ex) {
+//                        Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                    mainPanel.repaint();
                 }
 
             }
