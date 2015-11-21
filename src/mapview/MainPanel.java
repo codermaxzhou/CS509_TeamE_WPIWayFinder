@@ -21,10 +21,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -43,6 +47,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
     // UI varaibles
     private Image background;
+    private Image mapImage;
     private final JTextField startPointField = new JTextField();
     private final JTextField endPointField = new JTextField();
     private final JLabel profile = new JLabel();
@@ -61,7 +66,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private ArrayList<Edge> route = new ArrayList<>();
     private ArrayList<Edge> multiRoute = new ArrayList<>();
     private ArrayList<Integer> multiMapIndex = new ArrayList<>();
-
+    
+    private ArrayList<Map> allMapList = new ArrayList<>();
     private ArrayList<Location> allLocationList = new ArrayList<>();
     private ArrayList<Edge> allEdgeList = new ArrayList<>();
     private ArrayList<Point> allPointList = new ArrayList<>();
@@ -115,7 +121,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
     }
 
-    public void init() throws SQLException {
+    public void init() throws SQLException{
 
         map.mapID = mapIndex;
 
@@ -125,16 +131,29 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         locationList = info.locations;
 
         mapModel = new MapModel();
+        allMapList = mapModel.getMapList();
         allEdgeList = mapModel.getAllEdgeList();
         allPointList = mapModel.getAllPointList();
         allLocationList = mapModel.getAllLocationList();
         algo = new Dijkstra(allEdgeList, allPointList);
 
         // hardcoding, will be changed soon
-        if (mapIndex == 1) {
-            background = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_1.png")).getImage();
-        } else if (mapIndex == 2) {
-            background = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_2.png")).getImage();
+//        if (mapIndex == 1) {
+//            
+//            background = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_1.png")).getImage();
+//        } else if (mapIndex == 2) {
+//            background = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_2.png")).getImage();
+//        }
+        
+        for(Map m: allMapList){
+            String mapPath;
+            
+            if(m.mapID == mapIndex){
+                mapPath = m.path;
+                
+                mapImage = m.image;
+                
+            }
         }
 
         Image profileImage = new ImageIcon(this.getClass().getResource("/icons/user.png")).getImage();
@@ -212,7 +231,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
     @Override
     public void paintComponent(Graphics g) {
-        g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);
+        g.drawImage(mapImage, 0, 0, this.getWidth(), this.getHeight(), this);
 
     }
 
@@ -408,14 +427,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         repaint();
     }
 
-    public ArrayList<Point> edgeToPoint(ArrayList<Edge> edgeList) {
-        ArrayList<Point> resultPointList = new ArrayList<>();
-        for (int i = 0; i < edgeList.size(); i++) {
-            //System.out.println(i);
-            resultPointList.add(edgeList.get(i).startPoint);
-        }
-        return resultPointList;
-    }
+   
 
     public void clearPins() {
         setShowRoute(false);
