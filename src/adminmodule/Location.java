@@ -8,7 +8,8 @@ public class Location {
     public String name;                                     // Name of the location
     public String description;                              // Description of the location
     public int locationID;                                  // The primary key of this location from the DB
-    
+    //#############mxie
+    public String path;                                     //store the picture for location
     public Location() {
     
     }

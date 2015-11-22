@@ -26,8 +26,11 @@ public class MapPanel extends JScrollPane {
     public MapPanel(AdminFrame frame) {
         this.frame = frame;
         this.setLayout(new ScrollPaneLayout());
-        image = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_1.png")).getImage();
-        
+        //System.out.println(this.getClass().getResource("adminmodule.MapPanel"));
+        //System.out.println(getClass().getResource("/maps/campus_map.png"));
+        image=new ImageIcon(System.getProperty("user.dir")+"/src/map/campus_map.png").getImage();
+        //image = new ImageIcon(this.getClass().getResource("/maps/campus_map.png")).getImage();
+ 
         //JLabel label = new JLabel(image);
         //this.getViewport().add(label);
     }

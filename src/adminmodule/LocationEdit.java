@@ -2,9 +2,17 @@ package adminmodule;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 public class LocationEdit extends JFrame {
+    
 
     public static final int TEXT_ROWS = 20;
     public static final int TEXT_COLUMNS = 40;
@@ -15,8 +23,12 @@ public class LocationEdit extends JFrame {
     private JButton okButton;
     private JButton cancelButton;
     private JComboBox box;
+    private JToolBar tb = new JToolBar(); 
+    private String fileName;
+    BufferedImage bi = null;
 
     public LocationEdit(Location l) {
+        
         this.l = l;
         Information panel = new Information();
         setLayout(new BorderLayout());
@@ -33,7 +45,14 @@ public class LocationEdit extends JFrame {
          private JRadioButton jrb3 = new JRadioButton("ADMIN");// 定义一个单选按钮
          private JRadioButton jrb4 = new JRadioButton("PARKING");*/
         public Information() {
+            final JFileChooser chooser = new JFileChooser ();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter ("Some Images", "jpg", "gif", "png", "jpeg");
+            chooser.setFileFilter (filter);
             setLayout(new BorderLayout());
+            //buttons for select picture for location
+            JButton openButton = new JButton ("Open");
+            JButton saveButton = new JButton ("Save");
+            JButton cancelButton = new JButton ("Cancel");
 
       // construct a panel
             JPanel panel = new JPanel();
@@ -42,27 +61,48 @@ public class LocationEdit extends JFrame {
             panel.add(new JLabel("Name:"));
             panel.add(Name = new JTextField(""));
             panel.add(new JLabel("Description:"));
-            panel.add(Description = new JTextField(""));    
+            panel.add(Description = new JTextField(""));  
+            //########mxie
             panel.add(new JLabel("Category:"));
             JComboBox box = new JComboBox(options);
             if (l.locationID != -1)
                 box.setSelectedItem(l.category.toString());
             panel.add(box);
+            
+            
+            
+            //add image to the location
+            tb.add(openButton);
+            tb.add(saveButton);
+            tb.add(cancelButton); 
+            panel.add(tb);
+            
+            
+            openButton.addActionListener (new ActionListener ()
+            {
+                //private final Object chooser;
+                @Override
+                public void actionPerformed ( ActionEvent e )
+                {
+                    int returnVal = chooser.showOpenDialog (Information.this);
+                    if (returnVal == JFileChooser.APPROVE_OPTION)
+                    {
+                        try {
+                            bi = ImageIO.read (new File (chooser.getSelectedFile ().getAbsolutePath ()));
+                        } catch (IOException ex) {
+                            Logger.getLogger(LocationEdit.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        String path = chooser.getSelectedFile ().getAbsolutePath ();
+                        String [] fileNames = path.split("/");
+                        fileName = fileNames[fileNames.length-1];
+                        repaint ();
+                    }
 
-            /*jrb1.setActionCommand("DINING");
-             jrb2.setActionCommand("ATM");
-             jrb3.setActionCommand("ADMIN");
-             jrb4.setActionCommand("PARKING");
 
-             panel.add(this.jrb1);// 加入组件
-             panel.add(this.jrb2);
-             panel.add(this.jrb3);
-             panel.add(this.jrb4);
-             ButtonGroup group = new ButtonGroup();
-             group.add(this.jrb1);
-             group.add(this.jrb2);
-             group.add(this.jrb3);
-             group.add(this.jrb4);*/
+                }
+            });
+
+
             add(panel, BorderLayout.CENTER);
 
             // create Ok and Cancel buttons
@@ -91,6 +131,7 @@ public class LocationEdit extends JFrame {
                     } else {
                         l.category = Location.Category.PARKING;
                     }
+                    l.path = chooser.getSelectedFile ().getAbsolutePath ();
                     /*if(jrb1.isSelected()) l.category = Location.Category.DINING;
                      else if(jrb2.isSelected()) l.category = Location.Category.ATM;
                      else if(jrb3.isSelected()) l.category = Location.Category.ADMIN;
@@ -98,8 +139,8 @@ public class LocationEdit extends JFrame {
                 }
             });
 
-            JButton cancelButton = new JButton("Cancel");
-            cancelButton.addActionListener(new ActionListener() {
+            JButton cancelButton1 = new JButton("Cancel");
+            cancelButton1.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent event) {
                     dispose();
                 }
@@ -108,9 +149,15 @@ public class LocationEdit extends JFrame {
             // add these buttons to southern border
             JPanel buttonPanel = new JPanel();
             buttonPanel.add(okButton);
-            buttonPanel.add(cancelButton);
+            buttonPanel.add(cancelButton1);
             add(buttonPanel, BorderLayout.SOUTH);
         }
+    public void paint ( Graphics g )
+    {
+        super.paint (g);
+        g.drawImage (bi, 0, 300, this.getWidth ()/5, this.getHeight ()/5, null);
+        g.dispose ();
+    }
 
     
     
