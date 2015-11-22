@@ -353,11 +353,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
                     g.drawImage(pinImage, e.startPoint.X - diviation, e.startPoint.Y - diviation, 20, 20, null);
                     g.drawString("Connection", e.startPoint.X - diviation, e.startPoint.Y - diviation);
-                    // g.drawOval(e.startPoint.X, e.endPoint.Y, 30, 30);
-
-//                    nextButton.setBounds(e.startPoint.X - 5, e.startPoint.Y - 20, 50, 50);
-//                    this.add(nextButton);
-//                    nextButton.addMouseListener(this);
+                  
                 }
 
             }
@@ -373,7 +369,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         Graphics g = this.getGraphics();
         g.setColor(Color.red);
 
-        getMultiMapIndex().clear();
+        //getMultiMapIndex().clear();
         setMultiRoute((ArrayList<Edge>) algo.calculate(start.point, end.point));
 
         for (Edge e : getMultiRoute()) {
