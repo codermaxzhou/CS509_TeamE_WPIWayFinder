@@ -45,6 +45,9 @@ import jdbc.JDBC;
  */
 public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
+    
+    // Reference
+    MapView mapView;
     // UI varaibles
     private Image background;
     private Image mapImage;
@@ -516,7 +519,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                         && (y < (temp.point.Y + radius)))) {
 
                     clicked++;
-
+              
                     if (clicked % 2 == 1) {
                         startPointField.setText(temp.name);
                         clear = true;
@@ -529,6 +532,12 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                         showClickPin(temp.name);
 
                     }
+                    
+                    // emma new code 
+                    Enter enterMenu = new Enter(temp);
+                    enterMenu.setRightBar(mapView.getRightBar());
+                    enterMenu.show(e.getComponent(), x, y);
+
                 }
 
             }
@@ -834,6 +843,14 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
      */
     public void setMultiRoute(ArrayList<Edge> multiRoute) {
         this.multiRoute = multiRoute;
+    }
+    
+     public void setMapView(MapView mapView) {
+        this.mapView = mapView;
+    }
+    
+    public MapView getMapView() {
+        return mapView;
     }
 
 }

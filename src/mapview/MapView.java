@@ -26,6 +26,7 @@ public class MapView extends JFrame{
 	private MainPanel mainPanel = new MainPanel(this);
 	private RightSideBar rightSideBar = new RightSideBar();
         private SecRightSideBar secRightSideBar = new SecRightSideBar();
+        private RightBar RightBar = new RightBar();
       
         
     
@@ -76,11 +77,16 @@ public class MapView extends JFrame{
             secRightSideBar.mapModel = mapModel;
             
             mainPanel.setMapModel(mapModel);
+            mainPanel.setMapView(this);
             
             this.addMouseListener(rightSideBar);
            // this.addMouseListener(secRightSideBar);
                     
             this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        }
+        
+        public RightBar getRightBar() {
+            return this.RightBar;
         }
 }
 
