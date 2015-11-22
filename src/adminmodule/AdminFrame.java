@@ -261,6 +261,7 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
                     newlocation.locationID = -1;
                     newlocation.name = "test" + x;
                     newlocation.description = "desc" + y;
+                    // newlocation.path=
                     /*newlocation.category = Location.Category.DINING;*/
                     points.add(newpoint);
                     locations.add(newlocation);

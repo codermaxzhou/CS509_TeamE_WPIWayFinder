@@ -68,6 +68,7 @@ public class LocationEdit extends JFrame {
             if (l.locationID != -1)
                 box.setSelectedItem(l.category.toString());
             panel.add(box);
+            panel.add(new JLabel("Choose Map:"));
             
             
             
@@ -155,7 +156,7 @@ public class LocationEdit extends JFrame {
     public void paint ( Graphics g )
     {
         super.paint (g);
-        g.drawImage (bi, 0, 300, this.getWidth ()/5, this.getHeight ()/5, null);
+        g.drawImage (bi, 200, 300, this.getWidth ()/5, this.getHeight ()/5, null);
         g.dispose ();
     }
 
