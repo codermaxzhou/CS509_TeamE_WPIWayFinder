@@ -66,7 +66,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private ArrayList<Edge> route = new ArrayList<>();
     private ArrayList<Edge> multiRoute = new ArrayList<>();
     private ArrayList<Integer> multiMapIndex = new ArrayList<>();
-    
+
     private ArrayList<Map> allMapList = new ArrayList<>();
     private ArrayList<Location> allLocationList = new ArrayList<>();
     private ArrayList<Edge> allEdgeList = new ArrayList<>();
@@ -80,8 +80,6 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
     private Map map = new Map();
     private int mapIndex;
-    private int connectionX;
-    private int connectionY;
 
     // boolean varaibels 
     private boolean showRoute = false;
@@ -91,7 +89,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private boolean clear = true;
     private boolean drawMultiRoutes = false;
     private int clicked = 0;
-    
+
     AutoSuggestor startAutoSuggestor;
     AutoSuggestor endAutoSuggestor;
 
@@ -113,20 +111,19 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         this.init();
 
     }
-    
+
     MainPanel() throws SQLException {
-        
+
         mapIndex = 1;  // default is mapID 1
         this.init();
 
     }
 
-    public void init() throws SQLException{
+    public void init() throws SQLException {
 
         map.mapID = mapIndex;
         MapInfo info = db.getMapInfo(mapIndex, map); // why do we need map as parameter?
-        
-        
+
         pointList = info.points;
         edgeList = info.edges;
         locationList = info.locations;
@@ -137,22 +134,124 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         allPointList = mapModel.getAllPointList();
         allLocationList = mapModel.getAllLocationList();
         algo = new Dijkstra(allEdgeList, allPointList);
-        //mapImage = allMapList.get(mapIndex - 1).image; // mapIndex - 1 is the actual index
-        // hardcoding, will be changed soon
-//        if (mapIndex == 1) {
-//            
-//            background = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_1.png")).getImage();
-//        } else if (mapIndex == 2) {
-//            background = new ImageIcon(this.getClass().getResource("/maps/refined_project_floor_2.png")).getImage();
-//        }
-        
-        for(Map m: allMapList){
-   
-            if(m.mapID == mapIndex){
+
+        for (Map m : allMapList) {
+
+            if (m.mapID == mapIndex) {
                 mapImage = m.image;
-                
+
             }
         }
+
+        Image profileImage = new ImageIcon(this.getClass().getResource("/icons/user.png")).getImage();
+        ImageIcon profileIcon = new ImageIcon(profileImage);
+
+        profile.setIcon(profileIcon);
+
+        Image exchangeImage = new ImageIcon(this.getClass().getResource("/icons/exchange.png")).getImage();
+        ImageIcon exchangeIcon = new ImageIcon(exchangeImage);
+
+        exchange.setIcon(exchangeIcon);
+
+        Image searchImage = new ImageIcon(this.getClass().getResource("/icons/search.png")).getImage();
+        ImageIcon searchIcon = new ImageIcon(searchImage);
+
+        search.setIcon(searchIcon);
+
+        this.add(startPointField);
+        this.add(endPointField);
+        this.add(searchButton);
+        this.add(search);
+        this.add(profile);
+        this.add(exchange);
+
+        BorderLayout layout;
+        layout = new BorderLayout();
+        this.setLayout(layout);
+        //this.setLayout(null);
+
+        Font font = new Font("Roboto", Font.PLAIN, 16);
+
+        startPointField.setColumns(20);
+        startPointField.setBounds(40, 10, 150, 30);
+        startPointField.setText("Start Point");
+        startPointField.setFont(font);
+        startPointField.setForeground(Color.gray);
+
+        endPointField.setColumns(20);
+        endPointField.setBounds(220, 10, 150, 30);
+        endPointField.setText("End Point");
+        endPointField.setFont(font);
+        endPointField.setForeground(Color.gray);
+
+        startAutoSuggestor = new AutoSuggestor(startPointField, frame, null, Color.WHITE.brighter(), Color.BLUE, Color.RED, 1f);
+        endAutoSuggestor = new AutoSuggestor(endPointField, frame, null, Color.WHITE.brighter(), Color.BLUE, Color.RED, 1f);
+
+        // adding Listener Here
+        search.addMouseListener(this);
+        exchange.addMouseListener(this);
+
+        search.setBounds(380, 10, 30, 30);
+        profile.setBounds(10, 10, 30, 30);
+        exchange.setBounds(190, 10, 30, 30);
+
+        timer = new Timer(100, this);
+        timer.setInitialDelay(300);
+
+        this.setVisible(true);
+
+    }
+
+    public void setMapModel(MapModel model) {
+        this.mapModel = model;
+
+        ArrayList<String> suggestions = new ArrayList<>();
+
+        for (Location l : model.getAllLocationList()) {
+            suggestions.add(l.name);
+        }
+
+        startAutoSuggestor.setDictionary(suggestions);
+        endAutoSuggestor.setDictionary(suggestions);
+    }
+
+    public void changeMap(int mapIndex) {
+        for (Map m : allMapList) {
+
+            if (m.mapID == mapIndex) {
+                mapImage = m.image;
+
+            }
+        }
+        this.repaint();
+    }
+
+    public void reloadMap(int mapIndex) {
+        map.mapID = mapIndex;
+        this.mapIndex = mapIndex;
+        MapInfo info = null;
+        try {
+            info = db.getMapInfo(mapIndex, map); // why do we need map as parameter?
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        pointList = info.points;
+        edgeList = info.edges;
+        locationList = info.locations;
+        for (Map m : allMapList) {
+
+            if (m.mapID == mapIndex) {
+                mapImage = m.image;
+
+            }
+        }
+        this.repaint();
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        g.drawImage(mapImage, 0, 0, this.getWidth(), this.getHeight(), this);
 
 //        Image profileImage = new ImageIcon(this.getClass().getResource("/icons/user.png")).getImage();
 //        ImageIcon profileIcon = new ImageIcon(profileImage);
@@ -168,20 +267,12 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 //        ImageIcon searchIcon = new ImageIcon(searchImage);
 //
 //        search.setIcon(searchIcon);
-
-        this.add(startPointField);
-        this.add(endPointField);
-        this.add(searchButton);
-        this.add(search);
-        this.add(profile);
-        this.add(exchange);
-
-        BorderLayout layout;
-        layout = new BorderLayout();
-        this.setLayout(layout);
-        //this.setLayout(null);
-
-//        Font font = new Font("Roboto", Font.PLAIN, 16);
+//        
+//        search.setBounds(380, 10, 30, 30);
+//        profile.setBounds(10, 10, 30, 30);
+//        exchange.setBounds(190, 10, 30, 30);
+//        
+//         Font font = new Font("Roboto", Font.PLAIN, 16);
 //
 //        startPointField.setColumns(20);
 //        startPointField.setBounds(40, 10, 150, 30);
@@ -189,95 +280,21 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 //        startPointField.setFont(font);
 //        startPointField.setForeground(Color.gray);
 //        
-       
+////        startAutoSuggestor = new AutoSuggestor(startPointField, frame, null, Color.WHITE.brighter(), Color.BLUE, Color.RED, 1f);
 //
 //        endPointField.setColumns(20);
 //        endPointField.setBounds(220, 10, 150, 30);
 //        endPointField.setText("End Point");
 //        endPointField.setFont(font);
 //        endPointField.setForeground(Color.gray);
-        
-        startAutoSuggestor = new AutoSuggestor(startPointField, frame, null, Color.WHITE.brighter(), Color.BLUE, Color.RED, 1f);
-        endAutoSuggestor = new AutoSuggestor(endPointField, frame, null, Color.WHITE.brighter(), Color.BLUE, Color.RED, 1f);
-
-        // adding Listener Here
-        search.addMouseListener(this);
-        exchange.addMouseListener(this);
-
-//        search.setBounds(380, 10, 30, 30);
-//        profile.setBounds(10, 10, 30, 30);
-//        exchange.setBounds(190, 10, 30, 30);
-
-        timer = new Timer(100, this);
-        timer.setInitialDelay(300);
-
-        this.setVisible(true);
-
-    }
-    
-    public void setMapModel(MapModel model) {
-        this.mapModel = model;
-        
-        ArrayList<String> suggestions = new ArrayList<>();
-        
-        for(Location l : model.getAllLocationList()) {
-            suggestions.add(l.name);
-        }
-        
-        startAutoSuggestor.setDictionary(suggestions);
-        endAutoSuggestor.setDictionary(suggestions);
-    }
-    
-    public void changeMap(int mapIndex){
-        for(Map m: allMapList){
-   
-            if(m.mapID == mapIndex){
-                mapImage = m.image;
-                
-            }
-        }
-        this.repaint();
-    }
-
-    @Override
-    public void paintComponent(Graphics g) {
-        g.drawImage(mapImage, 0, 0, this.getWidth(), this.getHeight(), this);
-        
-        Image profileImage = new ImageIcon(this.getClass().getResource("/icons/user.png")).getImage();
-        ImageIcon profileIcon = new ImageIcon(profileImage);
-
-        profile.setIcon(profileIcon);
-
-        Image exchangeImage = new ImageIcon(this.getClass().getResource("/icons/exchange.png")).getImage();
-        ImageIcon exchangeIcon = new ImageIcon(exchangeImage);
-
-        exchange.setIcon(exchangeIcon);
-
-        Image searchImage = new ImageIcon(this.getClass().getResource("/icons/search.png")).getImage();
-        ImageIcon searchIcon = new ImageIcon(searchImage);
-
-        search.setIcon(searchIcon);
-        
-        search.setBounds(380, 10, 30, 30);
-        profile.setBounds(10, 10, 30, 30);
-        exchange.setBounds(190, 10, 30, 30);
-        
-         Font font = new Font("Roboto", Font.PLAIN, 16);
-
-        startPointField.setColumns(20);
-        startPointField.setBounds(40, 10, 150, 30);
-        startPointField.setText("Start Point");
-        startPointField.setFont(font);
-        startPointField.setForeground(Color.gray);
-        
-        startAutoSuggestor = new AutoSuggestor(startPointField, frame, null, Color.WHITE.brighter(), Color.BLUE, Color.RED, 1f);
-
-        endPointField.setColumns(20);
-        endPointField.setBounds(220, 10, 150, 30);
-        endPointField.setText("End Point");
-        endPointField.setFont(font);
-        endPointField.setForeground(Color.gray);
-
+//        
+//        
+//        this.add(startPointField);
+//        this.add(endPointField);
+//        this.add(searchButton);
+//        this.add(search);
+//        this.add(profile);
+//        this.add(exchange);
     }
 
     @Override
@@ -310,36 +327,33 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         }
 
         if (isDrawMultiRoutes()) {
-            
-            Edge startEdge = multiRoute.get(0);
-            Edge endEdge = multiRoute.get(multiRoute.size()-1);
+
+            Edge startEdge = getMultiRoute().get(0);
+            Edge endEdge = getMultiRoute().get(getMultiRoute().size() - 1);
             int diviation = 10;
-            
-            if(startEdge.startMapID == mapIndex){
-            g.drawImage(pinImage, startEdge.startPoint.X - diviation, startEdge.startPoint.Y - diviation, 20, 20, null);
+
+            if (startEdge.startMapID == mapIndex) {
+                g.drawImage(pinImage, startEdge.startPoint.X - diviation, startEdge.startPoint.Y - diviation, 20, 20, null);
             }
-            if(endEdge.endMapID == mapIndex){
-            g.drawImage(pinImage, endEdge.endPoint.X - diviation , endEdge.endPoint.Y - diviation, 20, 20, null);   
+            if (endEdge.endMapID == mapIndex) {
+                g.drawImage(pinImage, endEdge.endPoint.X - diviation, endEdge.endPoint.Y - diviation, 20, 20, null);
             }
-            
-            // some bugs in there need to be fixed 
-            int size = multiRoute.size();
+
+            int size = getMultiRoute().size();
             for (int i = 0; i <= size - 1; i++) {
-                Edge e = multiRoute.get(i);
+                Edge e = getMultiRoute().get(i);
                 //String type = route.get(i).startPoint.type.equals("CONNECTION");
 
-                if (e.startMapID == mapIndex || e.endMapID == mapIndex) {
+                if (e.startMapID == mapIndex && e.endMapID == mapIndex) {
                     g.drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
                 }
 
-                if (multiRoute.get(i).startPoint.type.name().equals("CONNECTION")) {
+                if (getMultiRoute().get(i).startPoint.type.name().equals("CONNECTION")) {
                     //System.out.print("this is the connection of edge !");
 
                     g.drawImage(pinImage, e.startPoint.X - diviation, e.startPoint.Y - diviation, 20, 20, null);
                     g.drawString("Connection", e.startPoint.X - diviation, e.startPoint.Y - diviation);
                     // g.drawOval(e.startPoint.X, e.endPoint.Y, 30, 30);
-                    connectionX = e.startPoint.X;
-                    connectionY = e.startPoint.Y;
 
 //                    nextButton.setBounds(e.startPoint.X - 5, e.startPoint.Y - 20, 50, 50);
 //                    this.add(nextButton);
@@ -359,15 +373,15 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         Graphics g = this.getGraphics();
         g.setColor(Color.red);
 
-        multiMapIndex.clear();
-        multiRoute = (ArrayList<Edge>) algo.calculate(start.point, end.point);
+        getMultiMapIndex().clear();
+        setMultiRoute((ArrayList<Edge>) algo.calculate(start.point, end.point));
 
-        for (Edge e : multiRoute) {
+        for (Edge e : getMultiRoute()) {
             if (!multiMapIndex.contains(e.startMapID)) {
-                multiMapIndex.add(e.startMapID);
+                getMultiMapIndex().add(e.startMapID);
             }
             if (!multiMapIndex.contains(e.endMapID)) {
-                multiMapIndex.add(e.endMapID);
+                getMultiMapIndex().add(e.endMapID);
             }
 
         }
@@ -414,8 +428,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
             if (p.name.equals(name)) {
                 // hardcode need to be improved 
-                for(Map m: allMapList){
-                    if(p.point.map.mapID == m.mapID){
+                for (Map m : allMapList) {
+                    if (p.point.map.mapID == m.mapID) {
                         mapIndex = m.mapID;
                         try {
                             this.init();
@@ -424,7 +438,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                         }
                     }
                 }
-            
+
                 pins.add(p);
                 break;
 
@@ -464,8 +478,6 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
         repaint();
     }
-
-   
 
     public void clearPins() {
         setShowRoute(false);
@@ -549,13 +561,18 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
                 } //                     multi map route 
                 else if (startLocation.point.map.mapID != endLocation.point.map.mapID) {
-
+                    
+                    if (startLocation.point.map.mapID != mapIndex) {
+                        this.reloadMap(startLocation.point.map.mapID);
+                    }
                     drawMultiRoute(startLocation, endLocation);
 
                 } else if (startLocation.point.map.mapID == endLocation.point.map.mapID) {
-                    // edgeList 取出来的edge里的connecion edge的endpoint有问题 所以算法无法使用 
-                    // just for testing avoid the connetctioin edge 
-
+                   
+                    if (startLocation.point.map.mapID != mapIndex) {
+                        this.reloadMap(startLocation.point.map.mapID);
+                    }
+                    
                     route = (ArrayList<Edge>) algo.calculate(startLocation.point, endLocation.point);
                     setShowRoute(true);
                     setShowPins(false);
@@ -607,8 +624,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                         || (x > (temp.getX() + radius))
                         || (y < (temp.getY() - radius))
                         || (y > (temp.getY() + radius))) && temp.type.name() == "CONNECTION") {
-                    Connection connection = new Connection(temp);
-                    connection.mainPanel = this;
+                    Connection connection = new Connection(temp, this);
+                    //connection.mainPanel = this;
                     connection.show(e.getComponent(), x, y);
 
                 }
@@ -775,6 +792,34 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
      */
     public void setDrawMultiRoutes(boolean drawMultiRoutes) {
         this.drawMultiRoutes = drawMultiRoutes;
+    }
+
+    /**
+     * @return the multiMapIndex
+     */
+    public ArrayList<Integer> getMultiMapIndex() {
+        return multiMapIndex;
+    }
+
+    /**
+     * @param multiMapIndex the multiMapIndex to set
+     */
+    public void setMultiMapIndex(ArrayList<Integer> multiMapIndex) {
+        this.multiMapIndex = multiMapIndex;
+    }
+
+    /**
+     * @return the multiRoute
+     */
+    public ArrayList<Edge> getMultiRoute() {
+        return multiRoute;
+    }
+
+    /**
+     * @param multiRoute the multiRoute to set
+     */
+    public void setMultiRoute(ArrayList<Edge> multiRoute) {
+        this.multiRoute = multiRoute;
     }
 
 }
