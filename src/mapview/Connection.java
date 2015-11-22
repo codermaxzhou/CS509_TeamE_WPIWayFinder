@@ -45,35 +45,36 @@ public class Connection extends JPopupMenu {
                 // multiMapIndex 是空 !
                 nextMapIndex = mainPanel.getMapIndex();
                 preMapIndex = mainPanel.getMapIndex();
-                
+
                 if (event.getSource() == next) {
 //                    for(int i = 0; i <= multiMapIndex.size() - 1; i++){
 //                         System.out.print(multiMapIndex.get(i));
 //                    }
-               
+
                     for (Edge e : edgeList) {
                         if ("CONNECTION".equals(e.startPoint.type.name()) && "CONNECTION".equals(e.endPoint.type.name())) {
                             if (e.startMapID == mainPanel.getMapIndex()) {
                                 for (int i = 0; i <= multiMapIndex.size() - 1; i++) {
                                     if (multiMapIndex.get(i) == e.startMapID) {
-                                        if((i + 1) <= multiMapIndex.size() - 1){
+                                        if ((i + 1) <= multiMapIndex.size() - 1) {
                                             nextMapIndex = multiMapIndex.get(i + 1);
-                                        }
-                                        else{
+                                        } else {
                                             break;
                                         }
-                                        
+
                                     }
                                 }
 
-                                mainPanel.setMapIndex(nextMapIndex);
-                                try {
-                                    mainPanel.init();
-                                } catch (SQLException ex) {
-                                    Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
-                                }
+                                
+                                mainPanel.reloadMap(nextMapIndex);
+//                                mainPanel.setMapIndex(nextMapIndex);
+//                                try {
+//                                    mainPanel.init();
+//                                } catch (SQLException ex) {
+//                                    Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+//                                }
                                 mainPanel.setDrawMultiRoutes(true);
-                                mainPanel.repaint();
+//                                mainPanel.repaint();
                                 break;
                             }
                         }
@@ -82,19 +83,18 @@ public class Connection extends JPopupMenu {
 
                 }
                 if (event.getSource() == pre) {
-                    
+
                     for (Edge e : edgeList) {
                         if ("CONNECTION".equals(e.startPoint.type.name()) && "CONNECTION".equals(e.endPoint.type.name())) {
                             if (e.endMapID == mainPanel.getMapIndex()) {
                                 for (int i = 0; i <= multiMapIndex.size() - 1; i++) {
                                     if (multiMapIndex.get(i) == e.endMapID) {
-                                        if((i - 1) >= 0){
+                                        if ((i - 1) >= 0) {
                                             preMapIndex = multiMapIndex.get(i - 1);
-                                        }
-                                        else{
+                                        } else {
                                             break;
                                         }
-                                        
+
                                     }
                                 }
 

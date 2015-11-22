@@ -53,6 +53,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private final JLabel profile = new JLabel();
     private final JLabel exchange = new JLabel();
     private final JLabel search = new JLabel();
+    private final JLabel home = new JLabel();
     private final JButton searchButton = new JButton();
     private JButton nextButton = new JButton("next routing");
 
@@ -157,6 +158,11 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         ImageIcon searchIcon = new ImageIcon(searchImage);
 
         search.setIcon(searchIcon);
+        
+        Image homeImage = new ImageIcon(this.getClass().getResource("/icons/home.png")).getImage();
+        ImageIcon homeIcon = new ImageIcon(homeImage);
+
+        home.setIcon(homeIcon);
 
         this.add(startPointField);
         this.add(endPointField);
@@ -164,6 +170,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         this.add(search);
         this.add(profile);
         this.add(exchange);
+        this.add(home);
 
         BorderLayout layout;
         layout = new BorderLayout();
@@ -627,6 +634,17 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                 }
             }
 
+        }
+        // added by emma
+        if (e.getSource()== home){
+            
+            background = new ImageIcon(this.getClass().getResource("/maps/campus_map.png")).getImage();
+            mapView.getRightBar().campus = true;
+            mapView.getRightBar().inner();        
+            this.repaint();
+            
+            
+        
         }
 
     }
