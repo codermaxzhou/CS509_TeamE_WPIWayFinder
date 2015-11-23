@@ -34,7 +34,7 @@ public class AdminLoginFrame extends javax.swing.JFrame {
     public AdminLoginFrame() {
         connect();
         initComponents();
-        this.setTitle("administrator Login");
+        this.setTitle("Administrator Login");
     }
     
     public void connect() {
@@ -200,18 +200,18 @@ public class AdminLoginFrame extends javax.swing.JFrame {
                     this.dispose();
                 }
                 else {
-                    JOptionPane.showMessageDialog(null, "You are not administrator!"); 
+                    JOptionPane.showMessageDialog(null, "You cannot login as administrator."); 
                 }
             }
             else if(count > 1) {
-                JOptionPane.showMessageDialog(null, "duplicate users found!"); 
+                JOptionPane.showMessageDialog(null, "Duplicate users found."); 
             }
             else {
                 JOptionPane.showMessageDialog(null, "Username or Password Incorrect!"); 
             }
         }
         catch(Exception ex) {
-            
+                JOptionPane.showMessageDialog(null, "Problem login to system."); 
         }
     }                                           
 

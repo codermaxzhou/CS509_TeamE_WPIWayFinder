@@ -70,6 +70,7 @@ public class UserLoginFrame extends javax.swing.JFrame {
         jPasswordField1 = new javax.swing.JPasswordField();
         loginButton = new javax.swing.JButton();
         adminButton = new javax.swing.JButton();
+        CreateAccountButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -114,6 +115,25 @@ public class UserLoginFrame extends javax.swing.JFrame {
             }
         });
 
+        CreateAccountButton.setText("<HTML><FONT color=\"#000099\"><U>Click</U></FONT>"
+            + " to create a new account.</HTML>");
+        CreateAccountButton.setBorder(null);
+
+        CreateAccountButton.setBorderPainted(false);
+
+        CreateAccountButton.setContentAreaFilled(false);
+
+        CreateAccountButton.setFocusPainted(false);
+        CreateAccountButton.setHorizontalAlignment(SwingConstants.LEFT);
+        CreateAccountButton.setBorderPainted(false);
+        CreateAccountButton.setOpaque(false);
+        CreateAccountButton.setBackground(Color.WHITE);
+        CreateAccountButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CreateAccountButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -134,7 +154,8 @@ public class UserLoginFrame extends javax.swing.JFrame {
                             .addComponent(adminButton)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(userTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)))))
+                                .addComponent(userTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
+                            .addComponent(CreateAccountButton))))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -153,7 +174,9 @@ public class UserLoginFrame extends javax.swing.JFrame {
                 .addComponent(loginButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(adminButton)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(CreateAccountButton)
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -198,14 +221,14 @@ public class UserLoginFrame extends javax.swing.JFrame {
                 
             }
             else if(count > 1) {
-                JOptionPane.showMessageDialog(null, "duplicate users found!"); 
+                JOptionPane.showMessageDialog(null, "Duplicate users found."); 
             }
             else {
                 JOptionPane.showMessageDialog(null, "Username or Password Incorrect!"); 
             }
         }
         catch(Exception ex) {
-            
+            JOptionPane.showMessageDialog(null, "Problem login to system."); 
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
@@ -219,6 +242,12 @@ public class UserLoginFrame extends javax.swing.JFrame {
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordField1ActionPerformed
+
+    private void CreateAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateAccountButtonActionPerformed
+        // TODO add your handling code here:
+        CreateAccountFrame caf = new CreateAccountFrame();
+        caf.setVisible(true);
+    }//GEN-LAST:event_CreateAccountButtonActionPerformed
 
 
     /**
@@ -265,6 +294,7 @@ public class UserLoginFrame extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton CreateAccountButton;
     private javax.swing.JButton adminButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
