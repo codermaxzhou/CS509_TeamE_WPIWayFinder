@@ -26,6 +26,7 @@ public class RightPanel extends javax.swing.JPanel {
     public RightPanel(AdminFrame frame) {
         this.frame = frame;
         initComponents();
+
     }
 
     /**
@@ -59,11 +60,20 @@ public class RightPanel extends javax.swing.JPanel {
 
         pointButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/CircledDot-50.png"))); // NOI18N
         pointButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                pointButtonMousePressed(evt);
+            }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 pointButtonMouseReleased(evt);
             }
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 pointButtonMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                pointButtonMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                pointButtonMouseEntered(evt);
             }
         });
 
@@ -72,12 +82,24 @@ public class RightPanel extends javax.swing.JPanel {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 locationButtonMouseReleased(evt);
             }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                locationButtonMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                locationButtonMouseEntered(evt);
+            }
         });
 
         edgeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/WaypointMap-50.png"))); // NOI18N
         edgeButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 edgeButtonMouseReleased(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                edgeButtonMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                edgeButtonMouseEntered(evt);
             }
         });
 
@@ -160,6 +182,49 @@ public class RightPanel extends javax.swing.JPanel {
         frame.button = AdminFrame.Button.EDGE;
         //frame.map.addMouseListener(frame);
     }//GEN-LAST:event_edgeButtonMouseReleased
+
+    private void pointButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pointButtonMouseEntered
+        this.pointButton.setBounds(this.pointButton.getX() - 5, this.pointButton.getY() - 10,
+           this.pointButton.getHeight() , this.pointButton.getWidth() );
+        this.pointButton.setToolTipText("Click to add points");
+        this.repaint();
+    }//GEN-LAST:event_pointButtonMouseEntered
+
+    private void pointButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pointButtonMouseExited
+         this.pointButton.setBounds(this.pointButton.getX() + 5, this.pointButton.getY() + 10,
+           this.pointButton.getHeight() , this.pointButton.getWidth() );
+        this.repaint();
+    }//GEN-LAST:event_pointButtonMouseExited
+
+    private void pointButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pointButtonMousePressed
+
+    }//GEN-LAST:event_pointButtonMousePressed
+
+    private void locationButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_locationButtonMouseEntered
+        this.locationButton.setBounds(this.locationButton.getX() - 5, this.locationButton.getY() - 10,
+           this.locationButton.getHeight() , this.locationButton.getWidth() );
+        this.locationButton.setToolTipText("Click to add locations");
+        this.repaint();
+    }//GEN-LAST:event_locationButtonMouseEntered
+
+    private void locationButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_locationButtonMouseExited
+         this.locationButton.setBounds(this.locationButton.getX() + 5, this.locationButton.getY() + 10,
+           this.locationButton.getHeight() , this.locationButton.getWidth() );
+        this.repaint();
+    }//GEN-LAST:event_locationButtonMouseExited
+
+    private void edgeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_edgeButtonMouseEntered
+        this.edgeButton.setBounds(this.edgeButton.getX() - 5, this.edgeButton.getY() - 10,
+           this.edgeButton.getHeight() , this.edgeButton.getWidth() );
+        this.edgeButton.setToolTipText("Click to add edges");
+        this.repaint();
+    }//GEN-LAST:event_edgeButtonMouseEntered
+
+    private void edgeButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_edgeButtonMouseExited
+         this.edgeButton.setBounds(this.edgeButton.getX() + 5, this.edgeButton.getY() + 10,
+           this.edgeButton.getHeight() , this.edgeButton.getWidth() );
+        this.repaint();
+    }//GEN-LAST:event_edgeButtonMouseExited
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
