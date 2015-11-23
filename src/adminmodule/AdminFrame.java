@@ -54,11 +54,9 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     Point startpoint = null;
     Point endpoint = null;
     int tempMapID = -1;
-
-    public static void main(String[] args) throws SQLException, IOException {
-        System.out.println("start...");
-        AdminFrame f = new AdminFrame();
-        f.init();
+    
+    public AdminFrame() throws SQLException, IOException {
+        this.init();
     }
 
     public void init() throws SQLException, IOException {
@@ -376,4 +374,10 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
 
     }
 
+    
+    public static void main(String[] args) throws SQLException, IOException {
+        System.out.println("start...");
+        AdminFrame f = new AdminFrame();
+    }
+        
 }
