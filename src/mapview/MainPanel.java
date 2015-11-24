@@ -17,6 +17,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -38,6 +39,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import jdbc.JDBC;
+import net.java.balloontip.CustomBalloonTip;
+import net.java.balloontip.examples.complete.Utils;
+import net.java.balloontip.utils.ToolTipUtils;
 
 /**
  *
@@ -102,6 +106,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
     AutoSuggestor startAutoSuggestor;
     AutoSuggestor endAutoSuggestor;
+    
+    private ArrayList<CustomBalloonTip> tipList = new ArrayList<>();
 
     // Timer 
     public Timer timer;
@@ -463,6 +469,14 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         this.setShowAllPins(false);
 
         pins.clear();
+        
+        for(CustomBalloonTip tip : tipList) {
+            ToolTipUtils.toolTipToBalloon(tip);
+            tip.setVisible(false);
+            tip.closeBalloon();
+        }
+        
+        tipList.clear();
 
         for (Location p : allLocationList) {
             // 判断location的mapID 就可以判断显示那张地图 
@@ -482,10 +496,23 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
                 pins.add(p);
                 break;
-
             }
-            repaint();
         }
+        
+        for(Location p : pins) {
+                CustomBalloonTip tip = new CustomBalloonTip(this, 
+                    new ToolTipPanel("/Users/Yihao/Desktop/sample.png", p.name, p.description),
+                    new Rectangle(p.point.X - 5, p.point.Y - 5, 20, 20),
+                    Utils.createBalloonTipStyle(),
+                    Utils.createBalloonTipPositioner(), 
+                    null);
+
+                tipList.add(tip);
+
+                ToolTipUtils.balloonToToolTip(tip, 200, 3000);
+        }
+        
+        repaint();
     }
 
     /**
@@ -499,6 +526,14 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
         Graphics g = this.getGraphics();
         pins.clear();
+        
+        for(CustomBalloonTip tip : tipList) {
+            ToolTipUtils.toolTipToBalloon(tip);
+            tip.setVisible(false);
+            tip.closeBalloon();
+        }
+        
+        tipList.clear();
 
         for (Location p : locationList) {
             switch (p.category) {
@@ -536,6 +571,19 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                 default:
                     break;
             }
+        }
+        
+        for(Location p : pins) {
+            CustomBalloonTip tip = new CustomBalloonTip(this, 
+                new ToolTipPanel("/Users/Yihao/Desktop/sample.png", p.name, p.description),
+                new Rectangle(p.point.X - 5, p.point.Y - 5, 20, 20),
+                Utils.createBalloonTipStyle(),
+                Utils.createBalloonTipPositioner(), 
+                null);
+            
+            tipList.add(tip);
+            
+            ToolTipUtils.balloonToToolTip(tip, 200, 3000);
         }
 
         repaint();
