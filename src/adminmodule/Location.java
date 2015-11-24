@@ -1,5 +1,7 @@
 package adminmodule;
 
+import java.awt.Image;
+
 public class Location {
     public enum Category { DINING, ATM, ADMIN, PARKING, CLASSROOM, RESTROOM };   // we will expand this list later
     
@@ -9,7 +11,8 @@ public class Location {
     public String description;                              // Description of the location
     public int locationID;                                  // The primary key of this location from the DB
     //#############mxie
-    public String path;                                     //store the picture for location
+    public String path;                         //store the picture for location
+    public Image image;
     public Location() {
     
     }

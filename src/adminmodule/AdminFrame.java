@@ -137,12 +137,9 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     public void deletePoint(Point pt) {
         ArrayList<Edge> copy = new ArrayList<>();
         copy = (ArrayList<Edge>) edges.clone();
-        //deletedPoints.add(pt);
 
         maps.get(left.mapList.getSelectedIndex()).addDeletedPointID(pt.pointID);
-
-        points.remove(pt);
-
+        
         for (Edge e : copy) {
             if (e.startPoint.equals(pt)) {
                 deleteEdge(e);
@@ -151,7 +148,24 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
                 deleteEdge(e);
             }
         }
-        //System.out.println(deletedPoints);
+        
+        if(pt.type == Point.Type.CONNECTION) {
+            for(int i = 0; i < maps.size(); ++i) {
+                copy = (ArrayList<Edge>) maps.get(i).edgeList.clone();
+                for(Edge e : copy) {
+                    if (e.startPoint.equals(pt)) {
+                        e.endPoint.type = Point.Type.WAYPOINT;
+                        maps.get(i).edgeList.remove(e);
+                    }
+                    if (e.endPoint.equals(pt)) {
+                        e.startPoint.type = Point.Type.WAYPOINT;
+                        maps.get(i).edgeList.remove(e);
+                    }
+                }
+            }
+        }
+
+        points.remove(pt);
     }
 
     public void deleteLocation(Location lc) {
@@ -164,6 +178,10 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     public void deleteEdge(Edge ed) {
         //deletedEdges.add(ed);
         maps.get(left.mapList.getSelectedIndex()).addDeletedEdgeID(ed.edgeID);
+        if(ed.startMapID != ed.endMapID) {
+            ed.startPoint.type = Point.Type.WAYPOINT;
+            ed.endPoint.type = Point.Type.WAYPOINT;
+        }
         edges.remove(ed);
     }
 

@@ -16,6 +16,7 @@ import adminmodule.Location;
 import adminmodule.Map;
 import adminmodule.MapInfo;
 import adminmodule.Point;
+import static com.sun.webkit.graphics.WCImage.getImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,6 +33,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
+import mapview.LocationThread;
 
 /**
  *
@@ -83,7 +85,7 @@ public class JDBC {
    }
    
    public MapInfo getMapInfo(int MapID, Map map) throws SQLException {
-       String query = "SELECT locationID, pointID, category, name, description, mapID FROM Location WHERE MapID = " + MapID + ";";
+       String query = "SELECT locationID, pointID, category, name, description, path, mapID FROM Location WHERE MapID = " + MapID + ";";
        Statement stmt = conn.createStatement();
        ResultSet rs = stmt.executeQuery(query);
        
@@ -99,6 +101,7 @@ public class JDBC {
            temp.description = rs.getString("Description");
            temp.locationID = rs.getInt("locationID");
            temp.name = rs.getString("name");
+           temp.path=rs.getString("path");
            temp.point = null;
            switch(rs.getString("category")) {
                case "DINING": temp.category = Location.Category.DINING;
@@ -166,6 +169,8 @@ public class JDBC {
            temp.edgeID = rs.getInt("edgeID");
            E.add(temp);
        }
+       LocationThread obj=new LocationThread(L);
+       obj.start();
        
        MapInfo info = new MapInfo();
        info.locations = L;
@@ -183,13 +188,13 @@ public class JDBC {
            if(l.locationID != -1) continue;
            query = "INSERT INTO Location (LocationID, PointID, category, name, path, description, mapID) ";
            query += "VALUES(" + getMaxLocID() + ", " + getMaxPointID() + ", \"" + l.category.toString() + "\", \"" + 
-                    l.name + "\", \"" + l.description + "\", \"" + l.path + "\", " + l.point.map.mapID + ");";
+                    l.name + "\", \"" + l.description + "\", \"" + l.path + "\", " +l.point.map.mapID + ");";
            Statement stmt = conn.createStatement();
            stmt.executeUpdate(query);
            
            l.locationID = getMaxLocID();
            l.point.pointID = getMaxPointID();
-           
+    
            query = "INSERT INTO Point (PointID, x, y, locationID, mapID, type) ";
            query += "VALUES(" + (maxPointID++) + ", " + l.point.X + ", " + 
                     l.point.Y + ", " + (maxLocID++) + ", " + l.point.map.mapID + ", \"" + l.point.type.toString() + "\");";
