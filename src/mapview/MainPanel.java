@@ -54,11 +54,16 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private final JTextField startPointField = new JTextField();
     private final JTextField endPointField = new JTextField();
     private final JLabel profile = new JLabel();
+    private final JLabel leftArrow = new JLabel();
+    private final JLabel rightArrow = new JLabel();
+    
+    
     private final JLabel exchange = new JLabel();
     private final JLabel search = new JLabel();
     private final JLabel home = new JLabel();
     private final JButton searchButton = new JButton();
     private JButton nextButton = new JButton("next routing");
+    
 
     private ArrayList<JLabel> pinList = new ArrayList<JLabel>();
     private final Image pinImage = new ImageIcon(this.getClass().getResource("/icons/marker.png")).getImage();
@@ -92,6 +97,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private boolean showAllPins = false;
     private boolean clear = true;
     private boolean drawMultiRoutes = false;
+    private boolean showWhenClick = false;
     private int clicked = 0;
 
     AutoSuggestor startAutoSuggestor;
@@ -146,11 +152,11 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
             }
         }
+//
+//        Image profileImage = new ImageIcon(this.getClass().getResource("/icons/user.png")).getImage();
+//        ImageIcon profileIcon = new ImageIcon(profileImage);
 
-        Image profileImage = new ImageIcon(this.getClass().getResource("/icons/user.png")).getImage();
-        ImageIcon profileIcon = new ImageIcon(profileImage);
-
-        profile.setIcon(profileIcon);
+      //  profile.setIcon(profileIcon);
 
         Image exchangeImage = new ImageIcon(this.getClass().getResource("/icons/exchange.png")).getImage();
         ImageIcon exchangeIcon = new ImageIcon(exchangeImage);
@@ -164,8 +170,18 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         
         Image homeImage = new ImageIcon(this.getClass().getResource("/icons/home.png")).getImage();
         ImageIcon homeIcon = new ImageIcon(homeImage);
-
+        
         home.setIcon(homeIcon);
+        
+        Image leftImage = new ImageIcon(this.getClass().getResource("/icons/CircleLeft.png")).getImage();
+        ImageIcon leftIcon = new ImageIcon(leftImage);
+        leftArrow.setIcon(leftIcon);
+        
+        Image rightImage = new ImageIcon(this.getClass().getResource("/icons/CircleRight.png")).getImage();
+        ImageIcon rightIcon = new ImageIcon(rightImage);
+        rightArrow.setIcon(rightIcon);
+        
+        
 
         this.add(startPointField);
         this.add(endPointField);
@@ -174,6 +190,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         this.add(profile);
         this.add(exchange);
         this.add(home);
+        this.add(leftArrow);
+        this.add(rightArrow);
+        
 
         BorderLayout layout;
         layout = new BorderLayout();
@@ -200,10 +219,16 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         // adding Listener Here
         search.addMouseListener(this);
         exchange.addMouseListener(this);
+        home.addMouseListener(this);
+        leftArrow.addMouseListener(this);
+        rightArrow.addMouseListener(this);
+        
 
         search.setBounds(380, 10, 30, 30);
-        profile.setBounds(10, 10, 30, 30);
+        home.setBounds(10, 10, 30, 30);
         exchange.setBounds(190, 10, 30, 30);
+        leftArrow.setBounds(800, 10, 50, 50);
+        rightArrow.setBounds(900, 10, 50, 50);
 
         timer = new Timer(100, this);
         timer.setInitialDelay(300);
@@ -239,6 +264,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     public void reloadMap(int mapIndex) {
         map.mapID = mapIndex;
         this.mapIndex = mapIndex;
+        this.showAllPins = false;
+        this.showPins = false;
+        
         MapInfo info = null;
         try {
             info = db.getMapInfo(mapIndex, map); // why do we need map as parameter?
@@ -335,6 +363,11 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
             }
         }
+        
+        if(showWhenClick == true){
+            
+            
+        }
 
         if (isDrawMultiRoutes()) {
 
@@ -370,12 +403,14 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             setDrawMultiRoutes(false);
 
         }
+        
+        
 
     }
 
     // multi map routing 
     public void drawMultiRoute(Location start, Location end) {
-        //System.out.print("enter");
+        
         Graphics g = this.getGraphics();
         g.setColor(Color.red);
 
@@ -477,6 +512,27 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                         pins.add(p);
                     }
                     break;
+                case ATM:
+                    if (category.equals("ATM")) {
+                        pins.add(p);
+                    }
+                    break;
+                case ADMIN:
+                    if (category.equals("ADMIN")) {
+                        pins.add(p);
+                    }
+                    break;
+                case DINING:
+                    if (category.equals("DINING")) {
+                        pins.add(p);
+                    }
+                    break;
+                case PARKING:
+                    if (category.equals("PARKING")) {
+                        pins.add(p);
+                    }
+                    break;
+                
                 default:
                     break;
             }
@@ -506,6 +562,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         String endPointString = endPointField.getText();
 
         if (e.getSource() != search && e.getSource() != exchange) {
+            
+            
             int radius = 50;
             boolean inrange = false;
 
@@ -534,8 +592,10 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                     }
                     
                     // emma new code 
-                    Enter enterMenu = new Enter(temp);
+                    Enter enterMenu = new Enter(temp, this);
+                    
                     enterMenu.setRightBar(mapView.getRightBar());
+                    enterMenu.setSecRightBar(mapView.getSecRightSideBar());
                     enterMenu.show(e.getComponent(), x, y);
 
                 }
@@ -644,12 +704,31 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             }
 
         }
+        
+        if(e.getSource() == rightArrow){
+            for(Map m: allMapList){
+                if(m.name.equals(this.map.name)){
+                    
+                }
+            }
+           // this.reloadMap(this.map.);
+            
+        }
+        if(e.getSource() == leftArrow){
+            
+            
+        }
         // added by emma
         if (e.getSource()== home){
             
-            background = new ImageIcon(this.getClass().getResource("/maps/campus_map.png")).getImage();
-            mapView.getRightBar().campus = true;
-            mapView.getRightBar().inner();        
+           // background = new ImageIcon(this.getClass().getResource("/maps/campus_map.png")).getImage();
+            this.reloadMap(1);  // campus mapID is always 1 
+            mapView.getRightBar().setIsCampus(true);
+            
+            mapView.getSecRightSideBar().removeAll();
+            mapView.getSecRightSideBar().setVisible(false);
+            mapView.getRightBar().repaint();
+                   
             this.repaint();
             
             
