@@ -16,6 +16,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -30,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import jdbc.JDBC;
 
@@ -530,13 +532,26 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
-        //System.out.println(e.getLocationOnScz zreen().x + "  " + e.getLocationOnScreen().y);
+//demo code
+        JPanel panel=new JPanel();
+        JLabel lbl=new JLabel("demo code");
+        ImageIcon icon=new ImageIcon("/Users/xiemingchen/Desktop/mapsrc/wpi_cc.jpg");
+        panel.add(lbl);
+ //demo code       
+        
 
         // TODO Auto-generated method stub
         if (e.getSource() == search) {
             search.setToolTipText("Search Route");
             search.setBounds(search.getX() - 3, search.getY() - 3, search.getWidth(), search.getHeight());
+            //demo
+            JOptionPane.showOptionDialog(null, panel, "demo", JOptionPane.NO_OPTION, JOptionPane.INFORMATION_MESSAGE, icon, null, null);
+            
+        }
+        if (e.getSource() != search){
+            JOptionPane.getRootFrame().dispose();
+            System.out.println("dispose");
+            
         }
         if (e.getSource() == exchange) {
             exchange.setToolTipText("Exchange StartingPoint and Destination");
