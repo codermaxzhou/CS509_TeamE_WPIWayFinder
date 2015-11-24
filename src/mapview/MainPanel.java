@@ -573,6 +573,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                     Enter enterMenu = new Enter(temp, this);
                     
                     enterMenu.setRightBar(mapView.getRightBar());
+                    enterMenu.setSecRightBar(mapView.getSecRightSideBar());
                     enterMenu.show(e.getComponent(), x, y);
 
                 }
@@ -687,6 +688,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
            // background = new ImageIcon(this.getClass().getResource("/maps/campus_map.png")).getImage();
             this.reloadMap(1);  // campus mapID is always 1 
             mapView.getRightBar().setIsCampus(true);
+            
+            mapView.getSecRightSideBar().removeAll();
             mapView.getRightBar().repaint();
                    
             this.repaint();

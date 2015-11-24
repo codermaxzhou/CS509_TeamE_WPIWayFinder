@@ -23,7 +23,7 @@ import javax.swing.JPopupMenu;
 public class Enter extends  JPopupMenu{
     
         private RightBar rightBar ;
-        private MapView mapView;
+        private SecRightSideBar secRightBar;
         private ArrayList<Map> mapList;
         
         
@@ -39,6 +39,7 @@ public class Enter extends  JPopupMenu{
                // mainPanel.reloadMap(location.point.map.mapID);
                 rightBar.setIsCampus(false);
                 rightBar.repaint();
+                secRightBar.repaint();
                 mapList = mainPanel.mapModel.getMapList();
                 for(Map m : mapList){
                     if(location.name.equals(m.name)){
@@ -54,5 +55,12 @@ public class Enter extends  JPopupMenu{
         
     public void setRightBar(RightBar rightBar) {
         this.rightBar = rightBar;
+    }
+
+    /**
+     * @param secRightBar the secRightBar to set
+     */
+    public void setSecRightBar(SecRightSideBar secRightBar) {
+        this.secRightBar = secRightBar;
     }
 }
