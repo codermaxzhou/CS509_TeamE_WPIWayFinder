@@ -375,7 +375,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
     // multi map routing 
     public void drawMultiRoute(Location start, Location end) {
-        //System.out.print("enter");
+        
         Graphics g = this.getGraphics();
         g.setColor(Color.red);
 
@@ -534,7 +534,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                     }
                     
                     // emma new code 
-                    Enter enterMenu = new Enter(temp);
+                    Enter enterMenu = new Enter(temp, this);
+                    
                     enterMenu.setRightBar(mapView.getRightBar());
                     enterMenu.show(e.getComponent(), x, y);
 

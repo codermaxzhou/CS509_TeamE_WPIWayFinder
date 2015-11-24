@@ -11,9 +11,11 @@ package mapview;
  */
 import adminmodule.Location;
 import adminmodule.LocationEdit;
+import adminmodule.Map;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -22,15 +24,27 @@ public class Enter extends  JPopupMenu{
     
         private RightBar rightBar ;
         private MapView mapView;
+        private ArrayList<Map> mapList;
+        
         
         
     
-        public Enter(Location location) {
+        public Enter(Location location, MainPanel mainPanel) {
         JMenuItem item = new JMenuItem("Enter");
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                rightBar.inner();
+//                rightBar.inner();
+                
+               // mainPanel.reloadMap(location.point.map.mapID);
+                mapList = mainPanel.mapModel.getMapList();
+                for(Map m : mapList){
+                    if(location.name.equals(m.name)){
+                        mainPanel.reloadMap(m.mapID);
+                    }
+                }
+                
+                
             }
         });
         this.add(item);

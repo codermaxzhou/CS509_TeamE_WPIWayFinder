@@ -34,7 +34,7 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
 
     public MainPanel mainPanel = null;
     public SecRightSideBar secRightSideBar = null;
-    public HigginsPanel higginsPanel = null;
+    
     public MapView mapView = null;
     public MapModel mapModel = new MapModel(); // other ways??
 
@@ -291,13 +291,7 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
     }//GEN-LAST:event_showButtonMouseClicked
 
     private void goCampusButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_goCampusButtonMouseClicked
-        try {
-            // TODO add your handling code here:
-            mapView.init(higginsPanel);
-
-        } catch (SQLException ex) {
-            Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }//GEN-LAST:event_goCampusButtonMouseClicked
 
 
@@ -354,18 +348,14 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
             for (Map m : allMapList) {
                 if (stringValue.equals(m.name)) {
                     
-                    mainPanel.changeMap(m.mapID);
+//                    mainPanel.changeMap(m.mapID);
 //                    mainPanel.setMapIndex(m.mapID);
+                    mainPanel.reloadMap(m.mapID);
                     mainPanel.setShowAllPins(false);
                     mainPanel.setShowPins(false);
                     mainPanel.setDrawRoutes(false);
                     mainPanel.setShowRoute(false);
-//                    try {
-//                        mainPanel.init();
-//                    } catch (SQLException ex) {
-//                        Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                    mainPanel.repaint();
+                
                 }
 
             }

@@ -36,7 +36,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
     public MainPanel mainPanel = null;
     public SecRightSideBar secRightSideBar = null;
     public MapView mapView = null;
-    public MapModel mapModel = null;
+    public MapModel mapModel = new MapModel();
 
     private JLabel backLabel;
     private JLabel classroomLabel;
@@ -75,6 +75,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
 
     public void init() {
         allMapList = mapModel.getMapList();
+        floorList = new JList();
         for (Map m : allMapList) {
             String mapName = m.name;
             listModel.addElement(mapName);
@@ -109,12 +110,15 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
         classroomIcon = new ImageIcon(getClass().getResource("/icons/classrooml.png"));
         restroomIcon = new ImageIcon(getClass().getResource("/icons/restrooml.png"));
 
+        clearButton = new JButton();
+        showButton = new JButton();
         clearButton.setText("Clear Pins");
         showButton.setText("Show Pins");
 
         floorList.setBorder(javax.swing.BorderFactory.createTitledBorder("Floor "));
         floorList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         floorList.setToolTipText("Choose Floor in Project Center");
+        scrollPane = new JScrollPane();
         scrollPane.setViewportView(floorList);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

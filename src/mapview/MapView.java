@@ -58,7 +58,7 @@ public class MapView extends JFrame{
 
             this.getContentPane().add(secRightSideBar, BorderLayout.CENTER);
 
-            HigginsPanel higginsPanel = new HigginsPanel();
+           
 
             Dimension d = new Dimension(1300, 850);
             this.setSize(d);
@@ -69,7 +69,7 @@ public class MapView extends JFrame{
            // communicate bettween class 
             rightSideBar.mainPanel = panel;
             rightSideBar.secRightSideBar = secRightSideBar;
-            rightSideBar.higginsPanel = higginsPanel;
+           
             rightSideBar.mapView = this;
             rightSideBar.mapModel = mapModel;
             
