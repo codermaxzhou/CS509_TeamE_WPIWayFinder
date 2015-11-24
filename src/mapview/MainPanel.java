@@ -707,8 +707,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         
         if(e.getSource() == rightArrow){
             for(Map m: allMapList){
-                if(m.name.equals(this.map.name)){
-                    
+                if(m.name.equals(this.map.name) && m.floor - this.map.floor == 1 ){
+                    this.reloadMap(m.mapID);
                 }
             }
            // this.reloadMap(this.map.);
@@ -719,7 +719,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             
         }
         // added by emma
-        if (e.getSource()== home){
+        if (e.getSource() == home){
             
            // background = new ImageIcon(this.getClass().getResource("/maps/campus_map.png")).getImage();
             this.reloadMap(1);  // campus mapID is always 1 
