@@ -61,7 +61,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
     private ImageIcon classroomIcon;
     private ImageIcon restroomIcon;
 
-    public boolean campus = false;
+    private boolean isCampus = true;
 
     private DefaultListModel listModel = new DefaultListModel();
     private ArrayList<Map> allMapList = new ArrayList<>();
@@ -107,9 +107,14 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
         parkingIcon = new ImageIcon(getClass().getResource("/icons/parking.png"));
         parkingLabel.setIcon(parkingIcon);
 
+        classroomLabel = new JLabel();
         classroomIcon = new ImageIcon(getClass().getResource("/icons/classrooml.png"));
+        classroomLabel.setIcon(classroomIcon);
+        
+        restroomLabel = new JLabel();
         restroomIcon = new ImageIcon(getClass().getResource("/icons/restrooml.png"));
-
+        restroomLabel.setIcon(restroomIcon);
+        
         clearButton = new JButton();
         showButton = new JButton();
         clearButton.setText("Clear Pins");
@@ -120,94 +125,182 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
         floorList.setToolTipText("Choose Floor in Project Center");
         scrollPane = new JScrollPane();
         scrollPane.setViewportView(floorList);
+        
+        
+        
+            javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+            this.setLayout(layout);
+            layout.setHorizontalGroup(
+                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addContainerGap(41, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(buildingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(diningLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(gymLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(libraryLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(parkingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            )
+                            .addGap(38, 38, 38))
+            );
+            layout.setVerticalGroup(
+                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                            .addGap(100, 100, 100)
+                            .addComponent(buildingLabel)
+                            .addGap(68, 68, 68)
+                            .addComponent(diningLabel)
+                            .addGap(68, 68, 68)
+                            .addComponent(gymLabel)
+                            .addGap(68, 68, 68)
+                            .addComponent(libraryLabel)
+                            .addGap(68, 68, 68)
+                            .addComponent(parkingLabel)
+                            .addContainerGap(133, Short.MAX_VALUE))
+            );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(41, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(buildingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(diningLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(gymLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(libraryLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(parkingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        )
-                        .addGap(38, 38, 38))
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                        .addGap(100, 100, 100)
-                        .addComponent(buildingLabel)
-                        .addGap(68, 68, 68)
-                        .addComponent(diningLabel)
-                        .addGap(68, 68, 68)
-                        .addComponent(gymLabel)
-                        .addGap(68, 68, 68)
-                        .addComponent(libraryLabel)
-                        .addGap(68, 68, 68)
-                        .addComponent(parkingLabel)
-                        .addContainerGap(133, Short.MAX_VALUE))
-        );
+        
+       
 
         buildingLabel.addMouseListener(this);
         diningLabel.addMouseListener(this);
         gymLabel.addMouseListener(this);
         libraryLabel.addMouseListener(this);
         parkingLabel.addMouseListener(this);
+        classroomLabel.addMouseListener(this);
+        restroomLabel.addMouseListener(this);
 
         clearButton.addMouseListener(this);
         showButton.addMouseListener(this);
 
     }
-
-    public void inner() {
-        System.out.println(campus);
-        if (!campus) {
-
-            buildingLabel.setIcon(classroomIcon);
-            diningLabel.setIcon(restroomIcon);
-
-            gymLabel.setVisible(campus);
-            libraryLabel.setVisible(campus);
-            parkingLabel.setVisible(campus);
-
-        } else {
-
-            buildingLabel.setIcon(backIcon);
-            diningLabel.setIcon(diningIcon);
-            gymLabel.setIcon(gymIcon);
-            libraryLabel.setIcon(libararyIcon);
-            parkingLabel.setIcon(parkingIcon);
-            gymLabel.setVisible(campus);
-            libraryLabel.setVisible(campus);
-            parkingLabel.setVisible(campus);
+    
+    @Override
+    public void paintComponent(Graphics g){
+         this.removeAll();
+         if (isIsCampus()) {
+            javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+            this.setLayout(layout);
+            layout.setHorizontalGroup(
+                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addContainerGap(41, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(buildingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(diningLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(gymLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(libraryLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(parkingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            )
+                            .addGap(38, 38, 38))
+            );
+            layout.setVerticalGroup(
+                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                            .addGap(100, 100, 100)
+                            .addComponent(buildingLabel)
+                            .addGap(68, 68, 68)
+                            .addComponent(diningLabel)
+                            .addGap(68, 68, 68)
+                            .addComponent(gymLabel)
+                            .addGap(68, 68, 68)
+                            .addComponent(libraryLabel)
+                            .addGap(68, 68, 68)
+                            .addComponent(parkingLabel)
+                            .addContainerGap(133, Short.MAX_VALUE))
+            );
 
         }
+        else{
+            
+            
+            javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+            this.setLayout(layout);
+            layout.setHorizontalGroup(
+                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addContainerGap(41, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(classroomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(restroomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    
+                            )
+                            .addGap(38, 38, 38))
+            );
+            layout.setVerticalGroup(
+                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                            .addGap(100, 100, 100)
+                            .addComponent(classroomLabel)
+                            .addGap(68, 68, 68)
+                            .addComponent(restroomLabel)
+                            .addContainerGap(133, Short.MAX_VALUE))
+            );
 
+            
+            
+            
+            
+        }
+
+        
+        
     }
+
+//    public void inner() {
+//        System.out.println(campus);
+//        if (!campus) {
+//            // need to be changed 
+//            
+//            this.removeAll();
+//            
+//            
+//            
+//            
+//            
+//            buildingLabel.setIcon(classroomIcon);
+//            diningLabel.setIcon(restroomIcon);
+//
+//            gymLabel.setVisible(campus);
+//            libraryLabel.setVisible(campus);
+//            parkingLabel.setVisible(campus);
+//
+//        } else {
+//
+//            buildingLabel.setIcon(backIcon);
+//            diningLabel.setIcon(diningIcon);
+//            gymLabel.setIcon(gymIcon);
+//            libraryLabel.setIcon(libararyIcon);
+//            parkingLabel.setIcon(parkingIcon);
+//            gymLabel.setVisible(campus);
+//            libraryLabel.setVisible(campus);
+//            parkingLabel.setVisible(campus);
+//
+//        }
+//
+//    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
 
         //category click 
-        if (campus) {
+        if (isIsCampus()) {
             if (e.getSource() == buildingLabel) {
 
                 secRightSideBar.setVisible(true);
                 secRightSideBar.setBackground(new java.awt.Color(0, 178, 219));
 
-                mainPanel.showLocationPin("BUILDING");
+                mainPanel.showLocationPin("ADMIN");
+
+                
 
                 try {
-
-                    secRightSideBar.ShowLocationName("BUILDING");
-                    secRightSideBar.timer.start();
+                    secRightSideBar.ShowLocationName("ADMIN");
                 } catch (SQLException ex) {
-                    Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                    secRightSideBar.timer.start();
+                
 
             }
             if (e.getSource() == diningLabel) {
@@ -218,12 +311,11 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                 mainPanel.showLocationPin("DINING");
 
                 try {
-
                     secRightSideBar.ShowLocationName("DINING");
-                    secRightSideBar.timer.start();
                 } catch (SQLException ex) {
-                    Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                    secRightSideBar.timer.start();
             }
             if (e.getSource() == gymLabel) {
 
@@ -233,12 +325,11 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                 mainPanel.showLocationPin("GYM");
 
                 try {
-
                     secRightSideBar.ShowLocationName("GYM");
-                    secRightSideBar.timer.start();
                 } catch (SQLException ex) {
-                    Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                    secRightSideBar.timer.start();
             }
 
             if (e.getSource() == libraryLabel) {
@@ -249,12 +340,11 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                 mainPanel.showLocationPin("LIBRARY");
 
                 try {
-
                     secRightSideBar.ShowLocationName("LIBRARY");
-                    secRightSideBar.timer.start();
                 } catch (SQLException ex) {
-                    Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                    secRightSideBar.timer.start();
             }
             if (e.getSource() == parkingLabel) {
 
@@ -264,12 +354,11 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                 mainPanel.showLocationPin("PARKING");
 
                 try {
-
                     secRightSideBar.ShowLocationName("PARKING");
-                    secRightSideBar.timer.start();
                 } catch (SQLException ex) {
-                    Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                    secRightSideBar.timer.start();
             }
         } else {
             if (e.getSource() == buildingLabel) {
@@ -278,12 +367,11 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                 mainPanel.showLocationPin("CLASSROOM");
 
                 try {
-
                     secRightSideBar.ShowLocationName("CLASSROOM");
-                    secRightSideBar.timer.start();
                 } catch (SQLException ex) {
-                    Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                    secRightSideBar.timer.start();
             } // doesn't work
             else {
                 if (e.getSource() == diningLabel) {
@@ -292,12 +380,11 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                     mainPanel.showLocationPin("RESTROOM");
 
                     try {
-
-                        secRightSideBar.ShowLocationName("RESTROOM");
-                        secRightSideBar.timer.start();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    secRightSideBar.ShowLocationName("RESTROOM");
+                } catch (SQLException ex) {
+                    Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                    secRightSideBar.timer.start();
                 }
             }
         }
@@ -357,6 +444,20 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
             }
 
         }
+    }
+
+    /**
+     * @return the isCampus
+     */
+    public boolean isIsCampus() {
+        return isCampus;
+    }
+
+    /**
+     * @param isCampus the isCampus to set
+     */
+    public void setIsCampus(boolean isCampus) {
+        this.isCampus = isCampus;
     }
 
 }

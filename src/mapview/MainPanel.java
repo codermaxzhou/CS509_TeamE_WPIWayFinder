@@ -490,6 +490,27 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                         pins.add(p);
                     }
                     break;
+                case ATM:
+                    if (category.equals("ATM")) {
+                        pins.add(p);
+                    }
+                    break;
+                case ADMIN:
+                    if (category.equals("ADMIN")) {
+                        pins.add(p);
+                    }
+                    break;
+                case DINING:
+                    if (category.equals("DINING")) {
+                        pins.add(p);
+                    }
+                    break;
+                case PARKING:
+                    if (category.equals("PARKING")) {
+                        pins.add(p);
+                    }
+                    break;
+                
                 default:
                     break;
             }
@@ -665,8 +686,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             
            // background = new ImageIcon(this.getClass().getResource("/maps/campus_map.png")).getImage();
             this.reloadMap(1);  // campus mapID is always 1 
-            mapView.getRightBar().campus = true;
-            mapView.getRightBar().inner();        
+            mapView.getRightBar().setIsCampus(true);
+            mapView.getRightBar().repaint();
+                   
             this.repaint();
             
             

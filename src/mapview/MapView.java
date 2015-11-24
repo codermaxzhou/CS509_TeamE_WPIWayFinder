@@ -25,8 +25,9 @@ public class MapView extends JFrame{
         private MapModel mapModel = new MapModel();
 	private MainPanel mainPanel = new MainPanel(this);
 	private RightSideBar rightSideBar = new RightSideBar();
+        
         private SecRightSideBar secRightSideBar = new SecRightSideBar();
-        private RightBar RightBar = new RightBar();
+        private RightBar rightBar = new RightBar();
       
         
     
@@ -51,9 +52,11 @@ public class MapView extends JFrame{
             panel.setPreferredSize(new Dimension(980, 800));
 
             this.getContentPane().add(panel, BorderLayout.WEST);
-            rightSideBar.setPreferredSize(new Dimension(150, 800));
+            //rightSideBar.setPreferredSize(new Dimension(150, 800));
+            rightBar.setPreferredSize(new Dimension(150, 800));
 
-            this.getContentPane().add(rightSideBar, BorderLayout.EAST);
+            //this.getContentPane().add(rightSideBar, BorderLayout.EAST);
+            this.getContentPane().add(rightBar, BorderLayout.EAST);
             secRightSideBar.setPreferredSize(new Dimension(170, 800));
 
             this.getContentPane().add(secRightSideBar, BorderLayout.CENTER);
@@ -73,6 +76,12 @@ public class MapView extends JFrame{
             rightSideBar.mapView = this;
             rightSideBar.mapModel = mapModel;
             
+            
+            rightBar.mainPanel = panel;
+            rightBar.secRightSideBar = secRightSideBar;
+            rightBar.mapView = this;
+            rightBar.mapModel = mapModel;
+            
             secRightSideBar.mainPanel = panel;
             secRightSideBar.mapModel = mapModel;
             
@@ -86,7 +95,7 @@ public class MapView extends JFrame{
         }
         
         public RightBar getRightBar() {
-            return this.RightBar;
+            return this.rightBar;
         }
 }
 
