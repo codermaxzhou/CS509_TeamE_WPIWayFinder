@@ -24,8 +24,8 @@
                           <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="locationButton" min="-2" max="-2" attributes="0"/>
-                              <Component id="pointButton" min="-2" pref="53" max="-2" attributes="0"/>
                               <Component id="edgeButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="pointButton" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -47,7 +47,7 @@
               <Component id="locationButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="149" max="-2" attributes="0"/>
               <Component id="edgeButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="152" max="32767" attributes="0"/>
+              <EmptySpace pref="110" max="32767" attributes="0"/>
               <Component id="saveButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="resetButton" min="-2" max="-2" attributes="0"/>
@@ -76,7 +76,7 @@
     <Component class="javax.swing.JLabel" name="pointButton">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/icons/CircledDot-50.png"/>
+          <Image iconType="3" name="/icons/center_direction_bw.png"/>
         </Property>
       </Properties>
       <Events>
@@ -90,10 +90,11 @@
     <Component class="javax.swing.JLabel" name="locationButton">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/icons/LocationFilled-50.png"/>
+          <Image iconType="3" name="/icons/geo_fence_bw.png"/>
         </Property>
       </Properties>
       <Events>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="locationButtonMousePressed"/>
         <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="locationButtonMouseReleased"/>
         <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="locationButtonMouseExited"/>
         <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="locationButtonMouseEntered"/>
@@ -102,10 +103,11 @@
     <Component class="javax.swing.JLabel" name="edgeButton">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/icons/WaypointMap-50.png"/>
+          <Image iconType="3" name="/icons/waypoint_map_bw.png"/>
         </Property>
       </Properties>
       <Events>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="edgeButtonMousePressed"/>
         <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="edgeButtonMouseReleased"/>
         <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="edgeButtonMouseExited"/>
         <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="edgeButtonMouseEntered"/>
