@@ -39,7 +39,8 @@ public class Enter extends  JPopupMenu{
                // mainPanel.reloadMap(location.point.map.mapID);
                 rightBar.setIsCampus(false);
                 rightBar.repaint();
-                secRightBar.repaint();
+                secRightBar.removeAll();
+                secRightBar.setVisible(false);
                 mapList = mainPanel.mapModel.getMapList();
                 for(Map m : mapList){
                     if(location.name.equals(m.name)){

@@ -54,12 +54,16 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private final JTextField startPointField = new JTextField();
     private final JTextField endPointField = new JTextField();
     private final JLabel profile = new JLabel();
+    private final JLabel leftArrow = new JLabel();
+    private final JLabel rightArrow = new JLabel();
+    
     
     private final JLabel exchange = new JLabel();
     private final JLabel search = new JLabel();
     private final JLabel home = new JLabel();
     private final JButton searchButton = new JButton();
     private JButton nextButton = new JButton("next routing");
+    
 
     private ArrayList<JLabel> pinList = new ArrayList<JLabel>();
     private final Image pinImage = new ImageIcon(this.getClass().getResource("/icons/marker.png")).getImage();
@@ -166,8 +170,18 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         
         Image homeImage = new ImageIcon(this.getClass().getResource("/icons/home.png")).getImage();
         ImageIcon homeIcon = new ImageIcon(homeImage);
-
+        
         home.setIcon(homeIcon);
+        
+        Image leftImage = new ImageIcon(this.getClass().getResource("/icons/CircleLeft.png")).getImage();
+        ImageIcon leftIcon = new ImageIcon(leftImage);
+        leftArrow.setIcon(leftIcon);
+        
+        Image rightImage = new ImageIcon(this.getClass().getResource("/icons/CircleRight.png")).getImage();
+        ImageIcon rightIcon = new ImageIcon(rightImage);
+        rightArrow.setIcon(rightIcon);
+        
+        
 
         this.add(startPointField);
         this.add(endPointField);
@@ -176,6 +190,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         this.add(profile);
         this.add(exchange);
         this.add(home);
+        this.add(leftArrow);
+        this.add(rightArrow);
+        
 
         BorderLayout layout;
         layout = new BorderLayout();
@@ -203,10 +220,15 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         search.addMouseListener(this);
         exchange.addMouseListener(this);
         home.addMouseListener(this);
+        leftArrow.addMouseListener(this);
+        rightArrow.addMouseListener(this);
+        
 
         search.setBounds(380, 10, 30, 30);
         home.setBounds(10, 10, 30, 30);
         exchange.setBounds(190, 10, 30, 30);
+        leftArrow.setBounds(800, 10, 50, 50);
+        rightArrow.setBounds(900, 10, 50, 50);
 
         timer = new Timer(100, this);
         timer.setInitialDelay(300);
@@ -682,6 +704,20 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             }
 
         }
+        
+        if(e.getSource() == rightArrow){
+            for(Map m: allMapList){
+                if(m.name.equals(this.map.name)){
+                    
+                }
+            }
+           // this.reloadMap(this.map.);
+            
+        }
+        if(e.getSource() == leftArrow){
+            
+            
+        }
         // added by emma
         if (e.getSource()== home){
             
@@ -690,6 +726,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             mapView.getRightBar().setIsCampus(true);
             
             mapView.getSecRightSideBar().removeAll();
+            mapView.getSecRightSideBar().setVisible(false);
             mapView.getRightBar().repaint();
                    
             this.repaint();
