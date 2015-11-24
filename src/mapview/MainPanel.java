@@ -54,6 +54,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private final JTextField startPointField = new JTextField();
     private final JTextField endPointField = new JTextField();
     private final JLabel profile = new JLabel();
+    
     private final JLabel exchange = new JLabel();
     private final JLabel search = new JLabel();
     private final JLabel home = new JLabel();
@@ -92,6 +93,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private boolean showAllPins = false;
     private boolean clear = true;
     private boolean drawMultiRoutes = false;
+    private boolean showWhenClick = false;
     private int clicked = 0;
 
     AutoSuggestor startAutoSuggestor;
@@ -146,11 +148,11 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
             }
         }
+//
+//        Image profileImage = new ImageIcon(this.getClass().getResource("/icons/user.png")).getImage();
+//        ImageIcon profileIcon = new ImageIcon(profileImage);
 
-        Image profileImage = new ImageIcon(this.getClass().getResource("/icons/user.png")).getImage();
-        ImageIcon profileIcon = new ImageIcon(profileImage);
-
-        profile.setIcon(profileIcon);
+      //  profile.setIcon(profileIcon);
 
         Image exchangeImage = new ImageIcon(this.getClass().getResource("/icons/exchange.png")).getImage();
         ImageIcon exchangeIcon = new ImageIcon(exchangeImage);
@@ -200,9 +202,10 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         // adding Listener Here
         search.addMouseListener(this);
         exchange.addMouseListener(this);
+        home.addMouseListener(this);
 
         search.setBounds(380, 10, 30, 30);
-        profile.setBounds(10, 10, 30, 30);
+        home.setBounds(10, 10, 30, 30);
         exchange.setBounds(190, 10, 30, 30);
 
         timer = new Timer(100, this);
@@ -239,6 +242,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     public void reloadMap(int mapIndex) {
         map.mapID = mapIndex;
         this.mapIndex = mapIndex;
+        this.showAllPins = false;
+        this.showPins = false;
+        
         MapInfo info = null;
         try {
             info = db.getMapInfo(mapIndex, map); // why do we need map as parameter?
@@ -335,6 +341,11 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
             }
         }
+        
+        if(showWhenClick == true){
+            
+            
+        }
 
         if (isDrawMultiRoutes()) {
 
@@ -370,6 +381,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             setDrawMultiRoutes(false);
 
         }
+        
+        
 
     }
 
@@ -506,6 +519,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         String endPointString = endPointField.getText();
 
         if (e.getSource() != search && e.getSource() != exchange) {
+            
+            
             int radius = 50;
             boolean inrange = false;
 
@@ -648,7 +663,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         // added by emma
         if (e.getSource()== home){
             
-            background = new ImageIcon(this.getClass().getResource("/maps/campus_map.png")).getImage();
+           // background = new ImageIcon(this.getClass().getResource("/maps/campus_map.png")).getImage();
+            this.reloadMap(1);  // campus mapID is always 1 
             mapView.getRightBar().campus = true;
             mapView.getRightBar().inner();        
             this.repaint();
