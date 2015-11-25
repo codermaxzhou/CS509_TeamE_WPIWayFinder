@@ -194,6 +194,12 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                                     .addComponent(parkingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                             )
                             .addGap(38, 38, 38))
+                    .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(showButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(clearButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGap(25, 25, 25))
                     
             );
             layout.setVerticalGroup(
@@ -209,7 +215,12 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                             .addComponent(libraryLabel)
                             .addGap(68, 68, 68)
                             .addComponent(parkingLabel)
-                            .addContainerGap(133, Short.MAX_VALUE))
+                            .addGap(29, 29, 29)
+                            .addComponent(clearButton)
+                            .addGap(18, 18, 18)
+                            .addComponent(showButton)
+                            .addContainerGap(41, Short.MAX_VALUE))
+                           
             );
 
         } else {
@@ -347,6 +358,15 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
 //    }
     @Override
     public void mouseClicked(MouseEvent e) {
+        
+        if (e.getSource() == showButton) {
+            mainPanel.showPins();
+        }
+
+        if (e.getSource() == clearButton) {
+
+            mainPanel.clearPins();
+        }
 
         //category click 
         if (e.getSource() == buildingLabel) {
@@ -447,14 +467,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                 }
                 secRightSideBar.timer.start();
             }
-            if (e.getSource() == showButton) {
-                mainPanel.showPins();
-            }
 
-            if (e.getSource() == clearButton) {
-                
-                mainPanel.clearPins();
-            }
 
         }
             
