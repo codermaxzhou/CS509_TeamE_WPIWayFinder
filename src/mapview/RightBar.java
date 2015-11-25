@@ -194,6 +194,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                                     .addComponent(parkingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                             )
                             .addGap(38, 38, 38))
+                    
             );
             layout.setVerticalGroup(
                     layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,6 +225,12 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                                     .addComponent(restroomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                             )
                             .addGap(38, 38, 38))
+                    .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(showButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(clearButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGap(25, 25, 25))
             );
             layout.setVerticalGroup(
                     layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -232,7 +239,11 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                             .addComponent(classroomLabel)
                             .addGap(68, 68, 68)
                             .addComponent(restroomLabel)
-                            .addContainerGap(133, Short.MAX_VALUE))
+                            .addGap(409, 409, 409)
+                            .addComponent(clearButton)
+                            .addGap(18, 18, 18)
+                            .addComponent(showButton)
+                            .addContainerGap(41, Short.MAX_VALUE))
             );
 
         }
@@ -422,7 +433,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                 Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
             }
             secRightSideBar.timer.start();
-        } // doesn't work
+        } 
         else {
             if (e.getSource() == restroomLabel) {
                 secRightSideBar.setVisible(true);
@@ -436,9 +447,22 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                 }
                 secRightSideBar.timer.start();
             }
-        }
+            if (e.getSource() == showButton) {
+                mainPanel.showPins();
+            }
 
-    }
+            if (e.getSource() == clearButton) {
+                
+                mainPanel.clearPins();
+            }
+
+        }
+            
+        }
+        
+
+
+   
 
     @Override
     public void mousePressed(MouseEvent e) {

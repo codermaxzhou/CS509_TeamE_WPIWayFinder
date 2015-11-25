@@ -227,7 +227,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         search.setBounds(380, 10, 30, 30);
         home.setBounds(10, 10, 30, 30);
         exchange.setBounds(190, 10, 30, 30);
-        leftArrow.setBounds(800, 10, 50, 50);
+        leftArrow.setBounds(850, 10, 50, 50);
         rightArrow.setBounds(900, 10, 50, 50);
 
         timer = new Timer(100, this);
