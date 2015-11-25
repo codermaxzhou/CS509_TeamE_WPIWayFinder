@@ -382,7 +382,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         
         for(Location p : pins) {
                 CustomBalloonTip tip = new CustomBalloonTip(this, 
-                    new ToolTipPanel("/Users/Yihao/Desktop/sample.png", p.name, p.description),
+                    new ToolTipPanel(p.image, p.name, p.description),
                     new Rectangle(p.point.X - 5, p.point.Y - 5, 20, 20),
                     Utils.createBalloonTipStyle(),
                     Utils.createBalloonTipPositioner(), 
@@ -435,7 +435,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         
         for(Location p : pins) {
             CustomBalloonTip tip = new CustomBalloonTip(this, 
-                new ToolTipPanel("/Users/Yihao/Desktop/sample.png", p.name, p.description),
+                new ToolTipPanel(p.image, p.name, p.description),
                 new Rectangle(p.point.X - 5, p.point.Y - 5, 20, 20),
                 Utils.createBalloonTipStyle(),
                 Utils.createBalloonTipPositioner(), 

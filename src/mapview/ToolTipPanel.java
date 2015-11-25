@@ -6,13 +6,14 @@
 package mapview;
 
 import java.awt.BorderLayout;
+import java.awt.Image;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class ToolTipPanel extends JPanel {
-    ToolTipPanel(String path, String locName, String desc) {
+    ToolTipPanel(Image img, String locName, String desc) {
         this.setLayout(new BorderLayout());
-        this.add(new ToolTipImage(path), BorderLayout.CENTER);
+        this.add(new ToolTipImage(img), BorderLayout.CENTER);
         JTextArea jt = new JTextArea();
         jt.setOpaque(false);
         jt.setText(locName + "\n\n" + desc);
