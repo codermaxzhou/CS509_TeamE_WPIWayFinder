@@ -11,7 +11,6 @@ import adminmodule.Location;
 import adminmodule.Map;
 import adminmodule.MapInfo;
 import adminmodule.Point;
-import adminmodule.PopupMenu;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -22,14 +21,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -271,9 +266,16 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         this.repaint();
     }
 
-    public void reloadMap(int mapIndex) {
-       // map.mapID = mapIndex;
-        map = allMapList.get(mapIndex - 1);
+    public void reloadMap(Map mapToLoad) {
+        for(CustomBalloonTip tip : tipList) {
+            ToolTipUtils.toolTipToBalloon(tip);
+            tip.setVisible(false);
+            tip.closeBalloon();
+        }
+        
+        tipList.clear();
+        
+        map = allMapList.get(allMapList.indexOf(mapToLoad));
         this.mapIndex = mapIndex;
         this.showAllPins = false;
         this.showPins = false;
@@ -355,11 +357,11 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         if (isShowPins()) {
             for (Location p : pins) {
                 g.drawImage(pinImage, p.point.X - 5, p.point.Y - 5, 20, 20, null);
-                g.drawString(p.point.location.name, p.point.X - 30, p.point.Y - 10);
+                //g.drawString(p.point.location.name, p.point.X - 30, p.point.Y - 10);
 
                 //g.drawString(TOOL_TIP_TEXT_KEY, index, WIDTH);
             }
-        }
+        } 
         if (isShowRoute()) {
             this.timer.start();
 
@@ -372,7 +374,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         if (isShowAllPins()) {
             for (Location l : locationList) {
                 g.drawImage(pinImage, l.point.X - 5, l.point.Y - 5, 20, 20, null);
-                g.drawString(l.point.location.name, l.point.X - 30, l.point.Y - 10);
+                //g.drawString(l.point.location.name, l.point.X - 30, l.point.Y - 10);
 
             }
         }
@@ -388,11 +390,11 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             Edge endEdge = getMultiRoute().get(getMultiRoute().size() - 1);
             int diviation = 10;
 
-            if (startEdge.startMapID == mapIndex) {
-                g.drawImage(pinImage, startEdge.startPoint.X - diviation, startEdge.startPoint.Y - diviation, 20, 20, null);
+            if (startLocation.point.map.mapID == map.mapID) {
+                g.drawImage(pinImage, startLocation.point.X - diviation, startLocation.point.Y - diviation, 20, 20, null);
             }
-            if (endEdge.endMapID == mapIndex) {
-                g.drawImage(pinImage, endEdge.endPoint.X - diviation, endEdge.endPoint.Y - diviation, 20, 20, null);
+            if (endLocation.point.map.mapID == map.mapID) {
+                g.drawImage(pinImage, endLocation.point.X - diviation, endLocation.point.Y - diviation, 20, 20, null);
             }
 
             int size = getMultiRoute().size();
@@ -400,20 +402,22 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                 Edge e = getMultiRoute().get(i);
                 //String type = route.get(i).startPoint.type.equals("CONNECTION");
 
-                if (e.startMapID == mapIndex && e.endMapID == mapIndex) {
+                if (e.startMapID == map.mapID && e.endMapID == map.mapID) {
                     g.drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
                 }
-
-                if (getMultiRoute().get(i).startPoint.type.name().equals("CONNECTION")) {
-                    //System.out.print("this is the connection of edge !");
-
+                
+                if(e.startPoint.type.name().equals("CONNECTION") && 
+                   e.startMapID == map.mapID) {
                     g.drawImage(pinImage, e.startPoint.X - diviation, e.startPoint.Y - diviation, 20, 20, null);
-                    g.drawString("Connection", e.startPoint.X - diviation, e.startPoint.Y - diviation);
-                  
+                }
+                
+                if(e.endPoint.type.name().equals("CONNECTION") && 
+                   e.endMapID == map.mapID) {
+                    g.drawImage(pinImage, e.endPoint.X - diviation, e.endPoint.Y - diviation, 20, 20, null);
                 }
 
             }
-            setDrawMultiRoutes(false);
+            //setDrawMultiRoutes(false);
 
         }
         
@@ -582,11 +586,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         
         for(Location p : pins) {
             CustomBalloonTip tip = new CustomBalloonTip(this, 
-<<<<<<< HEAD
-                new ToolTipPanel("/Users/GaoYifei/Desktop/1.png", p.name, p.description),
-=======
                 new ToolTipPanel(p.image, p.name, p.description),
->>>>>>> yihao
                 new Rectangle(p.point.X - 5, p.point.Y - 5, 20, 20),
                 Utils.createBalloonTipStyle(),
                 Utils.createBalloonTipPositioner(), 
@@ -623,13 +623,13 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         if (e.getSource() != search && e.getSource() != exchange) {
             
             
-            int radius = 50;
+            int radius = 30;
             boolean inrange = false;
 
             int x = e.getX();
             int y = e.getY();
 
-            for (Location temp : locationList) {
+            for (Location temp : pins) {
                 if (((x > (temp.point.X - radius))
                         && (x < (temp.point.X + radius))
                         && (y > (temp.point.Y - radius))
@@ -650,12 +650,27 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
                     }
                     
-                    // emma new code 
-                    Enter enterMenu = new Enter(temp, this);
+                    Map locationMap = null;
                     
-                    enterMenu.setRightBar(mapView.getRightBar());
-                    enterMenu.setSecRightBar(mapView.getSecRightSideBar());
-                    enterMenu.show(e.getComponent(), x, y);
+                    for(Map m : allMapList) {
+                        if(temp.locationID == m.locationID && m.floor == 1) {
+                            locationMap = m;
+                            break;
+                        }
+                    }
+                    
+                    if(locationMap != null) {
+                        Enter enterMenu = new Enter(locationMap, this);
+                    
+                        
+                        
+                        enterMenu.setRightBar(mapView.getRightBar());
+                        enterMenu.setSecRightBar(mapView.getSecRightSideBar());
+                        enterMenu.show(e.getComponent(), x, y);
+                    }
+                    
+                    // emma new code 
+                    
 
                 }
 
@@ -693,15 +708,15 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                 } //                     multi map route 
                 else if (startLocation.point.map.mapID != endLocation.point.map.mapID) {
                     
-                    if (startLocation.point.map.mapID != mapIndex) {
-                        this.reloadMap(startLocation.point.map.mapID);
+                    if (startLocation.point.map.mapID != map.mapID) {
+                        this.reloadMap(startLocation.point.map);
                     }
                     drawMultiRoute(startLocation, endLocation);
 
                 } else if (startLocation.point.map.mapID == endLocation.point.map.mapID) {
                    
-                    if (startLocation.point.map.mapID != mapIndex) {
-                        this.reloadMap(startLocation.point.map.mapID);
+                    if (startLocation.point.map.mapID != map.mapID) {
+                        this.reloadMap(startLocation.point.map);
                     }
                     
                     route = (ArrayList<Edge>) algo.calculate(startLocation.point, endLocation.point);
@@ -765,21 +780,101 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         }
         
         if(e.getSource() == rightArrow){
-            for(Map m: allMapList){
-                if(m.description.equals(this.map.description) && m.floor == (this.map.floor + 1)){
-                    System.out.println("mapID is " + m.mapID);
-                    this.reloadMap(m.mapID);
-                    break;             //  m  will update by reload , so we need to break the loop 
+            if(isDrawMultiRoutes()) {
+                Map nextMap = null;
+                
+                int lowestIndex = -1;
+                int i = 0;
+                
+                for(Edge edge : getMultiRoute()) {
+                    if(edge.startMapID == map.mapID || edge.endMapID == map.mapID) {
+                        lowestIndex = i;
+                        break;
+                    }
+                    i++;
+                }
+                
+                int ID = -1, currIndex = -1;
+                i = 0;
+                
+                for(Edge edge : getMultiRoute()) {
+                    if(edge.startMapID == map.mapID && edge.endMapID != map.mapID) {
+                        ID = edge.endMapID;
+                        currIndex = i;
+                    }
+                    else if(edge.startMapID != map.mapID && edge.endMapID == map.mapID) {
+                        ID = edge.startMapID;
+                        currIndex = i;
+                    }
+                
+                    i++;
+                }
+                
+                if(ID != -1 && (currIndex >= lowestIndex)) 
+                    for(Map m : allMapList) {
+                        if(m.mapID == ID) {
+                            nextMap = m;
+                        }
+                    }
+                
+                if(nextMap != null) this.reloadMap(nextMap);
+            } else {
+                for(Map m: allMapList){
+                    if(m.locationID == map.locationID && m.floor == map.floor + 1) {
+                        this.reloadMap(m);
+                        break;             //  m  will update by reload , so we need to break the loop 
+                    }
                 }
             }
            // this.reloadMap(this.map.);
             
         }
         if(e.getSource() == leftArrow){
-            for(Map m: allMapList){
-                if(m.description.equals(this.map.description) && m.floor == this.map.floor - 1 ){
-                    this.reloadMap(m.mapID);
-                    break;
+            if(isDrawMultiRoutes()) {
+                Map prevMap = null;
+                
+                int lowestIndex = -1;
+                int i = 0;
+                
+                for(Edge edge : getMultiRoute()) {
+                    if(edge.startMapID == map.mapID || edge.endMapID == map.mapID) {
+                        lowestIndex = i;
+                        break;
+                    }
+                    i++;
+                }
+                
+                int ID = -1, currIndex = -1;
+                i = 0;
+                
+                for(Edge edge : getMultiRoute()) {
+                    if(edge.startMapID == map.mapID && edge.endMapID != map.mapID && ID == -1) {
+                        ID = edge.endMapID;
+                        currIndex = i;
+                    }
+                    else if(edge.startMapID != map.mapID && edge.endMapID == map.mapID && ID == -1) {
+                        ID = edge.startMapID;
+                        currIndex = i;
+                    }
+                   
+                    i++;
+                }
+                
+                if(ID != -1 && currIndex <= lowestIndex) {
+                    for(Map m : allMapList) {
+                        if(m.mapID == ID) {
+                            prevMap = m;
+                        }
+                    }
+                }
+                
+                if(prevMap != null) this.reloadMap(prevMap);
+            } else { 
+                for(Map m: allMapList){
+                    if(m.locationID == map.locationID && m.floor == map.floor - 1 ){
+                        this.reloadMap(m);
+                        break;
+                    }
                 }
             }
             
@@ -789,7 +884,17 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         if (e.getSource() == home){
             
            // background = new ImageIcon(this.getClass().getResource("/maps/campus_map.png")).getImage();
-            this.reloadMap(1);  // campus mapID is always 1 
+            
+            Map campusMap = null;
+            
+            for(Map m : allMapList) {
+                if(!m.isInteriorMap) {
+                    campusMap = m;
+                    break;
+                }
+            }
+            
+            this.reloadMap(campusMap);  // campus mapID is always 1 
             mapView.getRightBar().setIsCampus(true);
             
             mapView.getSecRightSideBar().removeAll();

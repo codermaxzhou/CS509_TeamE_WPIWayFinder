@@ -539,7 +539,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
             for (Map m : allMapList) {
                 if (stringValue.equals(m.name)) {
 
-                    mainPanel.reloadMap(m.mapID);
+                    mainPanel.reloadMap(m);
 //                    mainPanel.setMapIndex(m.mapID);
                     mainPanel.setShowAllPins(false);
                     mainPanel.setShowPins(false);

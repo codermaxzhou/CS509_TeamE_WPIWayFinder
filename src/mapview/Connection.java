@@ -6,6 +6,7 @@
 package mapview;
 
 import adminmodule.Edge;
+import adminmodule.Map;
 import adminmodule.Point;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -64,9 +65,10 @@ public class Connection extends JPopupMenu {
 
                                     }
                                 }
-
                                 
-                                mainPanel.reloadMap(nextMapIndex);
+                               /*Map next = e.
+                                
+                                mainPanel.reloadMap(nextMapIndex);*/
 //                                mainPanel.setMapIndex(nextMapIndex);
 //                                try {
 //                                    mainPanel.init();

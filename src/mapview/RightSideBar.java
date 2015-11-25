@@ -350,7 +350,7 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
                     
 //                    mainPanel.changeMap(m.mapID);
 //                    mainPanel.setMapIndex(m.mapID);
-                    mainPanel.reloadMap(m.mapID);
+                    mainPanel.reloadMap(m);
                     mainPanel.setShowAllPins(false);
                     mainPanel.setShowPins(false);
                     mainPanel.setDrawRoutes(false);

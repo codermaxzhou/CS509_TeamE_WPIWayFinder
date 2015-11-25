@@ -29,8 +29,9 @@ public class Enter extends  JPopupMenu{
         
         
     
-        public Enter(Location location, MainPanel mainPanel) {
+   public Enter(Map locationMap, MainPanel mainPanel) {
         JMenuItem item = new JMenuItem("Enter");
+        
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -43,13 +44,7 @@ public class Enter extends  JPopupMenu{
                 secRightBar.setVisible(false);
                 mapList = mainPanel.mapModel.getMapList();
                 
-                for(Map m : mapList){
-                    if(location.name.equals(m.name)){
-                        mainPanel.reloadMap(m.mapID);
-                    }
-                }
-                
-                
+                mainPanel.reloadMap(locationMap);  
             }
         });
         this.add(item);
