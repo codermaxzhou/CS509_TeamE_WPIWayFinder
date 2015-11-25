@@ -83,7 +83,7 @@ public class JDBC {
    }
    
    public MapInfo getMapInfo(int MapID, Map map) throws SQLException {
-       String query = "SELECT locationID, pointID, category, name, description, mapID FROM Location WHERE MapID = " + MapID + ";";
+       String query = "SELECT locationID, pointID, category, name, description, path, mapID FROM Location WHERE MapID = " + MapID + ";";
        Statement stmt = conn.createStatement();
        ResultSet rs = stmt.executeQuery(query);
        
@@ -100,6 +100,7 @@ public class JDBC {
            temp.locationID = rs.getInt("locationID");
            temp.name = rs.getString("name");
            temp.point = null;
+           temp.path = rs.getString("path");
            switch(rs.getString("category")) {
                case "DINING": temp.category = Location.Category.DINING;
                               break;
@@ -167,6 +168,9 @@ public class JDBC {
            E.add(temp);
        }
        
+       LocationThread obj = new LocationThread(L);
+       obj.start();
+       
        MapInfo info = new MapInfo();
        info.locations = L;
        info.edges = E;
@@ -181,9 +185,9 @@ public class JDBC {
        for(int i = 0; i < A.size(); ++i) {
            Location l = A.get(i);
            if(l.locationID != -1) continue;
-           query = "INSERT INTO Location (LocationID, PointID, category, name, description, mapID) ";
+           query = "INSERT INTO Location (LocationID, PointID, category, name, description, mapID, path) ";
            query += "VALUES(" + getMaxLocID() + ", " + getMaxPointID() + ", \"" + l.category.toString() + "\", \"" + 
-                    l.name + "\", \"" + l.description + "\", " + l.point.map.mapID + ");";
+                    l.name + "\", \"" + l.description + "\", " + l.point.map.mapID +  ", \"" + l.path + "\");";
            Statement stmt = conn.createStatement();
            stmt.executeUpdate(query);
            
@@ -258,7 +262,7 @@ public class JDBC {
            Location l=A.get(i);
            if (l.locationID != -1) {
             query="UPDATE Location SET ";
-            query+="locationID="+l.locationID+",category=\""+l.category+"\",name=\""+l.name+"\",description=\""+l.description+"\",mapID="+ l.point.map.mapID;
+            query+="locationID="+l.locationID+",category=\""+l.category+"\",name=\""+l.name+"\",description=\""+l.description+"\",mapID="+ l.point.map.mapID +  ", path=\"" + l.path + "\"";
             query+=" where locationID=" + l.locationID + ";";
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(query);
@@ -301,8 +305,8 @@ public class JDBC {
                 query = "";
                 int isBldgMap = m.isInteriorMap ? 1 : 0;
 
-                query = "INSERT INTO Map (mapID, name, description, path, floor, isInteriorMap) ";
-                query += "VALUES('" + maxMapID + "', '" + m.name + "', '" + m.description + "', '" + m.path + "', " + m.floor+","+isBldgMap + ");";
+                query = "INSERT INTO Map (mapID, name, description, path, floor, isInteriorMap, locationID) ";
+                query += "VALUES('" + maxMapID + "', '" + m.name + "', '" + m.description + "', '" + m.path + "', " + m.floor+","+isBldgMap + "," + m.locationID + ");";
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(query);
 
@@ -414,7 +418,7 @@ public class JDBC {
    }
    
    public ArrayList<Map> showAllMap() throws SQLException, MalformedURLException, IOException{
-       String query= "SELECT MapID, name, description, path, floor, isInteriorMap, image From Map;";
+       String query= "SELECT MapID, name, description, path, floor, isInteriorMap, image, locationID From Map;";
        Statement stmt = conn.createStatement();
        ResultSet rs = stmt.executeQuery(query);
        
@@ -429,6 +433,7 @@ public class JDBC {
            temp.isInteriorMap = (isBldgMap == 1);
            temp.path = rs.getString("path");
            temp.floor = rs.getInt("floor");
+           temp.locationID = rs.getInt("locationID");
            
            //TODO remove
            //InputStream binaryStream = rs.getBinaryStream("image");
@@ -445,7 +450,7 @@ public class JDBC {
    }
    public Map showMap(int searchID) throws SQLException, IOException{
        String query;
-       query="SELECT name,description,isInteriorMap,floor,path FROM Map";
+       query="SELECT name,description,isInteriorMap,floor,path, locationID FROM Map";
        query+="WHERE mapID="+searchID+";";
        Statement stmt = conn.createStatement();
        ResultSet rs = stmt.executeQuery(query);
@@ -458,6 +463,7 @@ public class JDBC {
            m.isInteriorMap=true;
        m.path=rs.getString(path);
        m.image=ImageIO.read(new URL(m.path));
+       m.locationID = rs.getInt("locationID");
        
        
        //m.image = new image(path is from rs.getString("Path"))

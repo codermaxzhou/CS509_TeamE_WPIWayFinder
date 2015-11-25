@@ -7,28 +7,25 @@ package mapview;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
+import java.awt.Image;
 import javax.swing.JPanel;
 
 public class ToolTipImage extends JPanel {
-    private BufferedImage img;
+    private Image img;
+   // private String defaultpath="";
     
-    public ToolTipImage (String path) {
+    public ToolTipImage (Image img) {
         this.setMinimumSize(new Dimension(150, 150));
         this.setPreferredSize(new Dimension(150, 150));
         this.setMaximumSize(new Dimension(150, 150));
         
-        try {                
-          img = ImageIO.read(new File(path));
-        } catch (IOException ex) { }
+        this.img = img;
     }
     
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(img, 0, 0, null);         
+        if(img != null) g.drawImage(img, 0, 0, null); 
+ 
     }
 }

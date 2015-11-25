@@ -29,6 +29,7 @@ import javax.swing.*;
     JToolBar tb = new JToolBar();  
     AdminFrame admin;
     private String fileName;
+    
     public OpenFile (AdminFrame admin)
     {
         final JFileChooser chooser = new JFileChooser ();
@@ -63,7 +64,14 @@ import javax.swing.*;
         jFrame.setLocationRelativeTo (null);
         jFrame.setDefaultCloseOperation (JFrame.HIDE_ON_CLOSE);
         jFrame.setVisible (true);
-             openButton.addActionListener (new ActionListener ()
+        
+        box.addItem("None");
+        
+        for(Location l : admin.campusLocations) {
+            box.addItem(l.name);
+        }
+        
+        openButton.addActionListener (new ActionListener ()
         {
             @Override
             public void actionPerformed ( ActionEvent e )
@@ -102,6 +110,12 @@ import javax.swing.*;
                 ms.mapID = -1;
                 ms.isInteriorMap = ckbox.isSelected();
                 ms.name = Name.getText();
+                
+                if(box.getSelectedIndex() == 0)
+                    ms.locationID = -1;
+                else
+                    ms.locationID = admin.campusLocations.get(box.getSelectedIndex() - 1).locationID;
+                
                 if(ckbox.isSelected())
                     ms.isInteriorMap = true;
                 else ms.isInteriorMap = false;

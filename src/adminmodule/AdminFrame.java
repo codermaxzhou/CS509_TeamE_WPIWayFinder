@@ -48,6 +48,8 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     int radius = 10;
     int sIndex = 0;
     int boxSize = 10;
+    
+    public ArrayList<Location> campusLocations;
 
     MapPanel map;
     LeftPanel left;
@@ -85,9 +87,15 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     }
 
     public void loadMapInfo() throws SQLException, IOException {
+        campusLocations = new ArrayList<>();
+        
         maps = db.showAllMap();
 
         for (Map m : maps) {
+            if(!m.isInteriorMap) {
+                campusLocations.addAll(m.locList);
+            }
+            
             if (!left.model.contains(m.name)) {
                 left.model.addElement(m.name);
             }
