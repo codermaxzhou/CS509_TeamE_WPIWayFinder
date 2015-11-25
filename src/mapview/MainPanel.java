@@ -137,9 +137,10 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
     public void init() throws SQLException {
 
-        map.mapID = mapIndex;
+        
         MapInfo info = db.getMapInfo(mapIndex, map); // why do we need map as parameter?
-
+        
+        
         pointList = info.points;
         edgeList = info.edges;
         locationList = info.locations;
@@ -150,7 +151,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         allPointList = mapModel.getAllPointList();
         allLocationList = mapModel.getAllLocationList();
         algo = new Dijkstra(allEdgeList, allPointList);
-
+        map = allMapList.get(mapIndex);
+        
+        
         for (Map m : allMapList) {
 
             if (m.mapID == mapIndex) {
@@ -228,6 +231,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         home.addMouseListener(this);
         leftArrow.addMouseListener(this);
         rightArrow.addMouseListener(this);
+        this.addMouseListener(this);
         
 
         search.setBounds(380, 10, 30, 30);
@@ -268,7 +272,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     }
 
     public void reloadMap(int mapIndex) {
-        map.mapID = mapIndex;
+       // map.mapID = mapIndex;
+        map = allMapList.get(mapIndex - 1);
         this.mapIndex = mapIndex;
         this.showAllPins = false;
         this.showPins = false;
@@ -283,13 +288,15 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         pointList = info.points;
         edgeList = info.edges;
         locationList = info.locations;
-        for (Map m : allMapList) {
-
-            if (m.mapID == mapIndex) {
-                mapImage = m.image;
-
-            }
-        }
+        mapImage = map.image;
+//        for (Map m : allMapList) {
+//
+//            if (m.mapID == mapIndex) {
+//                mapImage = m.image;
+//
+//            }
+//        }
+        
         this.repaint();
     }
 
@@ -575,7 +582,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         
         for(Location p : pins) {
             CustomBalloonTip tip = new CustomBalloonTip(this, 
-                new ToolTipPanel("/Users/Yihao/Desktop/sample.png", p.name, p.description),
+                new ToolTipPanel("/Users/GaoYifei/Desktop/1.png", p.name, p.description),
                 new Rectangle(p.point.X - 5, p.point.Y - 5, 20, 20),
                 Utils.createBalloonTipStyle(),
                 Utils.createBalloonTipPositioner(), 
@@ -755,14 +762,22 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         
         if(e.getSource() == rightArrow){
             for(Map m: allMapList){
-                if(m.name.equals(this.map.name) && m.floor - this.map.floor == 1 ){
+                if(m.description.equals(this.map.description) && m.floor == (this.map.floor + 1)){
+                    System.out.println("mapID is " + m.mapID);
                     this.reloadMap(m.mapID);
+                    break;             //  m  will update by reload , so we need to break the loop 
                 }
             }
            // this.reloadMap(this.map.);
             
         }
         if(e.getSource() == leftArrow){
+            for(Map m: allMapList){
+                if(m.description.equals(this.map.description) && m.floor == this.map.floor - 1 ){
+                    this.reloadMap(m.mapID);
+                    break;
+                }
+            }
             
             
         }

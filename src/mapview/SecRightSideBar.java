@@ -57,10 +57,16 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
         this.removeAll();
 
         int mapIndex = mainPanel.getMapIndex();
-        m.mapID = mapIndex;
-        MapInfo info = db.getMapInfo(mapIndex, m);
+        
+        m = mapModel.getMapList().get(mapIndex - 1);
+       
 //        locationList = info.locations;
-        locationList = mapModel.getAllLocationList();
+        for(Map temp: mapModel.getMapList()){
+            if(temp.description.equals(m.description)){
+                locationList.addAll(temp.locList);
+            }
+        }
+     
         labelList.clear();
 
         for (Location l : locationList) {
