@@ -59,14 +59,18 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
         int mapIndex = mainPanel.getMapIndex();
         
         m = mapModel.getMapList().get(mapIndex - 1);
+        
+     
        
 //        locationList = info.locations;
-        for(Map temp: mapModel.getMapList()){
-            if(temp.description.equals(m.description)){
-                locationList.addAll(temp.locList);
-            }
-        }
-     
+//        for(Map temp: mapModel.getMapList()){
+//            if(temp.description.equals(m.description)){
+//                locationList.addAll(temp.locList);
+//            }
+//        }
+      //  locationList = locationList.addAll(locationList)
+         
+        locationList = m.locList;
         labelList.clear();
 
         for (Location l : locationList) {
@@ -116,8 +120,9 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
                         label.setText(l.name);
 
                         labelList.add(label);
-
+                   
                     }
+                 break;
                 case ADMIN:
                     if (category.equals("ADMIN")){
                         JLabel label = new JLabel();

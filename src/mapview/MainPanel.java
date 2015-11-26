@@ -227,6 +227,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         leftArrow.addMouseListener(this);
         rightArrow.addMouseListener(this);
         this.addMouseListener(this);
+        startPointField.addMouseListener(this);
+        endPointField.addMouseListener(this);
         
 
         search.setBounds(380, 10, 30, 30);
@@ -379,15 +381,12 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             }
         }
         
-        if(showWhenClick == true){
-            
-            
-        }
+        
 
         if (isDrawMultiRoutes()) {
 
-            Edge startEdge = getMultiRoute().get(0);
-            Edge endEdge = getMultiRoute().get(getMultiRoute().size() - 1);
+            //Edge startEdge = getMultiRoute().get(0);
+            //Edge endEdge = getMultiRoute().get(getMultiRoute().size() - 1);
             int diviation = 10;
 
             if (startLocation.point.map.mapID == map.mapID) {
@@ -475,6 +474,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     }
 
     public void showSinglePin(String name) {
+        this.setDrawMultiRoutes(false);
         this.setShowRoute(false);
         this.setShowPins(true);
         this.setShowAllPins(false);
@@ -534,6 +534,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
         this.setShowRoute(false);
         this.setShowPins(true);
+        this.setDrawMultiRoutes(false);
 
         Graphics g = this.getGraphics();
         pins.clear();
@@ -604,6 +605,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         setShowRoute(false);
         setShowPins(false);
         setShowAllPins(false);
+        setDrawMultiRoutes(false);
         repaint();
     }
 
@@ -611,6 +613,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
         setShowAllPins(true);
         setShowRoute(false);
+        setDrawMultiRoutes(false);
         repaint();
     }
 
@@ -906,11 +909,38 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             
         
         }
+        
+        if(e.getSource() == startPointField){
+            startPointField.setFocusable(true);
+            startPointField.setText("");
+            
+        }
+        
+        if(e.getSource() == endPointField){
+            endPointField.setFocusable(true);
+            endPointField.setText("");
+        }
 
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if(e.getSource() == rightArrow){
+            rightArrow.setBounds(rightArrow.getX() + 3, rightArrow.getY() + 3, rightArrow.getWidth(), rightArrow.getHeight());
+        }
+        if(e.getSource() == leftArrow){
+            leftArrow.setBounds(leftArrow.getX() + 3, leftArrow.getY() + 3, leftArrow.getWidth(), leftArrow.getHeight());
+        }
+        if(e.getSource() == home){
+            home.setBounds(home.getX() + 3, home.getY() + 3, home.getWidth(), home.getHeight());
+        }
+        if(e.getSource() == search){
+            search.setBounds(search.getX() + 3, search.getY() + 3, search.getWidth(), search.getHeight());
+        }
+        if(e.getSource() == exchange){
+            exchange.setBounds(exchange.getX() + 3, exchange.getY() + 3, exchange.getWidth(), exchange.getHeight());
+        }
+        
 
         // TODO Auto-generated method stub
     }
@@ -918,36 +948,51 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     @Override
     public void mouseReleased(MouseEvent e) {
         // TODO Auto-generated method stub
+        if(e.getSource() == rightArrow){
+            rightArrow.setBounds(rightArrow.getX() - 3, rightArrow.getY() - 3, rightArrow.getWidth(), rightArrow.getHeight());
+        }
+        if(e.getSource() == leftArrow){
+            leftArrow.setBounds(leftArrow.getX() - 3, leftArrow.getY() - 3, leftArrow.getWidth(), leftArrow.getHeight());
+        }
+        if(e.getSource() == home){
+            home.setBounds(home.getX() - 3, home.getY() - 3, home.getWidth(), home.getHeight());
+        }
+         if(e.getSource() == search){
+            search.setBounds(search.getX() - 3, search.getY() - 3, search.getWidth(), search.getHeight());
+        }
+         if(e.getSource() == exchange){
+            exchange.setBounds(exchange.getX() - 3, exchange.getY() - 3, exchange.getWidth(), exchange.getHeight());
+        }
 
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
         // TODO Auto-generated method stub
-        if (e.getSource() == search) {
-            search.setToolTipText("Search Route");
-            search.setBounds(search.getX() - 3, search.getY() - 3, search.getWidth(), search.getHeight());
-        }
-        if (e.getSource() == exchange) {
-            exchange.setToolTipText("Exchange StartingPoint and Destination");
-            exchange.setBounds(exchange.getX() - 1, exchange.getY() - 1, exchange.getWidth(), exchange.getHeight());
-
-        }
+//        if (e.getSource() == search) {
+//            search.setToolTipText("Search Route");
+//            search.setBounds(search.getX() - 3, search.getY() - 3, search.getWidth(), search.getHeight());
+//        }
+//        if (e.getSource() == exchange) {
+//            exchange.setToolTipText("Exchange StartingPoint and Destination");
+//            exchange.setBounds(exchange.getX() - 1, exchange.getY() - 1, exchange.getWidth(), exchange.getHeight());
+//
+//        }
 
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         // TODO Auto-generated method stub
-        if (e.getSource() == search) {
-            search.setBounds(search.getX() + 3, search.getY() + 3, search.getWidth(), search.getHeight());
-
-            // search.set
-        }
-        if (e.getSource() == exchange) {
-            exchange.setToolTipText("Exchange StartingPoint and Destination");
-            exchange.setBounds(exchange.getX() + 1, exchange.getY() + 1, exchange.getWidth(), exchange.getHeight());
-        }
+//        if (e.getSource() == search) {
+//            search.setBounds(search.getX() + 3, search.getY() + 3, search.getWidth(), search.getHeight());
+//
+//            // search.set
+//        }
+//        if (e.getSource() == exchange) {
+//            exchange.setToolTipText("Exchange StartingPoint and Destination");
+//            exchange.setBounds(exchange.getX() + 1, exchange.getY() + 1, exchange.getWidth(), exchange.getHeight());
+//        }
 
     }
 

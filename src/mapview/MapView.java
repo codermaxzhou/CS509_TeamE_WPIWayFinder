@@ -49,15 +49,15 @@ public class MapView extends JFrame{
           
             
             
-            panel.setPreferredSize(new Dimension(980, 800));
+            panel.setPreferredSize(new Dimension(980, 850));
 
             this.getContentPane().add(panel, BorderLayout.WEST);
             //rightSideBar.setPreferredSize(new Dimension(150, 800));
-            rightBar.setPreferredSize(new Dimension(150, 800));
+            rightBar.setPreferredSize(new Dimension(150, 850));
 
             //this.getContentPane().add(rightSideBar, BorderLayout.EAST);
             this.getContentPane().add(rightBar, BorderLayout.EAST);
-            getSecRightSideBar().setPreferredSize(new Dimension(170, 800));
+            getSecRightSideBar().setPreferredSize(new Dimension(170, 850));
 
             this.getContentPane().add(getSecRightSideBar(), BorderLayout.CENTER);
 
@@ -65,7 +65,7 @@ public class MapView extends JFrame{
 
             Dimension d = new Dimension(1300, 850);
             this.setSize(d);
-            this.setResizable(false);
+            this.setResizable(true);
             this.setVisible(true);
             this.addMouseListener(panel);
             
