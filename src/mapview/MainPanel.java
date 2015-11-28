@@ -149,16 +149,16 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         allPointList = mapModel.getAllPointList();
         allLocationList = mapModel.getAllLocationList();
         algo = new Dijkstra(allEdgeList, allPointList);
-        map = allMapList.get(mapIndex);
+        map = allMapList.get(mapIndex - 1);  // map 默认是1 
+        mapImage = map.image;
         
-        
-        for (Map m : allMapList) {
-
-            if (m.mapID == mapIndex) {
-                mapImage = m.image;
-
-            }
-        }
+//        for (Map m : allMapList) {
+//
+//            if (m.mapID == mapIndex) {
+//                mapImage = m.image;
+//
+//            }
+//        }
 //
 //        Image profileImage = new ImageIcon(this.getClass().getResource("/icons/user.png")).getImage();
 //        ImageIcon profileIcon = new ImageIcon(profileImage);
@@ -260,16 +260,16 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         endAutoSuggestor.setDictionary(suggestions);
     }
 
-    public void changeMap(int mapIndex) {
-        for (Map m : allMapList) {
-
-            if (m.mapID == mapIndex) {
-                mapImage = m.image;
-
-            }
-        }
-        this.repaint();
-    }
+//    public void changeMap(int mapIndex) {
+//        for (Map m : allMapList) {
+//
+//            if (m.mapID == mapIndex) {
+//                mapImage = m.image;
+//
+//            }
+//        }
+//        this.repaint();
+//    }
 
     public void reloadMap(Map mapToLoad) {
         for(CustomBalloonTip tip : tipList) {
@@ -282,6 +282,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         
         map = allMapList.get(allMapList.indexOf(mapToLoad));
         this.mapIndex = mapIndex;
+//        this.showRoute = false;
+//        this.drawMultiRoutes = false;
+//        this.drawRoutes = false;
         this.showAllPins = false;
         this.showPins = false;
         
@@ -296,13 +299,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         edgeList = info.edges;
         locationList = info.locations;
         mapImage = map.image;
-//        for (Map m : allMapList) {
-//
-//            if (m.mapID == mapIndex) {
-//                mapImage = m.image;
-//
-//            }
-//        }
+
         
         this.repaint();
     }
@@ -410,12 +407,20 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                 
                 if(e.startPoint.type.name().equals("CONNECTION") && 
                    e.startMapID == map.mapID) {
+
                     g.drawImage(connctionStartIcon, e.startPoint.X - diviation, e.startPoint.Y - diviation, 20, 20, null);
+
+                   // g.drawImage(pinImage, e.startPoint.X - diviation, e.startPoint.Y - diviation, 20, 20, null);
+
                 }
                 
                 if(e.endPoint.type.name().equals("CONNECTION") && 
                    e.endMapID == map.mapID) {
+
                     g.drawImage(connctionEndIcon, e.endPoint.X - diviation, e.endPoint.Y - diviation, 20, 20, null);
+
+                   // g.drawImage(pinImage, e.endPoint.X - diviation, e.endPoint.Y - diviation, 20, 20, null);
+
                 }
 
             }
@@ -445,17 +450,26 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             }
 
         }
+        // reload map if current Map is not the routing map 
+        if(this.getMultiRoute().get(0).startMapID != map.mapID){
+            for(Map m : allMapList){
+                if(m.mapID == this.getMultiRoute().get(0).startMapID ){
+                      this.reloadMap(m);
+                      break;
+                }
+            }
+          
+            
+        }
 
         setDrawMultiRoutes(true);
-
+        setShowAllPins(false);
         setShowRoute(false);
         setShowPins(false);
         repaint();
     }
 
-    public void drawRoute(Location start, Location end) {
-
-    }
+   
 
     public void showClickPin(String name) {
         this.setShowRoute(false);
@@ -1014,11 +1028,11 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
             if (index == 0) {
                 g.drawString(startLocation.name, startLocation.point.X - 30, startLocation.point.Y - 30);
-                g.drawImage(pinImage, startLocation.point.X - 5, startLocation.point.Y - 20, 20, 20, null);
+                g.drawImage(startIcon, startLocation.point.X - 5, startLocation.point.Y - 20, 30, 30, null);
             }
             if (index == route.size() - 1) {
                 g.drawString(endLocation.name, endLocation.point.X - 30, endLocation.point.Y - 30);
-                g.drawImage(pinImage, endLocation.point.X - 5, endLocation.point.Y - 20, 20, 20, null);
+                g.drawImage(endIcon, endLocation.point.X - 5, endLocation.point.Y - 20, 30, 30, null);
             }
 //                    
             g.fillOval(edge.startPoint.X - 5, edge.startPoint.Y - 5, 10, 10);
