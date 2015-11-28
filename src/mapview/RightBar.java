@@ -73,9 +73,12 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
     private ArrayList<Map> allMapList = new ArrayList<>();
 
     public RightBar() {
+        
+        this.setBackground(Color.red);
 
         init();
         initComponent();
+        
 
     }
 
@@ -265,97 +268,10 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
     public void paint(Graphics g) {
         super.paint(g);
 
-//        if(buildingMove){
-//            buildingLabel.setBounds(this.buildingLabel.getX() - 5, this.buildingLabel.getY() - 10,
-//                this.buildingLabel.getHeight(), this.buildingLabel.getWidth());
-//            buildingLabel.setToolTipText("Building");
-//            this.repaint();
-//            buildingMove = false;
-//            
-//            
-//        }
-//        if(gymMove){
-//            gymLabel.setBounds(this.gymLabel.getX() - 5, this.gymLabel.getY() - 10,
-//                this.gymLabel.getHeight(), this.gymLabel.getWidth());
-//            gymLabel.setToolTipText("Gym");
-//            this.repaint();
-//            gymMove = false;
-//            
-//            
-//        }
-//        if(diningMove){
-//            diningLabel.setBounds(this.diningLabel.getX() - 5, this.diningLabel.getY() - 10,
-//                this.diningLabel.getHeight(), this.diningLabel.getWidth());
-//            diningLabel.setToolTipText("Dining");
-//            this.repaint();
-//            
-//            diningMove = false;
-//        }
-//        if(parkingMove){
-//            parkingLabel.setBounds(this.parkingLabel.getX() - 5, this.parkingLabel.getY() - 10,
-//                this.parkingLabel.getHeight(), this.parkingLabel.getWidth());
-//            parkingLabel.setToolTipText("Parking");
-//            this.repaint();
-//            parkingMove = false;
-//            
-//        }
-//        if(libraryMove){
-//            libraryLabel.setBounds(this.libraryLabel.getX() - 5, this.libraryLabel.getY() - 10,
-//                this.libraryLabel.getHeight(), this.libraryLabel.getWidth());
-//            libraryLabel.setToolTipText("Library");
-//            this.repaint();
-//            libraryMove = false;
-//            
-//        }
-//        if(classroomMove){
-//            classroomLabel.setBounds(this.classroomLabel.getX() - 5, this.classroomLabel.getY() - 10,
-//                this.classroomLabel.getHeight(), this.classroomLabel.getWidth());
-//            classroomLabel.setToolTipText("Classroom");
-//            this.repaint();
-//            classroomMove = false;
-//        }
-//        if(restroomMove){
-//            restroomLabel.setBounds(this.restroomLabel.getX() - 5, this.restroomLabel.getY() - 10,
-//                this.restroomLabel.getHeight(), this.restroomLabel.getWidth());
-//            restroomLabel.setToolTipText("Restroom");
-//            this.repaint();
-//            restroomMove = false;
-//            
-//        }
+
     }
 
-//    public void inner() {
-//        System.out.println(campus);
-//        if (!campus) {
-//            // need to be changed 
-//            
-//            this.removeAll();
-//            
-//            
-//            
-//            
-//            
-//            buildingLabel.setIcon(classroomIcon);
-//            diningLabel.setIcon(restroomIcon);
-//
-//            gymLabel.setVisible(campus);
-//            libraryLabel.setVisible(campus);
-//            parkingLabel.setVisible(campus);
-//
-//        } else {
-//
-//            buildingLabel.setIcon(backIcon);
-//            diningLabel.setIcon(diningIcon);
-//            gymLabel.setIcon(gymIcon);
-//            libraryLabel.setIcon(libararyIcon);
-//            parkingLabel.setIcon(parkingIcon);
-//            gymLabel.setVisible(campus);
-//            libraryLabel.setVisible(campus);
-//            parkingLabel.setVisible(campus);
-//
-//        }
-//
-//    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         
