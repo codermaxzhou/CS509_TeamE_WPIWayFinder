@@ -550,41 +550,43 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         tipList.clear();
 
         for (Location p : locationList) {
-            switch (p.category) {
-                case CLASSROOM:
-                    if (category.equals("CLASSROOM")) {
-                        pins.add(p);
-                    }
-                    break;
-                case RESTROOM:
-                    if (category.equals("RESTROOM")) {
-                        pins.add(p);
-                    }
-                    break;
-                case ATM:
-                    if (category.equals("ATM")) {
-                        pins.add(p);
-                    }
-                    break;
-                case ADMIN:
-                    if (category.equals("ADMIN")) {
-                        pins.add(p);
-                    }
-                    break;
-                case DINING:
-                    if (category.equals("DINING")) {
-                        pins.add(p);
-                    }
-                    break;
-                case PARKING:
-                    if (category.equals("PARKING")) {
-                        pins.add(p);
-                    }
-                    break;
-                
-                default:
-                    break;
-            }
+            if (p.category.toString().equals(category))
+                    pins.add(p);
+//            switch (p.category) {
+//                case CLASSROOM:
+//                    if (category.equals("CLASSROOM")) {
+//                        pins.add(p);
+//                    }
+//                    break;
+//                case RESTROOM:
+//                    if (category.equals("RESTROOM")) {
+//                        pins.add(p);
+//                    }
+//                    break;
+//                case ATM:
+//                    if (category.equals("ATM")) {
+//                        pins.add(p);
+//                    }
+//                    break;
+//                case ADMIN:
+//                    if (category.equals("ADMIN")) {
+//                        pins.add(p);
+//                    }
+//                    break;
+//                case DINING:
+//                    if (category.equals("DINING")) {
+//                        pins.add(p);
+//                    }
+//                    break;
+//                case PARKING:
+//                    if (category.equals("PARKING")) {
+//                        pins.add(p);
+//                    }
+//                    break;
+//                
+//                default:
+//                    break;
+//            }
         }
         
         for(Location p : pins) {

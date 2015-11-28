@@ -374,10 +374,10 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
             secRightSideBar.setVisible(true);
             secRightSideBar.setBackground(new java.awt.Color(0, 178, 219));
 
-            mainPanel.showLocationPin("PARKING");
+            mainPanel.showLocationPin("BUILDING");
 
             try {
-                secRightSideBar.ShowLocationName("PARKING");
+                secRightSideBar.ShowLocationName("BUILDING");
             } catch (SQLException ex) {
                 Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
             }

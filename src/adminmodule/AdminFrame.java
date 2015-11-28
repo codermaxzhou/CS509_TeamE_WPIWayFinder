@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -48,7 +48,7 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     int radius = 10;
     int sIndex = 0;
     int boxSize = 10;
-    
+
     public ArrayList<Location> campusLocations;
 
     MapPanel map;
@@ -56,7 +56,7 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     Point startpoint = null;
     Point endpoint = null;
     int tempMapID = -1;
-    
+
     public AdminFrame() throws SQLException, IOException {
         this.init();
     }
@@ -88,14 +88,14 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
 
     public void loadMapInfo() throws SQLException, IOException {
         campusLocations = new ArrayList<>();
-        
+
         maps = db.showAllMap();
 
         for (Map m : maps) {
-            if(!m.isInteriorMap) {
+            if (!m.isInteriorMap) {
                 campusLocations.addAll(m.locList);
             }
-            
+
             if (!left.model.contains(m.name)) {
                 left.model.addElement(m.name);
             }
@@ -145,7 +145,7 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
         copy = (ArrayList<Edge>) edges.clone();
 
         maps.get(left.mapList.getSelectedIndex()).addDeletedPointID(pt.pointID);
-        
+
         for (Edge e : copy) {
             if (e.startPoint.equals(pt)) {
                 deleteEdge(e);
@@ -154,17 +154,21 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
                 deleteEdge(e);
             }
         }
-        
-        if(pt.type == Point.Type.CONNECTION) {
-            for(int i = 0; i < maps.size(); ++i) {
+
+        if (pt.type == Point.Type.CONNECTION) {
+            for (int i = 0; i < maps.size(); ++i) {
                 copy = (ArrayList<Edge>) maps.get(i).edgeList.clone();
-                for(Edge e : copy) {
+                for (Edge e : copy) {
                     if (e.startPoint.equals(pt)) {
+
                         e.endPoint.type = Point.Type.WAYPOINT;
+
                         maps.get(i).edgeList.remove(e);
                     }
                     if (e.endPoint.equals(pt)) {
+
                         e.startPoint.type = Point.Type.WAYPOINT;
+
                         maps.get(i).edgeList.remove(e);
                     }
                 }
@@ -184,7 +188,7 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
     public void deleteEdge(Edge ed) {
         //deletedEdges.add(ed);
         maps.get(left.mapList.getSelectedIndex()).addDeletedEdgeID(ed.edgeID);
-        if(ed.startMapID != ed.endMapID) {
+        if (ed.startMapID != ed.endMapID) {
             ed.startPoint.type = Point.Type.WAYPOINT;
             ed.endPoint.type = Point.Type.WAYPOINT;
         }
@@ -277,7 +281,7 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
                         }
                     }
 
-                    newpoint = new Point(x, y, Point.Type.LOCATION);
+                    newpoint = new Point(x, y, Point.Type.WAYPOINT);
                     newlocation = new Location(newpoint);
                     newpoint.map = maps.get(left.mapList.getSelectedIndex());
                     newpoint.location = newlocation;
@@ -330,8 +334,11 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
                                     int result = JOptionPane.showConfirmDialog(null, "Are you sure to add connection between two maps?", null, JOptionPane.YES_NO_OPTION);
                                     if (result == JOptionPane.YES_OPTION) {
                                         newedge.weight = 5;
+
                                         newedge.startPoint.type = Point.Type.CONNECTION;
+
                                         newedge.endPoint.type = Point.Type.CONNECTION;
+
                                         edges.add(newedge);
                                     }
 
@@ -382,10 +389,9 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
 
     }
 
-    
     public static void main(String[] args) throws SQLException, IOException {
         System.out.println("start...");
         AdminFrame f = new AdminFrame();
     }
-        
+
 }

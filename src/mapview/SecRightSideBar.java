@@ -74,69 +74,74 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
         labelList.clear();
 
         for (Location l : locationList) {
-
-            switch (l.category) {
-                case CLASSROOM:
-                    if (category.equals("CLASSROOM")) {
+            if (l.category.toString().equals(category)) {
                         JLabel label = new JLabel();
                         label.setText(l.name);
 
                         labelList.add(label);
-
-                    }
-                    break;
-                case RESTROOM:
-
-                    if (category.equals("RESTROOM")) {
-                        JLabel label = new JLabel();
-                        label.setText(l.name);
-
-                        labelList.add(label);
-
-                    }
-                    break;
-                case PARKING:
-                    if (category.equals("PARKING")) {
-                        JLabel label = new JLabel();
-                        label.setText(l.name);
-
-                        labelList.add(label);
-
-                    }
-                    break;
-                case ATM:
-                    if (category.equals("ATM")) {
-                        JLabel label = new JLabel();
-                        label.setText(l.name);
-
-                        labelList.add(label);
-
-                    }
-
-                    break;
-                case DINING:
-                    if (category.equals("DINING")) {
-                        JLabel label = new JLabel();
-                        label.setText(l.name);
-
-                        labelList.add(label);
-                   
-                    }
-                 break;
-                case ADMIN:
-                    if (category.equals("ADMIN")){
-                        JLabel label = new JLabel();
-                        label.setText(l.name);
-
-                        labelList.add(label);
-                    }
-
-                    break;
-
-                default:
-                    break;
-//                
             }
+//            switch (l.category) {
+//                case CLASSROOM:
+//                    if (category.equals("CLASSROOM")) {
+//                        JLabel label = new JLabel();
+//                        label.setText(l.name);
+//
+//                        labelList.add(label);
+//
+//                    }
+//                    break;
+//                case RESTROOM:
+//
+//                    if (category.equals("RESTROOM")) {
+//                        JLabel label = new JLabel();
+//                        label.setText(l.name);
+//
+//                        labelList.add(label);
+//
+//                    }
+//                    break;
+//                case PARKING:
+//                    if (category.equals("PARKING")) {
+//                        JLabel label = new JLabel();
+//                        label.setText(l.name);
+//
+//                        labelList.add(label);
+//
+//                    }
+//                    break;
+//                case ATM:
+//                    if (category.equals("ATM")) {
+//                        JLabel label = new JLabel();
+//                        label.setText(l.name);
+//
+//                        labelList.add(label);
+//
+//                    }
+//
+//                    break;
+//                case DINING:
+//                    if (category.equals("DINING")) {
+//                        JLabel label = new JLabel();
+//                        label.setText(l.name);
+//
+//                        labelList.add(label);
+//                   
+//                    }
+//                 break;
+//                case ADMIN:
+//                    if (category.equals("ADMIN")){
+//                        JLabel label = new JLabel();
+//                        label.setText(l.name);
+//
+//                        labelList.add(label);
+//                    }
+//
+//                    break;
+//
+//                default:
+//                    break;
+////                
+//            }
 
         }
         int y = 0;

@@ -102,15 +102,20 @@ public class JDBC {
            temp.point = null;
            temp.path = rs.getString("path");
            switch(rs.getString("category")) {
+               case "BUILDING": temp.category = Location.Category.BUILDING;
+                              break;
+               case "LIBRARY": temp.category = Location.Category.LIBRARY;
+                              break;
                case "DINING": temp.category = Location.Category.DINING;
                               break;
-               case "ATM": temp.category = Location.Category.ATM;
+               case "GYM": temp.category = Location.Category.GYM;
                            break;
                case "CLASSROOM": temp.category = Location.Category.CLASSROOM;
                                 break;
                case "RESTROOM": temp.category = Location.Category.RESTROOM;
                                 break;
-               default: temp.category = Location.Category.PARKING;
+               case "PARKING": temp.category = Location.Category.PARKING;
+                              break;
            }
            
            locMap.put(rs.getInt("pointID"), temp); //Why is this "pointID", not "locationID"?
@@ -125,18 +130,14 @@ public class JDBC {
            Point temp = new Point();
            temp.X = rs.getInt("X");
            temp.Y = rs.getInt("Y");
-           Location partner = locMap.get(rs.getInt("pointID"));
-           temp.location = partner;
-//           if(partner != null) {
-//               partner.point = temp;
-//               temp.type = Point.Type.LOCATION;
-//           } else
-//               temp.type = Point.Type.WAYPOINT;
            
+           if(locMap.containsKey(rs.getInt("pointID"))) {
+                Location partner = locMap.get(rs.getInt("pointID"));
+                temp.location = partner;
+                partner.point = temp;
+           }
+
            switch(rs.getString("type")) {
-               case "LOCATION": temp.type = Point.Type.LOCATION;
-                                partner.point = temp;
-                              break;
                case "CONNECTION": temp.type = Point.Type.CONNECTION;
                            break;
                case "WAYPOINT": temp.type = Point.Type.WAYPOINT;
