@@ -66,6 +66,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
     private ArrayList<JLabel> pinList = new ArrayList<JLabel>();
     private final Image pinImage = new ImageIcon(this.getClass().getResource("/icons/marker.png")).getImage();
+    private Image startIcon = new ImageIcon(this.getClass().getResource("/icons/start.png")).getImage();
+    private Image endIcon = new ImageIcon(this.getClass().getResource("/icons/end.png")).getImage();
 
     // Data varaibels 
     private ArrayList<Point> pointList = new ArrayList<>();
@@ -390,10 +392,10 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             int diviation = 10;
 
             if (startLocation.point.map.mapID == map.mapID) {
-                g.drawImage(pinImage, startLocation.point.X - diviation, startLocation.point.Y - diviation, 20, 20, null);
+                g.drawImage(startIcon, startLocation.point.X - diviation, startLocation.point.Y - diviation, 20, 20, null);
             }
             if (endLocation.point.map.mapID == map.mapID) {
-                g.drawImage(pinImage, endLocation.point.X - diviation, endLocation.point.Y - diviation, 20, 20, null);
+                g.drawImage(endIcon, endLocation.point.X - diviation, endLocation.point.Y - diviation, 20, 20, null);
             }
 
             int size = getMultiRoute().size();
@@ -407,12 +409,12 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                 
                 if(e.startPoint.type.name().equals("CONNECTION") && 
                    e.startMapID == map.mapID) {
-                    g.drawImage(pinImage, e.startPoint.X - diviation, e.startPoint.Y - diviation, 20, 20, null);
+                    g.drawImage(startIcon, e.startPoint.X - diviation, e.startPoint.Y - diviation, 20, 20, null);
                 }
                 
                 if(e.endPoint.type.name().equals("CONNECTION") && 
                    e.endMapID == map.mapID) {
-                    g.drawImage(pinImage, e.endPoint.X - diviation, e.endPoint.Y - diviation, 20, 20, null);
+                    g.drawImage(endIcon, e.endPoint.X - diviation, e.endPoint.Y - diviation, 20, 20, null);
                 }
 
             }
