@@ -350,9 +350,15 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     public void paint(Graphics g) {
         super.paint(g);
 
-        if (isShowPins()) {
+        if (isShowPins()) {         //p should be in clicked location list, we should use locationlist's coordinates ,dont know what's pins. for paint function uses pins, when we click search button, it repaint pinicon in a different way.
+                                    
             for (Location p : pins) {
+                g.setColor(Color.red);
+                Font locationFont = new Font("Roboto", Font.BOLD, 12);
+                g.setFont(locationFont);
                 g.drawImage(pinImage, p.point.X - 5, p.point.Y - 5, 20, 20, null);
+
+                g.drawString(p.name, p.point.X + 10, p.point.Y - 20);
 
             }
         }
@@ -621,7 +627,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         String endPointString = endPointField.getText();
 
         if (e.getSource() != search && e.getSource() != exchange && e.getSource() != rightArrow &&
-                e.getSource() != leftArrow) {
+if (e.getSource() != search && e.getSource() != exchange && e.getSource() != rightArrow && e.getSource() != leftArrow && e.getSource() != home )  {
 
             int radius = 30;
             boolean inrange = false;
@@ -629,7 +635,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             int x = e.getX();
             int y = e.getY();
 
-            for (Location temp : pins) {
+            for (Location temp : locationList) {
                 if (((x > (temp.point.X - radius))
                         && (x < (temp.point.X + radius))
                         && (y > (temp.point.Y - radius))
