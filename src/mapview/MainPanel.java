@@ -308,13 +308,16 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
             //Edge startEdge = getMultiRoute().get(0);
             //Edge endEdge = getMultiRoute().get(getMultiRoute().size() - 1);
+            
+            g.setColor(Color.red);
             int diviation = 10;
-
+            
+            
             if (startLocation.point.map.mapID == getMap().mapID) {
-                g.drawImage(startIcon, startLocation.point.X - diviation, startLocation.point.Y - diviation, 20, 20, null);
+                g.drawImage(startIcon, startLocation.point.X - diviation, startLocation.point.Y - diviation, 30, 30, null);
             }
             if (endLocation.point.map.mapID == getMap().mapID) {
-                g.drawImage(endIcon, endLocation.point.X - diviation, endLocation.point.Y - diviation, 20, 20, null);
+                g.drawImage(endIcon, endLocation.point.X - diviation, endLocation.point.Y - diviation, 30, 30, null);
             }
 
             int size = getMultiRoute().size();
@@ -611,15 +614,20 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                     }
                     drawMultiRoute(startLocation, endLocation);
 
-                } else if (startLocation.point.map.mapID == endLocation.point.map.mapID) {
+                } // single map routing 
+                else if (startLocation.point.map.mapID == endLocation.point.map.mapID) {
 
                     if (startLocation.point.map.mapID != getMap().mapID) {
                         this.reloadMap(startLocation.point.map);
                     }
 
                     route = (ArrayList<Edge>) algo.calculate(startLocation.point, endLocation.point);
+                    
                     setShowRoute(true);
+                    setDrawMultiRoutes(false);
                     setShowPins(false);
+                    setShowAllPins(false);
+   
                     repaint();
                 }
 
