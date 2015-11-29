@@ -94,7 +94,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private boolean showWhenClick = false;
     private int clicked = 0;
     private Font locationFont = new Font("Roboto", Font.BOLD, 12);
-
+    private Font mapINFOFont = new Font("Roboto", Font.BOLD, 24);
     AutoSuggestor startAutoSuggestor;
     AutoSuggestor endAutoSuggestor;
 
@@ -210,10 +210,10 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         endPointField.addMouseListener(this);
 
         search.setBounds(400, 8, 40, 40);
-        home.setBounds(10, 10, 30, 30);
-        exchange.setBounds(200, 5, 30, 40);
-        leftArrow.setBounds(850, 10, 50, 50);
-        rightArrow.setBounds(900, 10, 50, 50);
+        home.setBounds(5, 10, 40, 30);
+        exchange.setBounds(200, 5, 40, 40);
+        leftArrow.setBounds(850, 5, 50, 40);
+        rightArrow.setBounds(900, 5, 50, 40);
 
         timer = new Timer(100, this);
         timer.setInitialDelay(300);
@@ -278,6 +278,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+        g.setFont(mapINFOFont);
+        g.setColor(Color.lightGray);
+        g.drawString(getMap().description,700, 33);
 
         if (isShowPins()) {         //p should be in clicked location list, we should use locationlist's coordinates ,dont know what's pins. for paint function uses pins, when we click search button, it repaint pinicon in a different way.
 
