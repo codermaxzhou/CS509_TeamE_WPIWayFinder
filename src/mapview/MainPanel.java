@@ -93,6 +93,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private boolean drawMultiRoutes = false;
     private boolean showWhenClick = false;
     private int clicked = 0;
+    private Font locationFont = new Font("Roboto", Font.BOLD, 12);
 
     AutoSuggestor startAutoSuggestor;
     AutoSuggestor endAutoSuggestor;
@@ -282,10 +283,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
             for (Location p : pins) {
                 g.setColor(Color.black);
-            //    Font locationFont = new Font("Roboto", Font.BOLD, 12);
-             //   g.setFont(locationFont);
+                g.setFont(locationFont);
                 g.drawImage(pinImage, p.point.X - 5, p.point.Y - 5, 20, 20, null);
-                g.drawString(p.name, p.point.X + 10, p.point.Y - 20);
+                g.drawString(p.name, p.point.X + 10, p.point.Y - 25);
 
             }
         }
@@ -915,15 +915,17 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             edge = route.get(index);
             Graphics g = this.getGraphics();
             g.setColor(Color.red);
+            g.setFont(locationFont);
+            
             // Stroke stroke  = new BasicStroke(3.0f);
 
             if (index == 0) {
-                g.drawString(startLocation.name, startLocation.point.X - 30, startLocation.point.Y - 30);
-                g.drawImage(startIcon, startLocation.point.X - 5, startLocation.point.Y - 20, 30, 30, null);
+                g.drawString(startLocation.name, startLocation.point.X + 10, startLocation.point.Y - 25);
+                g.drawImage(startIcon, startLocation.point.X +5, startLocation.point.Y - 20, 30, 30, null);
             }
             if (index == route.size() - 1) {
-                g.drawString(endLocation.name, endLocation.point.X - 30, endLocation.point.Y - 30);
-                g.drawImage(endIcon, endLocation.point.X - 5, endLocation.point.Y - 20, 30, 30, null);
+                g.drawString(endLocation.name, endLocation.point.X + 10, endLocation.point.Y - 25);
+                g.drawImage(endIcon, endLocation.point.X +5, endLocation.point.Y - 20, 30, 30, null);
             }
 
             g.drawLine(edge.startPoint.X, edge.startPoint.Y, edge.endPoint.X, edge.endPoint.Y);
