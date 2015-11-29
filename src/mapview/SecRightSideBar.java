@@ -32,7 +32,7 @@ import jdbc.JDBC;
 public class SecRightSideBar extends javax.swing.JPanel implements MouseListener, ActionListener {
 
     private JDBC db = new JDBC();
-    private Map m = new Map();
+    private Map map = new Map();
     private ArrayList<Location> locationList = new ArrayList<Location>();
     private ArrayList<JLabel> labelList = new ArrayList<JLabel>();
     private ArrayList<JLabel> pinList = new ArrayList<JLabel>();
@@ -55,11 +55,12 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
 
     public void ShowLocationName(String category) throws SQLException {
         this.removeAll();
-
-        int mapIndex = mainPanel.getMapIndex();
+//
+//        int mapIndex = mainPanel.getMapIndex();
+//        
+//        map = mapModel.getMapList().get(mapIndex - 1);
         
-        m = mapModel.getMapList().get(mapIndex - 1);
-        
+         map = mainPanel.getMap();
      
        
 //        locationList = info.locations;
@@ -70,7 +71,7 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
 //        }
       //  locationList = locationList.addAll(locationList)
          
-        locationList = m.locList;
+        locationList = map.locList;
         labelList.clear();
 
         for (Location l : locationList) {

@@ -74,7 +74,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
 
     public RightBar() {
         
-        this.setBackground(Color.red);
+        this.setBackground(Color.GRAY);
 
         init();
         initComponent();
