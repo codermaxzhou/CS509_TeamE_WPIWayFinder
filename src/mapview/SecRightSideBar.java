@@ -40,6 +40,7 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
     public MainPanel mainPanel;
     public Timer timer;
     private int index = 0;
+    int temp = -1;
 
     public MapModel mapModel = null;
 
@@ -133,7 +134,7 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
                 
                 labelList.get(n).setForeground(Color.black);
                 mainPanel.showSinglePin(labelList.get(n).getText());
-
+                temp = n;
             }
             else{
                 labelList.get(n).setForeground(Color.white);
@@ -172,7 +173,21 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
 
     @Override
     public void mouseExited(MouseEvent e) {
+        int m;
+        for (m = 0; m < labelList.size(); m++) {
 
+                if (m != temp) {
+
+                    labelList.get(m).setForeground(Color.white);
+                    this.repaint();
+                }
+                else {
+                    labelList.get(m).setForeground(Color.black);
+                    this.repaint();
+                }
+
+
+        }
  
 
     }
