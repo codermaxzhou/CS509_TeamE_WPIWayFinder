@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package mapview;
 
 import adminmodule.Dijkstra;
@@ -301,49 +297,6 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     @Override
     public void paintComponent(Graphics g) {
         g.drawImage(mapImage, 0, 0, this.getWidth(), this.getHeight(), this);
-
-//        Image profileImage = new ImageIcon(this.getClass().getResource("/icons/user.png")).getImage();
-//        ImageIcon profileIcon = new ImageIcon(profileImage);
-//
-//        profile.setIcon(profileIcon);
-//
-//        Image exchangeImage = new ImageIcon(this.getClass().getResource("/icons/exchange.png")).getImage();
-//        ImageIcon exchangeIcon = new ImageIcon(exchangeImage);
-//
-//        exchange.setIcon(exchangeIcon);
-//
-//        Image searchImage = new ImageIcon(this.getClass().getResource("/icons/search.png")).getImage();
-//        ImageIcon searchIcon = new ImageIcon(searchImage);
-//
-//        search.setIcon(searchIcon);
-//        
-//        search.setBounds(380, 10, 30, 30);
-//        profile.setBounds(10, 10, 30, 30);
-//        exchange.setBounds(190, 10, 30, 30);
-//        
-//         Font font = new Font("Roboto", Font.PLAIN, 16);
-//
-//        startPointField.setColumns(20);
-//        startPointField.setBounds(40, 10, 150, 30);
-//        startPointField.setText("Start Point");
-//        startPointField.setFont(font);
-//        startPointField.setForeground(Color.gray);
-//        
-////        startAutoSuggestor = new AutoSuggestor(startPointField, frame, null, Color.WHITE.brighter(), Color.BLUE, Color.RED, 1f);
-//
-//        endPointField.setColumns(20);
-//        endPointField.setBounds(220, 10, 150, 30);
-//        endPointField.setText("End Point");
-//        endPointField.setFont(font);
-//        endPointField.setForeground(Color.gray);
-//        
-//        
-//        this.add(startPointField);
-//        this.add(endPointField);
-//        this.add(searchButton);
-//        this.add(search);
-//        this.add(profile);
-//        this.add(exchange);
     }
 
     @Override
@@ -353,11 +306,10 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         if (isShowPins()) {         //p should be in clicked location list, we should use locationlist's coordinates ,dont know what's pins. for paint function uses pins, when we click search button, it repaint pinicon in a different way.
                                     
             for (Location p : pins) {
-                g.setColor(Color.red);
+                g.setColor(Color.black);
                 Font locationFont = new Font("Roboto", Font.BOLD, 12);
                 g.setFont(locationFont);
                 g.drawImage(pinImage, p.point.X - 5, p.point.Y - 5, 20, 20, null);
-
                 g.drawString(p.name, p.point.X + 10, p.point.Y - 20);
 
             }
@@ -401,7 +353,6 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
                     g.drawImage(connctionStartIcon, e.startPoint.X - diviation, e.startPoint.Y - diviation, 20, 20, null);
 
-                   // g.drawImage(pinImage, e.startPoint.X - diviation, e.startPoint.Y - diviation, 20, 20, null);
                 }
 
                 if (e.endPoint.type.name().equals("CONNECTION")
@@ -409,7 +360,6 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
                     g.drawImage(connctionEndIcon, e.endPoint.X - diviation, e.endPoint.Y - diviation, 20, 20, null);
 
-                   // g.drawImage(pinImage, e.endPoint.X - diviation, e.endPoint.Y - diviation, 20, 20, null);
                 }
 
             }
@@ -551,41 +501,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             if (p.category.toString().equals(category)) {
                 pins.add(p);
             }
-//            switch (p.category) {
-//                case CLASSROOM:
-//                    if (category.equals("CLASSROOM")) {
-//                        pins.add(p);
-//                    }
-//                    break;
-//                case RESTROOM:
-//                    if (category.equals("RESTROOM")) {
-//                        pins.add(p);
-//                    }
-//                    break;
-//                case ATM:
-//                    if (category.equals("ATM")) {
-//                        pins.add(p);
-//                    }
-//                    break;
-//                case ADMIN:
-//                    if (category.equals("ADMIN")) {
-//                        pins.add(p);
-//                    }
-//                    break;
-//                case DINING:
-//                    if (category.equals("DINING")) {
-//                        pins.add(p);
-//                    }
-//                    break;
-//                case PARKING:
-//                    if (category.equals("PARKING")) {
-//                        pins.add(p);
-//                    }
-//                    break;
-//                
-//                default:
-//                    break;
-//            }
+
         }
 
         for (Location p : pins) {
@@ -625,9 +541,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
         String startPointString = startPointField.getText();
         String endPointString = endPointField.getText();
-
-        if (e.getSource() != search && e.getSource() != exchange && e.getSource() != rightArrow &&
-if (e.getSource() != search && e.getSource() != exchange && e.getSource() != rightArrow && e.getSource() != leftArrow && e.getSource() != home )  {
+        if (e.getSource() != search && e.getSource() != exchange && e.getSource() != rightArrow && e.getSource() != leftArrow && e.getSource() != home )  {
 
             int radius = 30;
             boolean inrange = false;
@@ -1024,9 +938,7 @@ if (e.getSource() != search && e.getSource() != exchange && e.getSource() != rig
                 g.drawString(endLocation.name, endLocation.point.X - 30, endLocation.point.Y - 30);
                 g.drawImage(endIcon, endLocation.point.X - 5, endLocation.point.Y - 20, 30, 30, null);
             }
-//                    
-            g.fillOval(edge.startPoint.X - 5, edge.startPoint.Y - 5, 10, 10);
-            g.fillOval(edge.endPoint.X - 5, edge.endPoint.Y - 5, 10, 10);
+
 
             g.drawLine(edge.startPoint.X, edge.startPoint.Y, edge.endPoint.X, edge.endPoint.Y);
 
