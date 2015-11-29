@@ -6,10 +6,12 @@ import adminmodule.Location;
 import adminmodule.Map;
 import adminmodule.MapInfo;
 import adminmodule.Point;
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -95,6 +97,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private int clicked = 0;
     private Font locationFont = new Font("Roboto", Font.BOLD, 12);
     private Font mapINFOFont = new Font("Roboto", Font.BOLD, 24);
+    private Font boldFont = new Font("Roboto", Font.BOLD, 16);
     AutoSuggestor startAutoSuggestor;
     AutoSuggestor endAutoSuggestor;
 
@@ -245,22 +248,19 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         tipList.clear();
 
         setMap(allMapList.get(allMapList.indexOf(mapToLoad)));
-        //this.mapIndex = mapIndex;
-//        this.showRoute = false;
-//        this.drawMultiRoutes = false;
-//        this.drawRoutes = false;
+
         this.showRoute = false;
         this.showAllPins = false;
         this.showPins = false;
         mapView.getSecRightSideBar().removeAll();
         mapView.getSecRightSideBar().setVisible(false);
+        if (map.mapID != 1) {
+            mapView.getRightBar().setIsCampus(false);
 
-//        MapInfo info = null;
-//        try {
-//            info = db.getMapInfo(mapIndex, map); // why do we need map as parameter?
-//        } catch (SQLException ex) {
-//            Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        } else {
+            mapView.getRightBar().setIsCampus(true);
+        }
+
         pointList = getMap().pointList;
         edgeList = getMap().edgeList;
         locationList = getMap().locList;
@@ -278,11 +278,12 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+        int diviation = 15;
         g.setFont(mapINFOFont);
         g.setColor(Color.lightGray);
-        g.drawString(getMap().description,600, 33);
+        g.drawString(getMap().description, 550, 33);
 
-        if (isShowPins()) {         
+        if (isShowPins()) {
 
             for (Location p : pins) {
                 g.setColor(Color.black);
@@ -293,7 +294,24 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             }
         }
         if (isShowRoute()) {
-            this.timer.start();
+            g.setColor(Color.BLACK);
+            g.setFont(boldFont);
+            
+            
+           
+            g.drawString(startLocation.name, startLocation.point.X, startLocation.point.Y);
+            g.drawImage(startIcon, startLocation.point.X - diviation, startLocation.point.Y - diviation, 30, 30, null);
+            
+            g.drawString(endLocation.name, endLocation.point.X, endLocation.point.Y);
+            g.drawImage(endIcon, endLocation.point.X - diviation, endLocation.point.Y - diviation, 30, 30, null);
+            
+            float lineWidth = 4.0f;
+            ((Graphics2D)g).setStroke(new BasicStroke(lineWidth));
+            g.setColor(new Color(0, 160, 255));
+            for (Edge e : route) {
+               ((Graphics2D)g).drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
+
+            }
 
         }
         if (isShowAllPins()) {
@@ -306,40 +324,42 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
         if (isDrawMultiRoutes()) {
 
-            //Edge startEdge = getMultiRoute().get(0);
-            //Edge endEdge = getMultiRoute().get(getMultiRoute().size() - 1);
-            
-            g.setColor(Color.red);
-            int diviation = 10;
-            
-            
+            g.setColor(Color.BLACK);
+            g.setFont(boldFont);
+         
             if (startLocation.point.map.mapID == getMap().mapID) {
+                g.drawString(startLocation.name, startLocation.point.X, startLocation.point.Y);
                 g.drawImage(startIcon, startLocation.point.X - diviation, startLocation.point.Y - diviation, 30, 30, null);
             }
             if (endLocation.point.map.mapID == getMap().mapID) {
+                g.drawString(endLocation.name, endLocation.point.X, endLocation.point.Y);
                 g.drawImage(endIcon, endLocation.point.X - diviation, endLocation.point.Y - diviation, 30, 30, null);
             }
-
+            
+            g.setColor(new Color(0, 160, 255));
+            float lineWidth = 4.0f;
+            ((Graphics2D)g).setStroke(new BasicStroke(lineWidth));
+            
             int size = getMultiRoute().size();
             for (int i = 0; i <= size - 1; i++) {
                 Edge e = getMultiRoute().get(i);
                 //String type = route.get(i).startPoint.type.equals("CONNECTION");
 
                 if (e.startMapID == getMap().mapID && e.endMapID == getMap().mapID) {
-                    g.drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
+                     ((Graphics2D)g).drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
                 }
 
                 if (e.startPoint.type.name().equals("CONNECTION")
                         && e.startMapID == getMap().mapID) {
 
-                    g.drawImage(connctionStartIcon, e.startPoint.X - diviation, e.startPoint.Y - diviation, 20, 20, null);
+                    g.drawImage(connctionStartIcon, e.startPoint.X - diviation, e.startPoint.Y - diviation, 30, 30, null);
 
                 }
 
                 if (e.endPoint.type.name().equals("CONNECTION")
                         && e.endMapID == getMap().mapID) {
 
-                    g.drawImage(connctionEndIcon, e.endPoint.X - diviation, e.endPoint.Y - diviation, 20, 20, null);
+                    g.drawImage(connctionEndIcon, e.endPoint.X - diviation, e.endPoint.Y - diviation, 30, 30, null);
 
                 }
 
@@ -403,7 +423,6 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 //        }
 //        this.repaint();
 //    }
-
     public void showSinglePin(String name) {
         this.setDrawMultiRoutes(false);
         this.setShowRoute(false);
@@ -622,12 +641,12 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                     }
 
                     route = (ArrayList<Edge>) algo.calculate(startLocation.point, endLocation.point);
-                    
+
                     setShowRoute(true);
                     setDrawMultiRoutes(false);
                     setShowPins(false);
                     setShowAllPins(false);
-   
+
                     repaint();
                 }
 
@@ -643,45 +662,6 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
         }
 
-//        if (e.getSource() == nextButton) {
-//            // System.out.print("next Button Clicked");
-//           // mapIndex = 2;
-//            //this.setMapIndex(mapIndex);
-//            setDrawMultiRoutes(true);
-//            this.setShowAllPins(false);
-//            this.setShowPins(false);
-//            this.setDrawRoutes(false);
-//            this.setShowRoute(false);
-//            try {
-//                this.init();
-//            } catch (SQLException ex) {
-//                Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            this.repaint();
-//            this.remove(nextButton);
-//        }
-//        if(e.getX() < connectionX + 20 && e.getX() > connectionX - 20 && e.getY() < connectionY + 20 && e.getY() > connectionY - 20){
-//            System.out.print("click the connection button");
-//        }
-        // right click 
-//        if (e.isMetaDown()) {
-//
-//            int x = e.getX();
-//            int y = e.getY();
-//            int radius = 30;
-//            for (Point temp : allPointList) {
-//                if (!((x < (temp.getX() - radius))
-//                        || (x > (temp.getX() + radius))
-//                        || (y < (temp.getY() - radius))
-//                        || (y > (temp.getY() + radius))) && temp.type.name() == "CONNECTION") {
-//                    Connection connection = new Connection(temp, this);
-//                    //connection.mainPanel = this;
-//                    connection.show(e.getComponent(), x, y);
-//
-//                }
-//            }
-//
-//        }
         if (e.getSource() == rightArrow) {
             if (isDrawMultiRoutes()) {
                 Map nextMap = null;
@@ -920,33 +900,33 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
-        if (e.getSource() == timer) {
-            Edge edge = new Edge();
-
-            edge = route.get(index);
-            Graphics g = this.getGraphics();
-            g.setColor(Color.red);
-            g.setFont(locationFont);
-            
-            // Stroke stroke  = new BasicStroke(3.0f);
-
-            if (index == 0) {
-                g.drawString(startLocation.name, startLocation.point.X + 10, startLocation.point.Y - 25);
-                g.drawImage(startIcon, startLocation.point.X +5, startLocation.point.Y - 20, 30, 30, null);
-            }
-            if (index == route.size() - 1) {
-                g.drawString(endLocation.name, endLocation.point.X + 10, endLocation.point.Y - 25);
-                g.drawImage(endIcon, endLocation.point.X +5, endLocation.point.Y - 20, 30, 30, null);
-            }
-
-            g.drawLine(edge.startPoint.X, edge.startPoint.Y, edge.endPoint.X, edge.endPoint.Y);
-
-            index++;
-            if (index == route.size()) {
-                this.timer.stop();
-                index = 0;
-            }
-        }
+//        if (e.getSource() == timer) {
+//            Edge edge = new Edge();
+//
+//            edge = route.get(index);
+//            Graphics g = this.getGraphics();
+//            g.setColor(Color.red);
+//            g.setFont(locationFont);
+//            
+//            // Stroke stroke  = new BasicStroke(3.0f);
+//
+//            if (index == 0) {
+//                g.drawString(startLocation.name, startLocation.point.X + 10, startLocation.point.Y - 25);
+//                g.drawImage(startIcon, startLocation.point.X +5, startLocation.point.Y - 20, 30, 30, null);
+//            }
+//            if (index == route.size() - 1) {
+//                g.drawString(endLocation.name, endLocation.point.X + 10, endLocation.point.Y - 25);
+//                g.drawImage(endIcon, endLocation.point.X +5, endLocation.point.Y - 20, 30, 30, null);
+//            }
+//
+//            g.drawLine(edge.startPoint.X, edge.startPoint.Y, edge.endPoint.X, edge.endPoint.Y);
+//
+//            index++;
+//            if (index == route.size()) {
+//                this.timer.stop();
+//                index = 0;
+//            }
+//        }
     }
 
     /**

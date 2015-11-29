@@ -38,8 +38,8 @@ public class Enter extends  JPopupMenu{
 //                rightBar.inner();
                 
                // mainPanel.reloadMap(location.point.map.mapID);
-                rightBar.setIsCampus(false);
-                rightBar.repaint();
+//                rightBar.setIsCampus(false);
+//                rightBar.repaint();
                 secRightBar.removeAll();
                 secRightBar.setVisible(false);
                 mapList = mainPanel.mapModel.getMapList();
