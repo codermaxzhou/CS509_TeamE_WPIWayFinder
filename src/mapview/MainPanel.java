@@ -282,10 +282,10 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
             for (Location p : pins) {
                 g.setColor(Color.black);
-               // Font locationFont = new Font("Roboto", Font.BOLD, 12);
-                // g.setFont(locationFont);
+            //    Font locationFont = new Font("Roboto", Font.BOLD, 12);
+             //   g.setFont(locationFont);
                 g.drawImage(pinImage, p.point.X - 5, p.point.Y - 5, 20, 20, null);
-                // g.drawString(p.name, p.point.X + 10, p.point.Y - 20);
+                g.drawString(p.name, p.point.X + 10, p.point.Y - 20);
 
             }
         }
@@ -530,7 +530,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             int x = e.getX();
             int y = e.getY();
 
-            for (Location temp : pins) {
+            for (Location temp : locationList) {
                 if (((x > (temp.point.X - radius))
                         && (x < (temp.point.X + radius))
                         && (y > (temp.point.Y - radius))
@@ -541,13 +541,11 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                     if (clicked % 2 == 1) {
                         startPointField.setText(temp.name);
                         clear = true;
-
-                        //showClickPin(temp.name);
+                        showSinglePin(temp.name);
                     } else {
-
                         endPointField.setText(temp.name);
                         clear = false;
-                       // showClickPin(temp.name);
+                        showSinglePin(temp.name);
 
                     }
 
@@ -619,7 +617,6 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                     route = (ArrayList<Edge>) algo.calculate(startLocation.point, endLocation.point);
                     setShowRoute(true);
                     setShowPins(false);
-
                     repaint();
                 }
 
