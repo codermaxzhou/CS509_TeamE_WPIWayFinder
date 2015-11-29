@@ -45,9 +45,11 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
     private JLabel diningLabel;
     private JLabel parkingLabel;
     private JLabel libraryLabel;
+    private JLabel clearLabel;
+    private JLabel showLabel;
 
-    private JButton clearButton;
-    private JButton showButton;
+//    private JButton clearButton;
+//    private JButton showButton;
 
     private JList floorList;
     private JScrollPane scrollPane;
@@ -59,6 +61,8 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
     private ImageIcon libraryIcon;
     private ImageIcon classroomIcon;
     private ImageIcon restroomIcon;
+    private ImageIcon clearIcon;
+    private ImageIcon showIcon;
 
     private boolean isCampus = true;
     private boolean buildingMove = false;
@@ -73,12 +77,11 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
     private ArrayList<Map> allMapList = new ArrayList<>();
 
     public RightBar() {
-        
-        this.setBackground(Color.GRAY);
+
+       // this.setBackground(Color.GRAY);
 
         init();
         initComponent();
-        
 
     }
 
@@ -99,44 +102,67 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
         buildingLabel = new JLabel();
         buildingIcon = new ImageIcon(getClass().getResource("/icons/building.png"));
         buildingLabel.setIcon(buildingIcon);
+        buildingLabel.setBounds(35, 50, 60, 60);
 
         diningLabel = new JLabel();
         diningIcon = new ImageIcon(getClass().getResource("/icons/dining.png"));
         diningLabel.setIcon(diningIcon);
-
+        diningLabel.setBounds(35, 180, 60, 60);
+        
         gymLabel = new JLabel();
         gymIcon = new ImageIcon(getClass().getResource("/icons/gym.png"));
         gymLabel.setIcon(gymIcon);
-
+        gymLabel.setBounds(35, 310, 60, 60);
+        
         libraryLabel = new JLabel();
         libraryIcon = new ImageIcon(getClass().getResource("/icons/reading.png"));
         libraryLabel.setIcon(libraryIcon);
+        libraryLabel.setBounds(35, 440, 60, 60);
 
         parkingLabel = new JLabel();
         parkingIcon = new ImageIcon(getClass().getResource("/icons/parking.png"));
         parkingLabel.setIcon(parkingIcon);
+        parkingLabel.setBounds(35, 570, 60, 60);
 
         classroomLabel = new JLabel();
         classroomIcon = new ImageIcon(getClass().getResource("/icons/classrooml.png"));
         classroomLabel.setIcon(classroomIcon);
+        classroomLabel.setBounds(35, 50, 60, 60);
 
         restroomLabel = new JLabel();
         restroomIcon = new ImageIcon(getClass().getResource("/icons/restrooml.png"));
         restroomLabel.setIcon(restroomIcon);
+        restroomLabel.setBounds(35, 180, 60, 60);
+ 
+        
+        clearLabel = new JLabel();
+        clearIcon = new ImageIcon(getClass().getResource("/icons/cancel.png"));
+        clearLabel.setIcon(clearIcon);
+        clearLabel.setBounds(80, 700, 35, 35);
+        
+        showLabel = new JLabel();
+        showIcon = new ImageIcon(getClass().getResource("/icons/show.png"));
+        showLabel.setIcon(showIcon);
+        showLabel.setBounds(30, 700, 35, 35);
+//        clearButton = new JButton();
+//        clearButton.setText("Clear Pins");
+//        //clearButton.setBounds(50, 700, 15, 60);
+//        
+//        showButton = new JButton();
+//        showButton.setText("Show Pins");
+        //showButton.setBounds(50, 750, 15, 60);
+        
+       
+        
 
-        clearButton = new JButton();
-        showButton = new JButton();
-        clearButton.setText("Clear Pins");
-        showButton.setText("Show Pins");
-
-        floorList.setBorder(javax.swing.BorderFactory.createTitledBorder("Floor "));
-        floorList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        floorList.setToolTipText("Choose Floor in Project Center");
-        scrollPane = new JScrollPane();
-        scrollPane.setViewportView(floorList);
+//        floorList.setBorder(javax.swing.BorderFactory.createTitledBorder("Floor "));
+//        floorList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+//        floorList.setToolTipText("Choose Floor in Project Center");
+//        scrollPane = new JScrollPane();
+//        scrollPane.setViewportView(floorList);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        this.setLayout(null);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -174,8 +200,8 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
         classroomLabel.addMouseListener(this);
         restroomLabel.addMouseListener(this);
 
-        clearButton.addMouseListener(this);
-        showButton.addMouseListener(this);
+        clearLabel.addMouseListener(this);
+        showLabel.addMouseListener(this);
 
     }
 
@@ -183,8 +209,16 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
     public void paintComponent(Graphics g) {
         this.removeAll();
         if (isIsCampus()) {
+            this.add(buildingLabel);
+            this.add(diningLabel);
+            this.add(gymLabel);
+            this.add(libraryLabel);
+            this.add(parkingLabel);
+           
+                
+            
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-            this.setLayout(layout);
+            this.setLayout(null);
             layout.setHorizontalGroup(
                     layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -200,10 +234,9 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                     .addGroup(layout.createSequentialGroup()
                             .addContainerGap()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(showButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(clearButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(showLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(clearLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGap(25, 25, 25))
-                    
             );
             layout.setVerticalGroup(
                     layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,17 +252,21 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                             .addGap(68, 68, 68)
                             .addComponent(parkingLabel)
                             .addGap(29, 29, 29)
-                            .addComponent(clearButton)
+                            .addComponent(clearLabel)
                             .addGap(18, 18, 18)
-                            .addComponent(showButton)
+                            .addComponent(showLabel)
                             .addContainerGap(41, Short.MAX_VALUE))
-                           
             );
 
         } else {
+            
+            this.add(classroomLabel);
+            this.add(restroomLabel);
+            this.add(showLabel);
+            this.add(clearLabel);
 
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-            this.setLayout(layout);
+            this.setLayout(null);
             layout.setHorizontalGroup(
                     layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -242,8 +279,8 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                     .addGroup(layout.createSequentialGroup()
                             .addContainerGap()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(showButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(clearButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(showLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(clearLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGap(25, 25, 25))
             );
             layout.setVerticalGroup(
@@ -254,9 +291,9 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                             .addGap(68, 68, 68)
                             .addComponent(restroomLabel)
                             .addGap(409, 409, 409)
-                            .addComponent(clearButton)
+                            .addComponent(clearLabel)
                             .addGap(18, 18, 18)
-                            .addComponent(showButton)
+                            .addComponent(showLabel)
                             .addContainerGap(41, Short.MAX_VALUE))
             );
 
@@ -268,18 +305,16 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
     public void paint(Graphics g) {
         super.paint(g);
 
-
     }
-
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        
-        if (e.getSource() == showButton) {
+
+        if (e.getSource() == showLabel) {
             mainPanel.showPins();
         }
 
-        if (e.getSource() == clearButton) {
+        if (e.getSource() == clearLabel) {
 
             mainPanel.clearPins();
         }
@@ -369,81 +404,124 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                 Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
             }
             secRightSideBar.timer.start();
-        } 
-        else {
-            if (e.getSource() == restroomLabel) {
-                secRightSideBar.setVisible(true);
-                secRightSideBar.setBackground(new java.awt.Color(38, 195, 194));
-                mainPanel.showLocationPin("RESTROOM");
+        }
 
-                try {
-                    secRightSideBar.ShowLocationName("RESTROOM");
-                } catch (SQLException ex) {
-                    Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                secRightSideBar.timer.start();
+        if (e.getSource() == restroomLabel) {
+            secRightSideBar.setVisible(true);
+            secRightSideBar.setBackground(new java.awt.Color(38, 195, 194));
+            mainPanel.showLocationPin("RESTROOM");
+
+            try {
+                secRightSideBar.ShowLocationName("RESTROOM");
+            } catch (SQLException ex) {
+                Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-
+            secRightSideBar.timer.start();
         }
-            
-        }
-        
 
-
-   
+    }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(e.getSource() == buildingLabel){
+            buildingLabel.setBounds(buildingLabel.getX() + 5, buildingLabel.getY() + 5, buildingLabel.getWidth(), buildingLabel.getHeight());
+        }
+        
+        if(e.getSource() == diningLabel){
+            diningLabel.setBounds(diningLabel.getX() + 5, diningLabel.getY() + 5, diningLabel.getWidth(), diningLabel.getHeight());
+        }
+        if(e.getSource() == gymLabel){
+            gymLabel.setBounds(gymLabel.getX() + 5, gymLabel.getY() + 5, gymLabel.getWidth(), gymLabel.getHeight());
+        }
+        if(e.getSource() == libraryLabel){
+            libraryLabel.setBounds(libraryLabel.getX() + 5, libraryLabel.getY() + 5, libraryLabel.getWidth(), libraryLabel.getHeight());
+        }
+        if(e.getSource() == parkingLabel){
+            parkingLabel.setBounds(parkingLabel.getX() + 5, parkingLabel.getY() + 5, parkingLabel.getWidth(), parkingLabel.getHeight());
+        }
+        if(e.getSource() == classroomLabel){
+            classroomLabel.setBounds(classroomLabel.getX() + 5, classroomLabel.getY() + 5, classroomLabel.getWidth(), classroomLabel.getHeight());
+        }
+        if(e.getSource() == restroomLabel){
+            restroomLabel.setBounds(restroomLabel.getX() + 5, restroomLabel.getY() + 5, restroomLabel.getWidth(), restroomLabel.getHeight());
+        }
+        if(e.getSource() == clearLabel){
+            clearLabel.setBounds(clearLabel.getX() + 3, clearLabel.getY() + 3, clearLabel.getWidth(), clearLabel.getHeight());
+        }
+        if(e.getSource() == showLabel){
+            showLabel.setBounds(showLabel.getX() + 3, showLabel.getY() + 3, showLabel.getWidth(), showLabel.getHeight());
+        }
+        
+        
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        if(e.getSource() == buildingLabel){
+            buildingLabel.setBounds(buildingLabel.getX() - 5, buildingLabel.getY() - 5, buildingLabel.getWidth(), buildingLabel.getHeight());
+        }
+        if(e.getSource() == diningLabel){
+            diningLabel.setBounds(diningLabel.getX() - 5, diningLabel.getY() - 5, diningLabel.getWidth(), diningLabel.getHeight());
+        }
+        if(e.getSource() == gymLabel){
+            gymLabel.setBounds(gymLabel.getX() - 5, gymLabel.getY() - 5, gymLabel.getWidth(), gymLabel.getHeight());
+        }
+        if(e.getSource() == libraryLabel){
+            libraryLabel.setBounds(libraryLabel.getX() - 5, libraryLabel.getY() - 5, libraryLabel.getWidth(), libraryLabel.getHeight());
+        }
+        if(e.getSource() == parkingLabel){
+            parkingLabel.setBounds(parkingLabel.getX() - 5, parkingLabel.getY() - 5, parkingLabel.getWidth(), parkingLabel.getHeight());
+        }
+        if(e.getSource() == classroomLabel){
+            classroomLabel.setBounds(classroomLabel.getX() - 5, classroomLabel.getY() - 5, classroomLabel.getWidth(), classroomLabel.getHeight());
+        }
+        if(e.getSource() == restroomLabel){
+            restroomLabel.setBounds(restroomLabel.getX() - 5, restroomLabel.getY() - 5, restroomLabel.getWidth(), restroomLabel.getHeight());
+        }
+        if(e.getSource() == clearLabel){
+            clearLabel.setBounds(clearLabel.getX() - 3, clearLabel.getY() - 3, clearLabel.getWidth(), clearLabel.getHeight());
+        }
+        if(e.getSource() == showLabel){
+            showLabel.setBounds(showLabel.getX() - 3, showLabel.getY() - 3, showLabel.getWidth(), showLabel.getHeight());
+        }
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-     // some animation here 
+        // some animation here 
 
-//        if(e.getSource() == classroomLabel){
-//            //classroomMove = true;
-//            
-//        }
-//        if(e.getSource() == restroomLabel){
-//            restroomMove = true;
-//        }
-//        if(e.getSource() == buildingLabel){
-//            System.out.print("entered");
-//            
-//            buildingLabel.setBounds(buildingLabel.getX() - 5, buildingLabel.getY() - 10,
-//                buildingLabel.getHeight(), buildingLabel.getWidth());
-//            buildingLabel.setToolTipText("Building");
-//            
-//            this.repaint();
-//            //buildingMove = true;
-//        }
-//        if(e.getSource() == gymLabel){
-//            gymMove = true;
-//        }
-//        if(e.getSource() == diningLabel){
-//            diningMove = true;
-//        }
-//        if(e.getSource() == parkingLabel){
-//            parkingMove = true;
-//        }
-//        if(e.getSource() == libraryLabel){
-//            libraryMove = true;
-//        }
-//        
-//    private JLabel classroomLabel;
-//    private JLabel restroomLabel;
-//    private JLabel buildingLabel;
-//    private JLabel gymLabel;
-//    private JLabel diningLabel;
-//    private JLabel parkingLabel;
-//    private JLabel libraryLabel;
+        if(e.getSource() == classroomLabel){
+            //classroomMove = true;
+            classroomLabel.setToolTipText("Classroom");
+            
+        }
+        if(e.getSource() == restroomLabel){
+            restroomLabel.setToolTipText("Restroom");
+        }
+        if(e.getSource() == buildingLabel){
+            buildingLabel.setToolTipText("Building");
+           
+        }
+        if(e.getSource() == gymLabel){
+            gymLabel.setToolTipText("Gym");
+        }
+        if(e.getSource() == diningLabel){
+            diningLabel.setToolTipText("Dining");
+        }
+        if(e.getSource() == parkingLabel){
+            parkingLabel.setToolTipText("Parking");
+        }
+        if(e.getSource() == libraryLabel){
+            libraryLabel.setToolTipText("Library");
+        }
+        if(e.getSource() == clearLabel){
+            clearLabel.setToolTipText("Clear Pins");
+        }
+        if(e.getSource() == showLabel){
+            showLabel.setToolTipText("Show All Pis");
+        }
+        
+
     }
 
     @Override

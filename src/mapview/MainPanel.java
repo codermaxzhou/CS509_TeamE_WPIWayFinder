@@ -205,7 +205,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         startPointField.setForeground(Color.gray);
 
         endPointField.setColumns(20);
-        endPointField.setBounds(220, 10, 150, 30);
+        endPointField.setBounds(240, 10, 150, 30);
         endPointField.setText("End Point");
         endPointField.setFont(font);
         endPointField.setForeground(Color.gray);
@@ -223,9 +223,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         startPointField.addMouseListener(this);
         endPointField.addMouseListener(this);
 
-        search.setBounds(380, 10, 30, 30);
+        search.setBounds(400, 8, 40, 40);
         home.setBounds(10, 10, 30, 30);
-        exchange.setBounds(190, 10, 30, 30);
+        exchange.setBounds(200, 5, 30, 40);
         leftArrow.setBounds(850, 10, 50, 50);
         rightArrow.setBounds(900, 10, 50, 50);
 
@@ -276,6 +276,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         this.showRoute = false;
         this.showAllPins = false;
         this.showPins = false;
+        mapView.getSecRightSideBar().removeAll();
+        mapView.getSecRightSideBar().setVisible(false);
 
 //        MapInfo info = null;
 //        try {
@@ -307,10 +309,10 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                                     
             for (Location p : pins) {
                 g.setColor(Color.black);
-                Font locationFont = new Font("Roboto", Font.BOLD, 12);
-                g.setFont(locationFont);
+               // Font locationFont = new Font("Roboto", Font.BOLD, 12);
+               // g.setFont(locationFont);
                 g.drawImage(pinImage, p.point.X - 5, p.point.Y - 5, 20, 20, null);
-                g.drawString(p.name, p.point.X + 10, p.point.Y - 20);
+              // g.drawString(p.name, p.point.X + 10, p.point.Y - 20);
 
             }
         }
@@ -459,6 +461,13 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 //                break;
 //            }
 //        }
+        
+        for(Location p : locationList){
+            if(p.name.equals(name)){
+                pins.add(p);
+                break;
+            }
+        }
 
         for (Location p : pins) {
             CustomBalloonTip tip = new CustomBalloonTip(this,
@@ -549,7 +558,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             int x = e.getX();
             int y = e.getY();
 
-            for (Location temp : locationList) {
+            for (Location temp : pins) {
                 if (((x > (temp.point.X - radius))
                         && (x < (temp.point.X + radius))
                         && (y > (temp.point.Y - radius))
@@ -892,15 +901,33 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     @Override
     public void mouseEntered(MouseEvent e) {
         // TODO Auto-generated method stub
-//        if (e.getSource() == search) {
-//            search.setToolTipText("Search Route");
-//            search.setBounds(search.getX() - 3, search.getY() - 3, search.getWidth(), search.getHeight());
-//        }
-//        if (e.getSource() == exchange) {
-//            exchange.setToolTipText("Exchange StartingPoint and Destination");
-//            exchange.setBounds(exchange.getX() - 1, exchange.getY() - 1, exchange.getWidth(), exchange.getHeight());
-//
-//        }
+        if (e.getSource() == search) {
+            search.setToolTipText("Search Route");
+            
+        }
+        if (e.getSource() == exchange) {
+            exchange.setToolTipText("Exchange StartingPoint and Destination");
+            
+
+        }
+        if (e.getSource() == rightArrow) {
+            if (this.drawMultiRoutes) {
+                rightArrow.setToolTipText("Next routing path");
+            } else {
+                rightArrow.setToolTipText("Next Floor");
+            }
+        }
+        if (e.getSource() == leftArrow) {
+            if(this.drawMultiRoutes){
+                leftArrow.setToolTipText("Previous Routing Path");
+            }
+            else{
+            leftArrow.setToolTipText("Previous Floor");
+            }
+        }
+        if (e.getSource() == home) {
+            home.setToolTipText("return to campus map");
+        }
 
     }
 
@@ -910,7 +937,6 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 //        if (e.getSource() == search) {
 //            search.setBounds(search.getX() + 3, search.getY() + 3, search.getWidth(), search.getHeight());
 //
-//            // search.set
 //        }
 //        if (e.getSource() == exchange) {
 //            exchange.setToolTipText("Exchange StartingPoint and Destination");
