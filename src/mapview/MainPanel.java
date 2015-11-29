@@ -280,9 +280,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         super.paint(g);
         g.setFont(mapINFOFont);
         g.setColor(Color.lightGray);
-        g.drawString(getMap().description,700, 33);
+        g.drawString(getMap().description,600, 33);
 
-        if (isShowPins()) {         //p should be in clicked location list, we should use locationlist's coordinates ,dont know what's pins. for paint function uses pins, when we click search button, it repaint pinicon in a different way.
+        if (isShowPins()) {         
 
             for (Location p : pins) {
                 g.setColor(Color.black);

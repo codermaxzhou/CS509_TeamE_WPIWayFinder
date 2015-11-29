@@ -118,29 +118,28 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
 //    }
     @Override
     public void mouseClicked(MouseEvent e) {
-        click = true;
+        
         int n = 0;
-        int m = 0;
         JLabel pinLabel = new JLabel();
         // set all label to null
         for (JLabel j : pinList) {
             // j.setIcon(null);
             j.setIcon(null);
-
         }
 
-        for (m = 0; m < labelList.size(); m++) {
-
-            labelList.get(m).setForeground(Color.white);
-
-            this.repaint();
-        }
 
         for (n = 0; n < labelList.size(); n++) {
             if (e.getSource().equals(labelList.get(n))) {
-
+                
+                labelList.get(n).setForeground(Color.black);
                 mainPanel.showSinglePin(labelList.get(n).getText());
 
+            }
+            else{
+                labelList.get(n).setForeground(Color.white);
+
+                this.repaint();
+            
             }
 
         }
@@ -162,12 +161,9 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
     public void mouseEntered(MouseEvent e) {
 
         int n = 0;
-
         for (n = 0; n < labelList.size(); n++) {
-            if (e.getSource().equals(labelList.get(n))) {
-
+            if (e.getSource().equals(labelList.get(n))) {               
                 labelList.get(n).setForeground(Color.black);
-
                 this.repaint();
             }
         }
@@ -177,23 +173,7 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
     @Override
     public void mouseExited(MouseEvent e) {
 
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        int m = 0;
-
-        for (m = 0; m < labelList.size(); m++) {
-            if (e.getSource().equals(labelList.get(m))) {
-
-                if (click == false) {
-
-                    labelList.get(m).setForeground(Color.white);
-
-                    this.repaint();
-                }
-
-            }
-
-        }
-        click = false;
+ 
 
     }
 
