@@ -65,7 +65,7 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
         this.setTitle("Administrator Module");
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         map = new MapPanel(this);
-        map.setPreferredSize(new Dimension(900, 800));
+        map.setPreferredSize(new Dimension(1000, 800));
         //map.addMouseListener(this);
         this.getContentPane().add(map, BorderLayout.CENTER);
 
