@@ -352,7 +352,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
         if (e.getSource() == gymLabel) {
 
             secRightSideBar.setVisible(true);
-            secRightSideBar.setBackground(new java.awt.Color(255, 255, 2));
+            secRightSideBar.setBackground(new java.awt.Color(255, 236, 34));
 
             mainPanel.showLocationPin("GYM");
 

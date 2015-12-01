@@ -203,7 +203,7 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
 
             Font font = new Font("Roboto", Font.BOLD, 16);
             label.setFont(font);
-            label.setBounds(30, 90 + y, 160, 30);
+            label.setBounds(25, 90 + y, 160, 30);
             label.setForeground(Color.white);
             label.addMouseListener(this);
 

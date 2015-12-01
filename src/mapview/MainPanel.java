@@ -44,7 +44,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     // Reference
     MapView mapView;
     // UI varaibles
-    private Image background;
+   // private Image background;
     private Image mapImage;
     private final JTextField startPointField = new JTextField();
     private final JTextField endPointField = new JTextField();
@@ -94,6 +94,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private boolean clear = true;
     private boolean drawMultiRoutes = false;
     private boolean showWhenClick = false;
+    
     private int clicked = 0;
     private Font locationFont = new Font("Roboto", Font.BOLD, 12);
     private Font mapINFOFont = new Font("Roboto", Font.BOLD, 24);
@@ -291,8 +292,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     public void paint(Graphics g) {
         super.paint(g);
         int diviation = 15;
+       
         g.setFont(mapINFOFont);
-        g.setColor(Color.lightGray);
+        g.setColor(Color.BLACK);
         g.drawString(getMap().description, 550, 33);
 
         if (isShowPins()) {
@@ -327,9 +329,11 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
         }
         if (isShowAllPins()) {
+             g.setColor(Color.black);
+             g.setFont(locationFont);
             for (Location l : locationList) {
                 g.drawImage(pinImage, l.point.X - 5, l.point.Y - 5, 20, 20, null);
-                //g.drawString(l.point.location.name, l.point.X - 30, l.point.Y - 10);
+                g.drawString(l.point.location.name, l.point.X - 30, l.point.Y - 10);
 
             }
         }
@@ -370,8 +374,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
                 if (e.endPoint.type.name().equals("CONNECTION")
                         && e.endMapID == getMap().mapID) {
-
-                    g.drawImage(connctionEndIcon, e.endPoint.X - diviation, e.endPoint.Y - diviation, 30, 30, null);
+                    // for now we just keep the connectionIcon the same , we will change it in 3rd iteration 
+                    g.drawImage(connctionStartIcon, e.endPoint.X - diviation, e.endPoint.Y - diviation, 30, 30, null);
                      
                     
                 }
@@ -480,8 +484,12 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         //getMultiMapIndex().clear();
         setMultiRoute((ArrayList<Edge>) algo.calculate(start.point, end.point));
 
-        connectionTips.clear();
-        this.showInstruction();
+        
+        //the routing instruction feature will coming soon 
+     //   connectionTips.clear();
+     //   this.showInstruction();
+        
+        
         // reload map if current Map is not the routing map 
         if (this.getMultiRoute().get(0).startMapID != getMap().mapID) {
             for (Map m : allMapList) {
