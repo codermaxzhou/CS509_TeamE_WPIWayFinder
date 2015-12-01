@@ -102,6 +102,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     AutoSuggestor endAutoSuggestor;
 
     private ArrayList<CustomBalloonTip> tipList = new ArrayList<>();
+    private ArrayList<CustomBalloonTip> connectionTips = new ArrayList<>();
 
     // Timer 
     public Timer timer;
@@ -246,8 +247,18 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         }
 
         tipList.clear();
+        
+        
+        for (CustomBalloonTip tip : connectionTips) {
+            ToolTipUtils.toolTipToBalloon(tip);
+            tip.setVisible(false);
+            tip.closeBalloon();
+        }
+        connectionTips.clear();
+        
+        
 
-        setMap(allMapList.get(allMapList.indexOf(mapToLoad)));
+        setMap(mapToLoad);
 
         this.showRoute = false;
         this.showAllPins = false;
@@ -265,7 +276,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         edgeList = getMap().edgeList;
         locationList = getMap().locList;
         mapImage = getMap().image;
-
+        
+       // this.showInstruction();
         this.repaint();
 
     }
@@ -323,7 +335,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         }
 
         if (isDrawMultiRoutes()) {
-
+            
             g.setColor(Color.BLACK);
             g.setFont(boldFont);
          
@@ -353,14 +365,15 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                         && e.startMapID == getMap().mapID) {
 
                     g.drawImage(connctionStartIcon, e.startPoint.X - diviation, e.startPoint.Y - diviation, 30, 30, null);
-
+                   
                 }
 
                 if (e.endPoint.type.name().equals("CONNECTION")
                         && e.endMapID == getMap().mapID) {
 
                     g.drawImage(connctionEndIcon, e.endPoint.X - diviation, e.endPoint.Y - diviation, 30, 30, null);
-
+                     
+                    
                 }
 
             }
@@ -368,25 +381,107 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         }
 
     }
+    
+    public void showInstruction() {
+        
+        if (getMultiRoute() != null) {
+            ArrayList<Edge> connectionList = new ArrayList<>();
+            for(Edge e: getMultiRoute()){
+                if((e.startPoint.type.name().equals("CONNECTION") && e.startMapID == map.mapID)|| (e.endPoint.type.name().equals("CONNECTION") && e.endMapID == map.mapID)){
+                    connectionList.add(e);
+                }
+            }
+            for (int i = 0; i <= getMultiRoute().size() - 1; i++) {
+                Edge e = getMultiRoute().get(i);
+                //String type = route.get(i).startPoint.type.equals("CONNECTION");
+
+                if (e.startPoint.type.name().equals("CONNECTION")
+                        && e.startMapID == getMap().mapID) {
+
+                    String instruction = null;
+                    // the second connection or only have 1 connection
+                    if ((connectionList.size() == 4 && connectionList.indexOf(e) == 2) || e.startMapID == startLocation.point.map.mapID) {
+                        if (e.endMapID == 1 && getMap().mapID != 1) {
+                            instruction = "Go out the current building";
+                        } else if (e.endMapID != 1 && getMap().mapID == 1) {
+                            instruction = "Go into the building";
+                        } else if (allMapList.get(e.endMapID - 1).floor > getMap().floor) {
+                            instruction = "Go upstairs";
+                        } else {
+                            instruction = "Go downstairs";
+                        }
+                    }
+                    
+                    else if((connectionList.size() == 4 && connectionList.indexOf(e) == 0)|| e.startMapID == endLocation.point.map.mapID)   {
+                        instruction = "Follow the path";
+                        
+                    }
+                    else{
+                        instruction = "No way";
+                    }
+
+                    CustomBalloonTip tip = new CustomBalloonTip(this,
+                            new ToolTipPanel(null, "Routing Guide", instruction),
+                            new Rectangle(e.startPoint.X - 5, e.startPoint.Y - 5, 20, 20),
+                            Utils.createBalloonTipStyle(),
+                            Utils.createBalloonTipPositioner(),
+                            null);
+
+                    connectionTips.add(tip);
+
+                    ToolTipUtils.balloonToToolTip(tip, 200, 4000);
+                }
+
+                if (e.endPoint.type.name().equals("CONNECTION")
+                        && e.endMapID == getMap().mapID) {
+
+                    String instruction = null;
+                    if ((connectionList.size() == 4 && connectionList.indexOf(e) == 2) || e.endMapID == startLocation.point.map.mapID) {
+                        if (e.startMapID == 1 && getMap().mapID != 1) {
+                            instruction = "Go out the current building";
+                        } else if (e.startMapID != 1 && getMap().mapID == 1) {
+                            instruction = "Go into the building";
+                        } else if (allMapList.get(e.startMapID - 1).floor > getMap().floor) {
+                            instruction = "Go upstairs";
+                        } else {
+                            instruction = "Go downstairs";
+                        }
+                    } else if((connectionList.size() == 4 && connectionList.indexOf(e) == 0)|| e.endMapID == endLocation.point.map.mapID)   {
+                        instruction = "Follow the path";
+                    }
+                    else{
+                        instruction = "no way";
+                    }
+
+                    CustomBalloonTip tip = new CustomBalloonTip(this,
+                            new ToolTipPanel(null, "Routing Guide ", instruction),
+                            new Rectangle(e.endPoint.X - 5, e.endPoint.Y - 5, 20, 20),
+                            Utils.createBalloonTipStyle(),
+                            Utils.createBalloonTipPositioner(),
+                            null);
+
+                    connectionTips.add(tip);
+
+                    ToolTipUtils.balloonToToolTip(tip, 200, 4000);
+                }
+
+            }
+        }
+    }
 
     // multi map routing 
     public void drawMultiRoute(Location start, Location end) {
 
         Graphics g = this.getGraphics();
         g.setColor(Color.red);
+        
+        
 
         //getMultiMapIndex().clear();
         setMultiRoute((ArrayList<Edge>) algo.calculate(start.point, end.point));
 
-        for (Edge e : getMultiRoute()) {
-            if (!multiMapIndex.contains(e.startMapID)) {
-                getMultiMapIndex().add(e.startMapID);
-            }
-            if (!multiMapIndex.contains(e.endMapID)) {
-                getMultiMapIndex().add(e.endMapID);
-            }
-
-        }
+        connectionTips.clear();
+        this.showInstruction();
         // reload map if current Map is not the routing map 
         if (this.getMultiRoute().get(0).startMapID != getMap().mapID) {
             for (Map m : allMapList) {
@@ -397,6 +492,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             }
 
         }
+        
+        
 
         setDrawMultiRoutes(true);
         setShowAllPins(false);
@@ -625,7 +722,12 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                 if (startLocation == null || endLocation == null) {
                     JOptionPane.showMessageDialog(null, "Wrong Location !");
 
-                } //                     multi map route 
+                } 
+                else if(startLocation == endLocation){
+                     JOptionPane.showMessageDialog(null, "Start Point and Destination are same...");
+                }
+
+//                     multi map route 
                 else if (startLocation.point.map.mapID != endLocation.point.map.mapID) {
 
                     if (startLocation.point.map.mapID != getMap().mapID) {
