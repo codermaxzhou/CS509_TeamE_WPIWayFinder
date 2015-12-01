@@ -196,7 +196,7 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
     public void actionPerformed(ActionEvent e) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         if (e.getSource() == timer && !labelList.isEmpty() ) {
-            System.out.print("timer !");
+          //  System.out.print("timer !");
             int y = index * 30; // hieght change 
 
             JLabel label = labelList.get(index);

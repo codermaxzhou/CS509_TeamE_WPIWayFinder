@@ -308,16 +308,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             }
         }
         if (isShowRoute()) {
-            g.setColor(Color.BLACK);
-            g.setFont(boldFont);
             
-            
-           
-            g.drawString(startLocation.name, startLocation.point.X, startLocation.point.Y);
-            g.drawImage(startIcon, startLocation.point.X - diviation, startLocation.point.Y - diviation, 30, 30, null);
-            
-            g.drawString(endLocation.name, endLocation.point.X, endLocation.point.Y);
-            g.drawImage(endIcon, endLocation.point.X - diviation, endLocation.point.Y - diviation, 30, 30, null);
             
             float lineWidth = 4.0f;
             ((Graphics2D)g).setStroke(new BasicStroke(lineWidth));
@@ -326,6 +317,18 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                ((Graphics2D)g).drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
 
             }
+            
+            g.setColor(Color.BLACK);
+            g.setFont(boldFont);
+            
+            
+           
+           
+            g.drawImage(startIcon, startLocation.point.X - diviation, startLocation.point.Y - diviation, 30, 30, null);
+            g.drawString(startLocation.name, startLocation.point.X + 5 , startLocation.point.Y - 10);
+           
+            g.drawImage(endIcon, endLocation.point.X - diviation, endLocation.point.Y - diviation, 30, 30, null);
+            g.drawString(endLocation.name, endLocation.point.X + 5, endLocation.point.Y - 10);
 
         }
         if (isShowAllPins()) {
@@ -340,17 +343,6 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
         if (isDrawMultiRoutes()) {
             
-            g.setColor(Color.BLACK);
-            g.setFont(boldFont);
-         
-            if (startLocation.point.map.mapID == getMap().mapID) {
-                g.drawString(startLocation.name, startLocation.point.X, startLocation.point.Y);
-                g.drawImage(startIcon, startLocation.point.X - diviation, startLocation.point.Y - diviation, 30, 30, null);
-            }
-            if (endLocation.point.map.mapID == getMap().mapID) {
-                g.drawString(endLocation.name, endLocation.point.X, endLocation.point.Y);
-                g.drawImage(endIcon, endLocation.point.X - diviation, endLocation.point.Y - diviation, 30, 30, null);
-            }
             
             g.setColor(new Color(0, 160, 255));
             float lineWidth = 4.0f;
@@ -381,6 +373,22 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                 }
 
             }
+            
+            g.setColor(Color.BLACK);
+            g.setFont(boldFont);
+         
+            if (startLocation.point.map.mapID == getMap().mapID) {
+                
+                g.drawImage(startIcon, startLocation.point.X - diviation, startLocation.point.Y - diviation, 30, 30, null);
+                g.drawString(startLocation.name, startLocation.point.X + 5, startLocation.point.Y - 10);
+            }
+            if (endLocation.point.map.mapID == getMap().mapID) {
+                
+                g.drawImage(endIcon, endLocation.point.X - diviation, endLocation.point.Y - diviation, 30, 30, null);
+                g.drawString(endLocation.name, endLocation.point.X + 5, endLocation.point.Y - 10);
+                
+            }
+            
 
         }
 
@@ -696,7 +704,6 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                         enterMenu.show(e.getComponent(), x, y);
                     }
 
-                    // emma new code 
                 }
 
             }

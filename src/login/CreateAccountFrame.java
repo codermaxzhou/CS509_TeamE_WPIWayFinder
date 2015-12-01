@@ -31,6 +31,7 @@ public class CreateAccountFrame extends javax.swing.JFrame {
     public CreateAccountFrame() {
         connect();
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     public void connect() {

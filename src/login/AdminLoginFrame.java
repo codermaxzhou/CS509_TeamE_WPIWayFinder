@@ -35,6 +35,7 @@ public class AdminLoginFrame extends javax.swing.JFrame {
         connect();
         initComponents();
         this.setTitle("Administrator Login");
+        this.setLocationRelativeTo(null);
     }
     
     public void connect() {
