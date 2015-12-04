@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -64,6 +65,12 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private Image endIcon = new ImageIcon(this.getClass().getResource("/icons/end.png")).getImage();
     private Image connctionStartIcon = new ImageIcon(this.getClass().getResource("/icons/connection_start.png")).getImage();
     private Image connctionEndIcon = new ImageIcon(this.getClass().getResource("/icons/connection_end.png")).getImage();
+    
+    private ImageIcon upIcon;
+    private ImageIcon downIcon;
+    private ImageIcon leftIcon;
+    private ImageIcon rightIcon;
+    
     // Data varaibels 
     private ArrayList<Point> pointList = new ArrayList<>();
     private ArrayList<Edge> edgeList = new ArrayList<>();
@@ -112,6 +119,10 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     // other class
     public MapModel mapModel;
     JFrame frame;
+   
+    
+
+
 
     //private boolean drawDiningPins = false;
 //	private final SLPanel panel = new SLPanel();
@@ -163,13 +174,15 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
         home.setIcon(homeIcon);
 
-        Image leftImage = new ImageIcon(this.getClass().getResource("/icons/CircleLeft.png")).getImage();
-        ImageIcon leftIcon = new ImageIcon(leftImage);
+        leftIcon= new ImageIcon(this.getClass().getResource("/icons/CircleLeft.png"));
         leftArrow.setIcon(leftIcon);
-
-        Image rightImage = new ImageIcon(this.getClass().getResource("/icons/CircleRight.png")).getImage();
-        ImageIcon rightIcon = new ImageIcon(rightImage);
+        
+        rightIcon = new ImageIcon(this.getClass().getResource("/icons/CircleRight.png"));
         rightArrow.setIcon(rightIcon);
+        
+        upIcon = new ImageIcon(this.getClass().getResource("/icons/CircleUp.png"));
+        downIcon = new ImageIcon(this.getClass().getResource("/icons/CircleDown.png"));
+        
 
         this.add(startPointField);
         this.add(endPointField);
@@ -239,8 +252,24 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         startAutoSuggestor.setDictionary(suggestions);
         endAutoSuggestor.setDictionary(suggestions);
     }
+    
+     private void isCampus(int mapID) {
+        
+        if (map.mapID == 1){
+        leftArrow.setIcon(leftIcon);
+        rightArrow.setIcon(rightIcon);
+        }
+        else{
+        leftArrow.setIcon(upIcon);
+        rightArrow.setIcon(downIcon);   
+        
+        }
+
+}
 
     public void reloadMap(Map mapToLoad) {
+    
+        
         for (CustomBalloonTip tip : tipList) {
             ToolTipUtils.toolTipToBalloon(tip);
             tip.setVisible(false);
@@ -268,9 +297,11 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         mapView.getSecRightSideBar().setVisible(false);
         if (map.mapID != 1) {
             mapView.getRightBar().setIsCampus(false);
-
+            isCampus (map.mapID);
+            
         } else {
             mapView.getRightBar().setIsCampus(true);
+            isCampus(map.mapID);
         }
 
         pointList = getMap().pointList;
@@ -909,6 +940,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             mapView.getSecRightSideBar().removeAll();
             mapView.getSecRightSideBar().setVisible(false);
             mapView.getRightBar().repaint();
+            
+            
 
             this.repaint();
 
@@ -1165,5 +1198,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     public void setMap(Map map) {
         this.map = map;
     }
+
+
+
+
 
 }
