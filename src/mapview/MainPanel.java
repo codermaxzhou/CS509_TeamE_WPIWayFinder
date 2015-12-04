@@ -10,6 +10,7 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -230,7 +231,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         search.setBounds(400, 8, 40, 40);
         home.setBounds(5, 10, 40, 30);
         exchange.setBounds(200, 5, 40, 40);
-        leftArrow.setBounds(850, 5, 50, 40);
+        leftArrow.setBounds(650, 5, 50, 40);
         rightArrow.setBounds(900, 5, 50, 40);
 
         timer = new Timer(100, this);
@@ -323,10 +324,12 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     public void paint(Graphics g) {
         super.paint(g);
         int diviation = 15;
-       
-        g.setFont(mapINFOFont);
-        g.setColor(Color.BLACK);
-        g.drawString(getMap().description, 550, 33);
+        g.setFont(mapINFOFont);    
+        g.setColor(Color.black);
+        int stringSize = getMap().description.length();
+        System.out.println (stringSize);
+        int x = 775 - stringSize*4;
+        g.drawString(getMap().description, x , 33);
 
         if (isShowPins()) {
 
