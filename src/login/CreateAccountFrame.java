@@ -59,137 +59,105 @@ public class CreateAccountFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        username = new javax.swing.JLabel();
-        password = new javax.swing.JLabel();
-        rtPassword = new javax.swing.JLabel();
-        userTextField = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jPasswordField2 = new javax.swing.JPasswordField();
-        createButton = new javax.swing.JButton();
-        cancelButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        username2 = new javax.swing.JLabel();
+        password2 = new javax.swing.JLabel();
+        rtPassword2 = new javax.swing.JLabel();
+        userTextField2 = new javax.swing.JTextField();
+        jPasswordField5 = new javax.swing.JPasswordField();
+        jPasswordField6 = new javax.swing.JPasswordField();
+        createButton2 = new javax.swing.JButton();
+        cancelButton2 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+
+        jLabel1.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Create New Account");
+        setPreferredSize(new java.awt.Dimension(451, 300));
 
-        username.setText("Username");
+        jPanel3.setLayout(null);
 
-        password.setText("Password");
+        username2.setFont(new java.awt.Font("Roboto Bk", 0, 12)); // NOI18N
+        username2.setText("Username");
+        jPanel3.add(username2);
+        username2.setBounds(120, 60, 60, 15);
 
-        rtPassword.setText("Re-type Password");
+        password2.setFont(new java.awt.Font("Roboto Bk", 0, 12)); // NOI18N
+        password2.setText("Password");
+        jPanel3.add(password2);
+        password2.setBounds(120, 100, 70, 15);
 
-        userTextField.addActionListener(new java.awt.event.ActionListener() {
+        rtPassword2.setFont(new java.awt.Font("Roboto Bk", 0, 12)); // NOI18N
+        rtPassword2.setText("Re-type Password");
+        jPanel3.add(rtPassword2);
+        rtPassword2.setBounds(80, 140, 110, 15);
+
+        userTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userTextFieldActionPerformed(evt);
+                userTextField2ActionPerformed(evt);
             }
         });
+        jPanel3.add(userTextField2);
+        userTextField2.setBounds(190, 51, 130, 30);
+        jPanel3.add(jPasswordField5);
+        jPasswordField5.setBounds(190, 91, 130, 30);
+        jPanel3.add(jPasswordField6);
+        jPasswordField6.setBounds(190, 131, 130, 30);
 
-        createButton.setText("Create");
-        createButton.addActionListener(new java.awt.event.ActionListener() {
+        createButton2.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        createButton2.setText("Create");
+        createButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createButtonActionPerformed(evt);
+                createButton2ActionPerformed(evt);
             }
         });
+        jPanel3.add(createButton2);
+        createButton2.setBounds(110, 210, 67, 23);
 
-        cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+        cancelButton2.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        cancelButton2.setText("Cancel");
+        cancelButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelButtonActionPerformed(evt);
+                cancelButton2ActionPerformed(evt);
             }
         });
+        jPanel3.add(cancelButton2);
+        cancelButton2.setBounds(250, 210, 69, 23);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/back.png"))); // NOI18N
+        jLabel3.setPreferredSize(new java.awt.Dimension(451, 350));
+        jPanel3.add(jLabel3);
+        jLabel3.setBounds(0, 0, 460, 300);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(rtPassword)
-                            .addComponent(username)
-                            .addComponent(password))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPasswordField2, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                            .addComponent(jPasswordField1)
-                            .addComponent(userTextField)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(createButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(cancelButton)
-                        .addGap(12, 12, 12)))
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(username)
-                    .addComponent(userTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(password)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rtPassword)
-                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(createButton)
-                    .addComponent(cancelButton))
-                .addGap(22, 22, 22))
+            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void userTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userTextFieldActionPerformed
+    private void userTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userTextField2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_userTextFieldActionPerformed
+    }//GEN-LAST:event_userTextField2ActionPerformed
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+    private void createButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButton2ActionPerformed
         // TODO add your handling code here:
-        this.dispose();
-    }//GEN-LAST:event_cancelButtonActionPerformed
+    }//GEN-LAST:event_createButton2ActionPerformed
 
-    private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
+    private void cancelButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButton2ActionPerformed
         // TODO add your handling code here:
-        try {
-            String username = userTextField.getText().trim();
-            String password = new String(jPasswordField1.getPassword());
-            String passwordCheck = new String(jPasswordField2.getPassword());
-            String sql = "select username from user where username = '"+username+"';";
-            rs = st.executeQuery(sql);
-            int count = 0;
-            while(rs.next()){
-                count++;
-            }
-            if(count > 0) {
-                JOptionPane.showMessageDialog(null, "Same username existed. Please choose another username."); 
-            }
-            else if (username.equals("")){
-                JOptionPane.showMessageDialog(null, "Please choose a username."); 
-            }
-            else if (password.equals("")) {
-                JOptionPane.showMessageDialog(null, "Password cannot be empty.");      
-            }
-            else if (!password.equals(passwordCheck)) {
-                JOptionPane.showMessageDialog(null, "Retype password is wrong."); 
-            }
-            else {
-                sql = "INSERT INTO user (username, password, type) VALUES (\""+username+"\", \""+password+"\", \"user\");";
-                st.executeUpdate(sql);
-                JOptionPane.showMessageDialog(null, "Account creates successfully."); 
-                this.dispose();
-            }
-        }
-        catch(Exception ex) {
-            JOptionPane.showMessageDialog(null, "problem creating an account."); 
-        }
-    }//GEN-LAST:event_createButtonActionPerformed
+    }//GEN-LAST:event_cancelButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -227,13 +195,16 @@ public class CreateAccountFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cancelButton;
-    private javax.swing.JButton createButton;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordField2;
-    private javax.swing.JLabel password;
-    private javax.swing.JLabel rtPassword;
-    private javax.swing.JTextField userTextField;
-    private javax.swing.JLabel username;
+    private javax.swing.JButton cancelButton2;
+    private javax.swing.JButton createButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPasswordField jPasswordField5;
+    private javax.swing.JPasswordField jPasswordField6;
+    private javax.swing.JLabel password2;
+    private javax.swing.JLabel rtPassword2;
+    private javax.swing.JTextField userTextField2;
+    private javax.swing.JLabel username2;
     // End of variables declaration//GEN-END:variables
 }

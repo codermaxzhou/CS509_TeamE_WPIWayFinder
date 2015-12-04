@@ -7,11 +7,16 @@ package login;
 
 import adminmodule.AdminFrame;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
@@ -27,6 +32,7 @@ public class AdminLoginFrame extends javax.swing.JFrame {
     Connection con;
     Statement st;
     ResultSet rs;
+   private Image back = new ImageIcon(this.getClass().getResource("/icons/back.png")).getImage();
 
     /**
      * Creates new form LoginFrame
@@ -53,6 +59,12 @@ public class AdminLoginFrame extends javax.swing.JFrame {
         }
         
     }
+    public void paintComponent(Graphics g) {
+        Image a = new ImageIcon(this.getClass().getResource("/icons/back.png")).getImage();
+        g.drawImage(a, 0, 0, this);
+       
+    }
+
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -72,6 +84,7 @@ public class AdminLoginFrame extends javax.swing.JFrame {
         loginButton = new javax.swing.JButton();
         userButton = new javax.swing.JButton();
 
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("EZ WayFinder");
@@ -277,5 +290,7 @@ public class AdminLoginFrame extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JButton loginButton;
     private javax.swing.JTextField userTextField;
+ 
+    
     // End of variables declaration                   
 }
