@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 
+
 /**
  *
  * @author xiemingchen
@@ -256,6 +257,44 @@ public class JDBC {
        
        return true;
    }
+   //get userid from username
+   public int returnUserId(String userName) throws SQLException{
+       String query;
+       query="SELECT userid FROM user WHERE username="+userName+";";
+       ResultSet rs = stmt.executeQuery(query);
+       int userid=rs.getInt("userid");
+       return userid;
+   }
+   //   save favorite point
+   public boolean saveFavorite(int userID,int locationID) throws SQLException{
+       String query;
+       query="INSERT INTO Favorite (userid,locationid)";
+       query+="VALUES("+userID+","+locationID+");";
+       Statement stmt = conn.createStatement();
+       stmt.executeUpdate(query);
+       return true;      
+   }
+   //delete favorite point
+   public boolean deleteFavorite(int userID,int locationID) throws SQLException{
+       String query;
+       query="DELETE FROM Favorite WHERE userid="+userID+"AND locationid="+locationID+";";
+       Statement stmt = conn.createStatement();
+       stmt.executeUpdate(query);
+       return true; 
+       
+   }
+   //read from favorite point
+   public ArrayList<Integer> getfavorite(int userid) throws SQLException{
+       String query;
+       query="SELECT FROM Favorite WHERE userid="+userid+";";
+       Statement stmt = conn.createStatement();
+       ResultSet rs = stmt.executeQuery(query);
+       
+       ArrayList<Integer> locationlist = new ArrayList<Integer>();
+       return locationlist;
+       
+       
+   }
    //########################
    public boolean updateLocation(ArrayList<Location> A) throws SQLException{
        String query = null;
@@ -384,6 +423,7 @@ public class JDBC {
        
        return true;
    }
+ 
    
    public GlobalMapInfo getGlobalMapInfo() throws SQLException, IOException {
        ArrayList<Map> maps = showAllMap();
@@ -552,5 +592,6 @@ public class JDBC {
     public void setMaxMapID(int maxMapID) {
         this.maxMapID = maxMapID;
     }
+
     
 }
