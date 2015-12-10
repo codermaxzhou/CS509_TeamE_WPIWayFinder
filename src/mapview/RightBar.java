@@ -47,6 +47,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
     private JLabel libraryLabel;
     private JLabel clearLabel;
     private JLabel showLabel;
+ //   private JLabel cameraLabel;
 
 //    private JButton clearButton;
 //    private JButton showButton;
@@ -63,6 +64,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
     private ImageIcon restroomIcon;
     private ImageIcon clearIcon;
     private ImageIcon showIcon;
+ //   private ImageIcon cameraIcon;
 
     private boolean isCampus = true;
     private boolean buildingMove = false;
@@ -144,9 +146,15 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
         showIcon = new ImageIcon(getClass().getResource("/icons/show.png"));
         showLabel.setIcon(showIcon);
         showLabel.setBounds(30, 700, 35, 35);
+        
+        //camera
+//        cameraLabel = new JLabel();
+//        cameraIcon = new ImageIcon(getClass().getResource("/icons/show.png"));
+//        cameraLabel.setIcon(cameraIcon);
+//        cameraLabel.setBounds(30, 750, 35, 35);
 //        clearButton = new JButton();
 //        clearButton.setText("Clear Pins");
-//        //clearButton.setBounds(50, 700, 15, 60);
+        //clearButton.setBounds(50, 700, 15, 60);
 //        
 //        showButton = new JButton();
 //        showButton.setText("Show Pins");
@@ -202,6 +210,8 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
 
         clearLabel.addMouseListener(this);
         showLabel.addMouseListener(this);
+        //       camera
+  //      cameraLabel.addMouseListener(this);
 
     }
 
@@ -235,9 +245,12 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
                             .addContainerGap()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(showLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(clearLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGap(25, 25, 25))
-            );
+                                    .addComponent(clearLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGap(25, 25, 25))));
+                                    //camera
+                           //         .addComponent(cameraLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+
+           
             layout.setVerticalGroup(
                     layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
