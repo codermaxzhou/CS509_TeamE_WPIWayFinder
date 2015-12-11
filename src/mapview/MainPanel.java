@@ -6,6 +6,7 @@ import adminmodule.Location;
 import adminmodule.Map;
 import adminmodule.MapInfo;
 import adminmodule.Point;
+import java.awt.AWTException;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -15,14 +16,20 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -53,12 +60,14 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private final JLabel profile = new JLabel();
     private final JLabel leftArrow = new JLabel();
     private final JLabel rightArrow = new JLabel();
+    private final JLabel screenShot = new JLabel();
 
     private final JLabel exchange = new JLabel();
     private final JLabel search = new JLabel();
     private final JLabel home = new JLabel();
     private final JButton searchButton = new JButton();
     private JButton nextButton = new JButton("next routing");
+    
 
     private ArrayList<JLabel> pinList = new ArrayList<JLabel>();
     private final Image pinImage = new ImageIcon(this.getClass().getResource("/icons/marker.png")).getImage();
@@ -184,6 +193,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         upIcon = new ImageIcon(this.getClass().getResource("/icons/CircleUp.png"));
         downIcon = new ImageIcon(this.getClass().getResource("/icons/CircleDown.png"));
         
+        screenShot.setIcon(new ImageIcon(this.getClass().getResource("/icons/GoogleCamera.png")));
+        screenShot.setBounds(450, 10, 50, 50);
 
         this.add(startPointField);
         this.add(endPointField);
@@ -194,6 +205,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         this.add(home);
         this.add(leftArrow);
         this.add(rightArrow);
+        this.add(screenShot);
 
         BorderLayout layout;
         layout = new BorderLayout();
@@ -227,6 +239,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         this.addMouseListener(this);
         startPointField.addMouseListener(this);
         endPointField.addMouseListener(this);
+        screenShot.addMouseListener(this);
 
         search.setBounds(400, 8, 40, 40);
         home.setBounds(5, 10, 40, 30);
@@ -965,6 +978,29 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         if (e.getSource() == endPointField) {
             endPointField.setFocusable(true);
             endPointField.setText("");
+        }
+        
+        if (e.getSource() == screenShot) {
+            Robot robot;
+            try {
+                robot = new Robot();
+                String format = "jpg";
+                String fileName = "WPImap." + format;
+
+                Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+                 Rectangle captureRect = new Rectangle(0, 0, 500, 400);
+                BufferedImage screenFullImage = robot.createScreenCapture(screenRect);
+                JOptionPane.showMessageDialog(null, "Screen Shot have been made");
+                try {
+                    ImageIO.write(screenFullImage, format, new File(fileName));
+                } catch (IOException ex) {
+                    Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            } catch (AWTException ex) {
+                Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
 
     }
