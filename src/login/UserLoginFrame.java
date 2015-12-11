@@ -81,14 +81,15 @@ public class UserLoginFrame extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        userNameLabel = new javax.swing.JLabel();
+        passwordLabel = new javax.swing.JLabel();
         userTextField = new javax.swing.JTextField();
         jPasswordField1 = new javax.swing.JPasswordField();
         loginButton = new javax.swing.JButton();
         adminButton = new javax.swing.JButton();
         CreateAccountButton = new javax.swing.JButton();
         logo = new javax.swing.JLabel();
+        voiceIcon = new javax.swing.JLabel();
         background = new javax.swing.JLabel();
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
@@ -100,15 +101,15 @@ public class UserLoginFrame extends javax.swing.JFrame {
 
         jPanel1.setLayout(null);
 
-        jLabel2.setFont(new java.awt.Font("Roboto Bk", 0, 14)); // NOI18N
-        jLabel2.setText("Username");
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(60, 130, 70, 17);
+        userNameLabel.setFont(new java.awt.Font("Roboto Bk", 0, 14)); // NOI18N
+        userNameLabel.setText("Username");
+        jPanel1.add(userNameLabel);
+        userNameLabel.setBounds(60, 130, 70, 17);
 
-        jLabel3.setFont(new java.awt.Font("Roboto Bk", 0, 14)); // NOI18N
-        jLabel3.setText("Password");
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(60, 170, 70, 17);
+        passwordLabel.setFont(new java.awt.Font("Roboto Bk", 0, 14)); // NOI18N
+        passwordLabel.setText("Password");
+        jPanel1.add(passwordLabel);
+        passwordLabel.setBounds(60, 170, 70, 17);
 
         userTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -175,11 +176,20 @@ public class UserLoginFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(CreateAccountButton);
-        CreateAccountButton.setBounds(150, 260, 200, 23);
+        CreateAccountButton.setBounds(150, 260, 200, 29);
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logo.jpg"))); // NOI18N
         jPanel1.add(logo);
         logo.setBounds(140, 10, 230, 100);
+
+        voiceIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Voice.png"))); // NOI18N
+        voiceIcon.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                voiceIconMouseClicked(evt);
+            }
+        });
+        jPanel1.add(voiceIcon);
+        voiceIcon.setBounds(320, 190, 30, 40);
 
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/back.png"))); // NOI18N
         background.setPreferredSize(new java.awt.Dimension(451, 350));
@@ -254,6 +264,10 @@ public class UserLoginFrame extends javax.swing.JFrame {
         caf.setVisible(true);
     }//GEN-LAST:event_CreateAccountButtonActionPerformed
 
+    private void voiceIconMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_voiceIconMouseClicked
+        // TODO 
+    }//GEN-LAST:event_voiceIconMouseClicked
+
 
     /**
      * @param args the command line arguments
@@ -303,12 +317,13 @@ public class UserLoginFrame extends javax.swing.JFrame {
     private javax.swing.JButton adminButton;
     private javax.swing.JLabel background;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JButton loginButton;
     private javax.swing.JLabel logo;
+    private javax.swing.JLabel passwordLabel;
+    private javax.swing.JLabel userNameLabel;
     private javax.swing.JTextField userTextField;
+    private javax.swing.JLabel voiceIcon;
     // End of variables declaration//GEN-END:variables
 }

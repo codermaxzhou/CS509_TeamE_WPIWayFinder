@@ -12,6 +12,7 @@ import java.awt.BorderLayout;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,8 +38,10 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
     private ArrayList<JLabel> labelList = new ArrayList<JLabel>();
     private ArrayList<JLabel> pinList = new ArrayList<JLabel>();
     private Boolean click = false;
+    private Boolean isCampus = true;
     public MainPanel mainPanel;
     public Timer timer;
+    
     private int index = 0;
     int temp = -1;
 
@@ -49,11 +52,25 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
      */
     public SecRightSideBar() {
         initComponents();
+        
         timer = new Timer(100, this);
         timer.setInitialDelay(200);
 
     }
-
+    
+   
+    
+    public void changeBackGround(){
+        if(isCampus){
+            this.setBackground(Color.red);
+            this.repaint();
+        }
+        else{
+            this.setBackground(Color.WHITE);
+            this.repaint();
+        }
+    }
+    
     public void ShowLocationName(String category) throws SQLException {
         this.removeAll();
 
@@ -94,7 +111,7 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setBackground(new java.awt.Color(255, 255, 255));
+        setBackground(new java.awt.Color(153, 153, 255));
         setPreferredSize(new java.awt.Dimension(170, 800));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -224,5 +241,19 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
 
         }
 
+    }
+
+    /**
+     * @return the isCampus
+     */
+    public Boolean getIsCampus() {
+        return isCampus;
+    }
+
+    /**
+     * @param isCampus the isCampus to set
+     */
+    public void setIsCampus(Boolean isCampus) {
+        this.isCampus = isCampus;
     }
 }

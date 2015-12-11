@@ -254,7 +254,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         endAutoSuggestor.setDictionary(suggestions);
     }
     
-     private void isCampus(int mapID) {
+     private void setCampusIcon(int mapID) {
         
         if (map.mapID == 1){
         leftArrow.setIcon(leftIcon);
@@ -295,14 +295,24 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         this.showAllPins = false;
         this.showPins = false;
         mapView.getSecRightSideBar().removeAll();
-        mapView.getSecRightSideBar().setVisible(false);
+      //  mapView.getSecRightSideBar().setVisible(false);
         if (map.mapID != 1) {
             mapView.getRightBar().setIsCampus(false);
-            isCampus (map.mapID);
+            mapView.getRightBar().repaint();
+            mapView.getSecRightSideBar().setBackground(Color.WHITE);
+            mapView.getSecRightSideBar().repaint();
+         // mapView.getSecRightSideBar().setIsCampus(false);
+         //   mapView.getSecRightSideBar().changeBackGround();
+            setCampusIcon(map.mapID);
             
         } else {
             mapView.getRightBar().setIsCampus(true);
-            isCampus(map.mapID);
+            mapView.getRightBar().repaint();
+            mapView.getSecRightSideBar().setBackground(new Color(191, 219, 151));
+            mapView.getSecRightSideBar().repaint();
+          //  mapView.getSecRightSideBar().setIsCampus(true);
+         //   mapView.getSecRightSideBar().changeBackGround();
+            setCampusIcon(map.mapID);
         }
 
         pointList = getMap().pointList;
@@ -938,11 +948,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             }
 
             this.reloadMap(campusMap);  // campus mapID is always 1 
-            mapView.getRightBar().setIsCampus(true);
-
-            mapView.getSecRightSideBar().removeAll();
-            mapView.getSecRightSideBar().setVisible(false);
-            mapView.getRightBar().repaint();
+            
             
             
 

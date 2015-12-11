@@ -47,6 +47,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
     private JLabel libraryLabel;
     private JLabel clearLabel;
     private JLabel showLabel;
+    private JLabel favoriteLabel;
  //   private JLabel cameraLabel;
 
 //    private JButton clearButton;
@@ -64,6 +65,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
     private ImageIcon restroomIcon;
     private ImageIcon clearIcon;
     private ImageIcon showIcon;
+    private ImageIcon favoriteIcon;
  //   private ImageIcon cameraIcon;
 
     private boolean isCampus = true;
@@ -140,12 +142,17 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
         clearLabel = new JLabel();
         clearIcon = new ImageIcon(getClass().getResource("/icons/cancel.png"));
         clearLabel.setIcon(clearIcon);
-        clearLabel.setBounds(80, 700, 35, 35);
+        clearLabel.setBounds(85, 680, 35, 35);
         
         showLabel = new JLabel();
         showIcon = new ImageIcon(getClass().getResource("/icons/show.png"));
         showLabel.setIcon(showIcon);
-        showLabel.setBounds(30, 700, 35, 35);
+        showLabel.setBounds(50, 680, 35, 35);
+        
+        favoriteLabel = new JLabel();
+        favoriteIcon = new ImageIcon(getClass().getResource("/icons/star.png"));
+        favoriteLabel.setIcon(favoriteIcon);
+        favoriteLabel.setBounds(15, 680, 35, 35);
         
         //camera
 //        cameraLabel = new JLabel();
@@ -210,6 +217,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
 
         clearLabel.addMouseListener(this);
         showLabel.addMouseListener(this);
+        favoriteLabel.addMouseListener(this);
         //       camera
   //      cameraLabel.addMouseListener(this);
 
@@ -224,6 +232,9 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
             this.add(gymLabel);
             this.add(libraryLabel);
             this.add(parkingLabel);
+            this.add(showLabel);
+            this.add(clearLabel);
+            this.add(favoriteLabel);
            
                 
             
@@ -277,6 +288,8 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
             this.add(restroomLabel);
             this.add(showLabel);
             this.add(clearLabel);
+            this.add(favoriteLabel);
+            
 
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
             this.setLayout(null);
@@ -464,6 +477,9 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
         if(e.getSource() == showLabel){
             showLabel.setBounds(showLabel.getX() + 3, showLabel.getY() + 3, showLabel.getWidth(), showLabel.getHeight());
         }
+        if(e.getSource() == favoriteLabel){
+            favoriteLabel.setBounds(favoriteLabel.getX() + 3, favoriteLabel.getY() + 3, favoriteLabel.getWidth(), favoriteLabel.getHeight());
+        }
         
         
     }
@@ -496,6 +512,9 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
         }
         if(e.getSource() == showLabel){
             showLabel.setBounds(showLabel.getX() - 3, showLabel.getY() - 3, showLabel.getWidth(), showLabel.getHeight());
+        }
+        if(e.getSource() == favoriteLabel){
+            favoriteLabel.setBounds(favoriteLabel.getX() - 3, favoriteLabel.getY() - 3, favoriteLabel.getWidth(), favoriteLabel.getHeight());
         }
     }
 
@@ -532,6 +551,9 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
         }
         if(e.getSource() == showLabel){
             showLabel.setToolTipText("Show All Pis");
+        }
+        if(e.getSource() == favoriteLabel){
+            favoriteLabel.setToolTipText("Show Favorite Locations");
         }
         
 
