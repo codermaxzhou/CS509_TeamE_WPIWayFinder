@@ -10,15 +10,15 @@ package mapview;
  * @author Emma
  */
 import adminmodule.Location;
-import adminmodule.LocationEdit;
 import adminmodule.Map;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import jdbc.JDBC;
 
 public class Enter extends  JPopupMenu{
     
@@ -31,7 +31,7 @@ public class Enter extends  JPopupMenu{
     
    public Enter(Map locationMap, Location loc, MainPanel mainPanel) {
         JMenuItem item = new JMenuItem("Enter building");
-        
+        JDBC db = JDBC.getInstance();
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -73,11 +73,12 @@ public class Enter extends  JPopupMenu{
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                
-                mapList = mainPanel.mapModel.getMapList();
-                
-                mainPanel.reloadMap(locationMap);  
+                loc.favorite=1;
+                try {
+                    db.updateSingleLocation(loc);
+                } catch (SQLException ex) {
+                    System.out.println("problem save favorite");
+                }
             }
         });
         this.add(item);         
@@ -85,6 +86,7 @@ public class Enter extends  JPopupMenu{
         
    
       public Enter(Location loc, MainPanel mainPanel) {
+        JDBC db = JDBC.getInstance();
         JMenuItem item = new JMenuItem("Set as start point");
         
         item.addActionListener(new ActionListener() {
@@ -114,6 +116,13 @@ public class Enter extends  JPopupMenu{
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                loc.favorite=1;
+                try {
+                    db.updateSingleLocation(loc);
+                } catch (SQLException ex) {
+                    System.out.println("problem save favorite");
+                }
+                
 
             }
         });

@@ -337,6 +337,15 @@ public class JDBC {
        return true;
    }
    
+   public boolean updateSingleLocation(Location l) throws SQLException{
+       String query = null;
+       query = "UPDATE Location SET ";
+       query += "favorite = " + l.favorite;
+       query += " where locationID=" + l.locationID + ";";
+       Statement stmt = conn.createStatement();
+       stmt.executeUpdate(query);
+       return true;
+   }
    
    public boolean deleteALL(String tableName) throws SQLException{
        String query=null;
