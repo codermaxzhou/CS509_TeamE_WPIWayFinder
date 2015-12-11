@@ -12,6 +12,7 @@ public class Location {
     public int locationID;                                  // The primary key of this location from the DB
     public String path;
     public Image image=null;
+    public int favorite;
     
     public Location() {
     

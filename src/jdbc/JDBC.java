@@ -92,7 +92,7 @@ public class JDBC {
    }
    
    public MapInfo getMapInfo(int MapID, Map map) throws SQLException {
-       String query = "SELECT locationID, pointID, category, name, description, path, mapID FROM Location WHERE MapID = " + MapID + ";";
+       String query = "SELECT locationID, pointID, category, name, description, path, mapID , favorite FROM Location WHERE MapID = " + MapID + ";";
        Statement stmt = conn.createStatement();
        ResultSet rs = stmt.executeQuery(query);
        
@@ -110,6 +110,7 @@ public class JDBC {
            temp.name = rs.getString("name");
            temp.point = null;
            temp.path = rs.getString("path");
+           temp.favorite=rs.getInt("favorite");
            switch(rs.getString("category")) {
                case "BUILDING": temp.category = Location.Category.BUILDING;
                               break;
@@ -195,9 +196,9 @@ public class JDBC {
        for(int i = 0; i < A.size(); ++i) {
            Location l = A.get(i);
            if(l.locationID != -1) continue;
-           query = "INSERT INTO Location (LocationID, PointID, category, name, description, mapID, path) ";
+           query = "INSERT INTO Location (LocationID, PointID, category, name, description, mapID, path, favorite) ";
            query += "VALUES(" + getMaxLocID() + ", " + getMaxPointID() + ", \"" + l.category.toString() + "\", \"" + 
-                    l.name + "\", \"" + l.description + "\", " + l.point.map.mapID +  ", \"" + l.path + "\");";
+                    l.name + "\", \"" + l.description + "\", " + l.point.map.mapID +  ", \"" + l.path +   ", \"" + l.favorite + "\");";
            Statement stmt = conn.createStatement();
            stmt.executeUpdate(query);
            
@@ -310,7 +311,7 @@ public class JDBC {
            Location l=A.get(i);
            if (l.locationID != -1) {
             query="UPDATE Location SET ";
-            query+="locationID="+l.locationID+",category=\""+l.category+"\",name=\""+l.name+"\",description=\""+l.description+"\",mapID="+ l.point.map.mapID +  ", path=\"" + l.path + "\"";
+            query+="locationID="+l.locationID+",category=\""+l.category+"\",name=\""+l.name+"\",description=\""+l.description+"\",mapID="+ l.point.map.mapID +  ", path=\"" + l.path + "\""+",favorite=\""+l.favorite;
             query+=" where locationID=" + l.locationID + ";";
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(query);
