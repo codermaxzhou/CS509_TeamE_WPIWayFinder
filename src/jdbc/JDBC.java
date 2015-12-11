@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Statement;
@@ -57,7 +56,16 @@ public class JDBC {
    private int isInteriorMap;
    private int path;
    
-   public JDBC() {
+   static private JDBC instance = null;
+   
+   public static JDBC getInstance() {
+       // this is not thread-safe but it's ok since we don't have
+       // multiple threads accessing the object
+       if(instance == null) instance = new JDBC();
+       return instance;
+   }
+   
+   private JDBC() {
        try {
            Class.forName("com.mysql.jdbc.Driver");
            conn = DriverManager.getConnection(DB_URL,USER,PASS);

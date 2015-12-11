@@ -27,7 +27,7 @@ public class MapModel {
     private ArrayList<Location> allLocationList = new ArrayList<>(); 
     private ArrayList<Map> mapList = new ArrayList<>();
     
-     private JDBC dataBase = new JDBC();
+     private JDBC dataBase = JDBC.getInstance();
      private int maxMapID = 0;
      private int maxLocID = 0;
      private int maxPointID = 0;

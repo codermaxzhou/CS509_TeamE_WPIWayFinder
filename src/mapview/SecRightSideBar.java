@@ -7,21 +7,16 @@ package mapview;
 
 import adminmodule.Location;
 import adminmodule.Map;
-import adminmodule.MapInfo;
 import java.awt.BorderLayout;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.TimerTask;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.Timer;
 import jdbc.JDBC;
@@ -32,7 +27,7 @@ import jdbc.JDBC;
  */
 public class SecRightSideBar extends javax.swing.JPanel implements MouseListener, ActionListener {
 
-    private JDBC db = new JDBC();
+    private JDBC db = JDBC.getInstance();
     private Map map = new Map();
     private ArrayList<Location> locationList = new ArrayList<Location>();
     private ArrayList<JLabel> labelList = new ArrayList<JLabel>();

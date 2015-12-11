@@ -4,14 +4,13 @@ import adminmodule.Dijkstra;
 import adminmodule.Edge;
 import adminmodule.Location;
 import adminmodule.Map;
-import adminmodule.MapInfo;
 import adminmodule.Point;
+import adminmodule.RoutingAlgorithm;
 import java.awt.AWTException;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -30,7 +29,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -67,6 +65,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private final JLabel home = new JLabel();
     private final JButton searchButton = new JButton();
     private JButton nextButton = new JButton("next routing");
+    private JLabel voice = new JLabel();
     
 
     private ArrayList<JLabel> pinList = new ArrayList<JLabel>();
@@ -94,11 +93,11 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private ArrayList<Edge> allEdgeList = new ArrayList<>();
     private ArrayList<Point> allPointList = new ArrayList<>();
 
-    private Dijkstra algo;
+    private RoutingAlgorithm algo;
     private ArrayList<Location> pins = new ArrayList<>();
     private Location startLocation = null;
     private Location endLocation = null;
-    private final JDBC db = new JDBC();
+    private final JDBC db = JDBC.getInstance();
 
     private Map map = new Map();
     //private int mapIndex;
@@ -130,7 +129,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     public MapModel mapModel;
     JFrame frame;
    
-    
+    private Recorder r = new Recorder(this);
 
 
 
@@ -150,6 +149,10 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         //mapIndex = 1;  // default is mapID 1
         this.init();
 
+    }
+    
+    public void setRoutingAlgorithm(RoutingAlgorithm algo) {
+        this.algo = algo;
     }
 
     public void init() throws SQLException {
@@ -194,8 +197,11 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         downIcon = new ImageIcon(this.getClass().getResource("/icons/CircleDown.png"));
         
         screenShot.setIcon(new ImageIcon(this.getClass().getResource("/icons/GoogleCamera.png")));
-        screenShot.setBounds(450, 10, 50, 50);
+        screenShot.setBounds(450, 0, 50, 50);
 
+        voice.setIcon(new ImageIcon(this.getClass().getResource("/icons/Voice.png")));
+        voice.setBounds(500, 10, 30, 30);
+        
         this.add(startPointField);
         this.add(endPointField);
         this.add(searchButton);
@@ -206,6 +212,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         this.add(leftArrow);
         this.add(rightArrow);
         this.add(screenShot);
+        this.add(voice);
 
         BorderLayout layout;
         layout = new BorderLayout();
@@ -240,12 +247,13 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         startPointField.addMouseListener(this);
         endPointField.addMouseListener(this);
         screenShot.addMouseListener(this);
+        voice.addMouseListener(this);
 
         search.setBounds(400, 8, 40, 40);
         home.setBounds(5, 10, 40, 30);
         exchange.setBounds(200, 5, 40, 40);
-        leftArrow.setBounds(650, 5, 50, 40);
-        rightArrow.setBounds(900, 5, 50, 40);
+        leftArrow.setBounds(620, 5, 50, 40);
+        rightArrow.setBounds(950, 5, 50, 40);
 
         timer = new Timer(100, this);
         timer.setInitialDelay(300);
@@ -711,6 +719,67 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         setDrawMultiRoutes(false);
         repaint();
     }
+    
+    public void route(String loc1, String loc2) {
+        startPointField.setText(loc1);
+        endPointField.setText(loc2);
+        String startPointString = loc1;
+        String endPointString = loc2;
+        this.setShowRoute(false);
+        startLocation = null;
+        endLocation = null;
+
+        System.out.println("The start Point name:" + startPointString);
+        System.out.println("The end Point name:" + endPointString);
+        if (startPointString.isEmpty() || endPointString.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please input the location!");
+
+        } else {
+            for (Location l : allLocationList) {
+                if (l.name.equalsIgnoreCase(startPointString)) {
+                    startLocation = l;
+
+                } else if (l.name.equalsIgnoreCase(endPointString)) {
+                    endLocation = l;
+                }
+            }
+//                System.out.println("The start Point name:" + startLocation.name);
+//                System.out.println("The end Point name:" + endLocation.name);
+
+            if (startLocation == null || endLocation == null) {
+                JOptionPane.showMessageDialog(null, "Wrong Location !");
+
+            } 
+            else if(startLocation == endLocation){
+                 JOptionPane.showMessageDialog(null, "Start Point and Destination are same...");
+            }
+
+//                     multi map route 
+            else if (startLocation.point.map.mapID != endLocation.point.map.mapID) {
+
+                if (startLocation.point.map.mapID != getMap().mapID) {
+                    this.reloadMap(startLocation.point.map);
+                }
+                drawMultiRoute(startLocation, endLocation);
+
+            } // single map routing 
+            else if (startLocation.point.map.mapID == endLocation.point.map.mapID) {
+
+                if (startLocation.point.map.mapID != getMap().mapID) {
+                    this.reloadMap(startLocation.point.map);
+                }
+
+                route = (ArrayList<Edge>) algo.calculate(startLocation.point, endLocation.point);
+
+                setShowRoute(true);
+                setDrawMultiRoutes(false);
+                setShowPins(false);
+                setShowAllPins(false);
+
+                repaint();
+            }
+        }
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -992,8 +1061,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                 String fileName = "WPImap." + format;
 
                 Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
-                 Rectangle captureRect = new Rectangle(0, 0, 500, 400);
-                BufferedImage screenFullImage = robot.createScreenCapture(screenRect);
+                Rectangle captureRect = new Rectangle(0, 30, 1000, 800);
+                BufferedImage screenFullImage = robot.createScreenCapture(captureRect);
                 JOptionPane.showMessageDialog(null, "Screen Shot have been made");
                 try {
                     ImageIO.write(screenFullImage, format, new File(fileName));
@@ -1005,6 +1074,27 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                 Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
             
+        }
+        if(e.getSource() == voice){
+            Thread stopper = new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                    r.finish();
+                }
+            });
+
+            stopper.start();
+
+            try {
+                // start recording
+                r.start();
+            } catch (IOException ex) {
+                Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }

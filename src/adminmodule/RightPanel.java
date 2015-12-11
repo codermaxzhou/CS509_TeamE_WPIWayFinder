@@ -159,7 +159,7 @@ public class RightPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_resetButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        JDBC db = new JDBC();
+        JDBC db = JDBC.getInstance();
         frame.button = AdminFrame.Button.NULL;
         try {
             db.addMap(frame.maps);

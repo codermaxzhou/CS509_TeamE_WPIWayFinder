@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 
-public class Dijkstra {
+public class Dijkstra implements RoutingAlgorithm {
     private HashMap<Point, Integer> pToIndex = null;
     private HashMap<Integer, Point> iToPoint = null;
     private HashMap<String, Edge> kToEdge = null;
@@ -115,6 +115,7 @@ public class Dijkstra {
         resetGraph(edgeSet, vertexSet);
     }
     
+    @Override
     public final void resetGraph(Collection<Edge> edgeSet, Collection<Point> vertexSet) {
         pToIndex = new HashMap<>();
         iToPoint = new HashMap<>();
@@ -148,6 +149,7 @@ public class Dijkstra {
         }
     }
     
+    @Override
     public Collection<Edge> calculate(Point start, Point end) {
         int source = pToIndex.get(start);
         int dest   = pToIndex.get(end);

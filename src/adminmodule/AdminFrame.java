@@ -44,7 +44,7 @@ public class AdminFrame extends JFrame implements MouseListener, ListSelectionLi
 
     public Button button = Button.NULL;
 
-    public JDBC db = new JDBC();
+    public JDBC db = JDBC.getInstance();
     int radius = 10;
     int sIndex = 0;
     int boxSize = 10;
