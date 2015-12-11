@@ -29,8 +29,8 @@ public class Enter extends  JPopupMenu{
         
         
     
-   public Enter(Map locationMap, MainPanel mainPanel) {
-        JMenuItem item = new JMenuItem("Enter");
+   public Enter(Map locationMap, Location loc, MainPanel mainPanel) {
+        JMenuItem item = new JMenuItem("Enter building");
         
         item.addActionListener(new ActionListener() {
             @Override
@@ -43,8 +43,84 @@ public class Enter extends  JPopupMenu{
             }
         });
         this.add(item);
+        
+        item = new JMenuItem("Set as start point");
+        
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainPanel.startPointField.setText(loc.name);
+                mainPanel.clear = true;
+                mainPanel.showSinglePin(loc.name);
+            }
+        });
+        this.add(item);   
+        
+        item = new JMenuItem("Set as end point");
+        
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                        mainPanel.endPointField.setText(loc.name);
+                        mainPanel.clear = false;
+                        mainPanel.showSinglePin(loc.name);
+            }
+        });
+        this.add(item);   
+        
+        item = new JMenuItem("Save as favorite");
+        
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                
+                mapList = mainPanel.mapModel.getMapList();
+                
+                mainPanel.reloadMap(locationMap);  
+            }
+        });
+        this.add(item);         
     }
         
+   
+      public Enter(Location loc, MainPanel mainPanel) {
+        JMenuItem item = new JMenuItem("Set as start point");
+        
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainPanel.startPointField.setText(loc.name);
+                mainPanel.clear = true;
+                mainPanel.showSinglePin(loc.name);
+            }
+        });
+        this.add(item);   
+        
+        item = new JMenuItem("Set as end point");
+        
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                        mainPanel.endPointField.setText(loc.name);
+                        mainPanel.clear = false;
+                        mainPanel.showSinglePin(loc.name);
+            }
+        });
+        this.add(item);   
+        
+        item = new JMenuItem("Save as favorite");
+        
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        this.add(item);         
+    }
+      
+      
     public void setRightBar(RightBar rightBar) {
         this.rightBar = rightBar;
     }

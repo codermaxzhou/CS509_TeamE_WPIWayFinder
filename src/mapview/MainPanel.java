@@ -55,8 +55,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     // UI varaibles
    // private Image background;
     private Image mapImage;
-    private final JTextField startPointField = new JTextField();
-    private final JTextField endPointField = new JTextField();
+    public final JTextField startPointField = new JTextField();
+    public final JTextField endPointField = new JTextField();
     private final JLabel profile = new JLabel();
     private final JLabel leftArrow = new JLabel();
     private final JLabel rightArrow = new JLabel();
@@ -108,7 +108,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private boolean showPins = false;
     private boolean drawRoutes = false;
     private boolean showAllPins = false;
-    private boolean clear = true;
+    public boolean clear = true;
     private boolean drawMultiRoutes = false;
     private boolean showWhenClick = false;
     
@@ -733,16 +733,16 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
                     clicked++;
 
-                    if (clicked % 2 == 1) {
-                        startPointField.setText(temp.name);
-                        clear = true;
-                        showSinglePin(temp.name);
-                    } else {
-                        endPointField.setText(temp.name);
-                        clear = false;
-                        showSinglePin(temp.name);
-
-                    }
+//                    if (clicked % 2 == 1) {
+//                        startPointField.setText(temp.name);
+//                        clear = true;
+//                        showSinglePin(temp.name);
+//                    } else {
+//                        endPointField.setText(temp.name);
+//                        clear = false;
+//                        showSinglePin(temp.name);
+//
+//                    }
 
                     Map locationMap = null;
 
@@ -754,13 +754,17 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                     }
 
                     if (locationMap != null) {
-                        Enter enterMenu = new Enter(locationMap, this);
+                        Enter enterMenu = new Enter(locationMap, temp, this);
 
                         enterMenu.setRightBar(mapView.getRightBar());
                         enterMenu.setSecRightBar(mapView.getSecRightSideBar());
                         enterMenu.show(e.getComponent(), x, y);
                     }
-
+                    else {
+                        Enter popUp = new Enter(temp, this);
+                        popUp.show(e.getComponent(), x, y);
+                    }
+                    
                 }
 
             }
