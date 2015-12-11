@@ -16,6 +16,7 @@ public class Edge {
     public Edge(Point startPoint, Point endPoint) {
         this.startPoint = startPoint;
         this.endPoint = endPoint;
-        this.weight = 5;
+        this.weight = Math.sqrt((Math.abs(startPoint.getX()-endPoint.getX()))^2 + (Math.abs(startPoint.getY()-endPoint.getY()))^2);
     }
 }
+    

@@ -18,7 +18,7 @@ import javax.swing.JPopupMenu;
  */
 public class PopupMenu extends JPopupMenu {
 
-    public PopupMenu(Location location) {
+    public PopupMenu(Location location, AdminFrame af) {
         JMenuItem item = new JMenuItem("Edit");
         item.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -43,10 +43,37 @@ public class PopupMenu extends JPopupMenu {
         item = new JMenuItem("Delete");
         item.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Menu item Delete not complete yet");
+                af.deleteLocation(location);
+                af.repaint();
             }
         });
         this.add(item);
     }
 
+        public PopupMenu(Point point, AdminFrame af) {
+
+        JMenuItem item = new JMenuItem("Delete");
+        item.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                //System.out.println("Menu item Delete not complete yet");
+                af.deletePoint(point);
+                af.repaint();
+            }
+        });
+        this.add(item);
+    }
+        
+        public PopupMenu(Edge edge, AdminFrame af) {
+
+        JMenuItem item = new JMenuItem("Delete");
+        item.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                //System.out.println("Menu item Delete not complete yet");
+                af.deleteEdge(edge);
+                af.repaint();
+            }
+        });
+        this.add(item);
+    }
+    
 }
