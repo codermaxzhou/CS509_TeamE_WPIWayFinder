@@ -156,6 +156,7 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
             }
 
         }
+        
 
         // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

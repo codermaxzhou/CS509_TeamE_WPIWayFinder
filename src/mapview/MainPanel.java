@@ -197,7 +197,12 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         downIcon = new ImageIcon(this.getClass().getResource("/icons/CircleDown.png"));
         
         screenShot.setIcon(new ImageIcon(this.getClass().getResource("/icons/GoogleCamera.png")));
+<<<<<<< Updated upstream
         screenShot.setBounds(450, 0, 50, 50);
+=======
+        screenShot.setBounds(450, 10, 50, 50);
+        
+>>>>>>> Stashed changes
 
         voice.setIcon(new ImageIcon(this.getClass().getResource("/icons/Voice.png")));
         voice.setBounds(500, 10, 30, 30);
@@ -783,7 +788,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        clicked = 0;
         String startPointString = startPointField.getText();
         String endPointString = endPointField.getText();
         if (e.getSource() != search && e.getSource() != exchange && e.getSource() != rightArrow && e.getSource() != leftArrow && e.getSource() != home) {
@@ -836,6 +841,10 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                     
                 }
 
+            }
+            
+            if (clicked == 0) {
+                mapView.getSecRightSideBar().setVisible(false);
             }
 
         }
@@ -1169,7 +1178,6 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         if (e.getSource() == home) {
             home.setToolTipText("return to campus map");
         }
-
     }
 
     @Override

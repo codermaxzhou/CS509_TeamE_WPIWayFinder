@@ -1,16 +1,9 @@
 package mapview;
 
-import adminmodule.Dijkstra;
-import adminmodule.Edge;
-import adminmodule.Location;
 import adminmodule.Map;
-import adminmodule.MapInfo;
-import adminmodule.Point;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -23,7 +16,6 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import jdbc.JDBC;
 
 /**
  *
@@ -48,6 +40,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
     private JLabel clearLabel;
     private JLabel showLabel;
     private JLabel favoriteLabel;
+    private boolean threadrunning = false;
  //   private JLabel cameraLabel;
 
 //    private JButton clearButton;
@@ -336,115 +329,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
     @Override
     public void mouseClicked(MouseEvent e) {
 
-        if (e.getSource() == showLabel) {
-            mainPanel.showPins();
-        }
-
-        if (e.getSource() == clearLabel) {
-
-            mainPanel.clearPins();
-        }
-
-        //category click 
-        if (e.getSource() == buildingLabel) {
-
-            secRightSideBar.setVisible(true);
-            secRightSideBar.setBackground(new java.awt.Color(0, 178, 219));
-
-            mainPanel.showLocationPin("BUILDING");
-
-            try {
-                secRightSideBar.ShowLocationName("BUILDING");
-            } catch (SQLException ex) {
-                Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            secRightSideBar.timer.start();
-
-        }
-        if (e.getSource() == diningLabel) {
-
-            secRightSideBar.setVisible(true);
-            secRightSideBar.setBackground(new java.awt.Color(255, 102, 0));
-
-            mainPanel.showLocationPin("DINING");
-
-            try {
-                secRightSideBar.ShowLocationName("DINING");
-            } catch (SQLException ex) {
-                Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            secRightSideBar.timer.start();
-        }
-        if (e.getSource() == gymLabel) {
-
-            secRightSideBar.setVisible(true);
-            secRightSideBar.setBackground(new java.awt.Color(255, 236, 34));
-
-            mainPanel.showLocationPin("GYM");
-
-            try {
-                secRightSideBar.ShowLocationName("GYM");
-            } catch (SQLException ex) {
-                Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            secRightSideBar.timer.start();
-        }
-
-        if (e.getSource() == libraryLabel) {
-
-            secRightSideBar.setVisible(true);
-            secRightSideBar.setBackground(new java.awt.Color(141, 179, 2));
-
-            mainPanel.showLocationPin("LIBRARY");
-
-            try {
-                secRightSideBar.ShowLocationName("LIBRARY");
-            } catch (SQLException ex) {
-                Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            secRightSideBar.timer.start();
-        }
-        if (e.getSource() == parkingLabel) {
-
-            secRightSideBar.setVisible(true);
-            secRightSideBar.setBackground(new java.awt.Color(170, 49, 103));
-
-            mainPanel.showLocationPin("PARKING");
-
-            try {
-                secRightSideBar.ShowLocationName("PARKING");
-            } catch (SQLException ex) {
-                Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            secRightSideBar.timer.start();
-        }
-
-        if (e.getSource() == classroomLabel) {
-            secRightSideBar.setVisible(true);
-            secRightSideBar.setBackground(new java.awt.Color(231, 0, 102));
-            mainPanel.showLocationPin("CLASSROOM");
-
-            try {
-                secRightSideBar.ShowLocationName("CLASSROOM");
-            } catch (SQLException ex) {
-                Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            secRightSideBar.timer.start();
-        }
-
-        if (e.getSource() == restroomLabel) {
-            secRightSideBar.setVisible(true);
-            secRightSideBar.setBackground(new java.awt.Color(38, 195, 194));
-            mainPanel.showLocationPin("RESTROOM");
-
-            try {
-                secRightSideBar.ShowLocationName("RESTROOM");
-            } catch (SQLException ex) {
-                Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            secRightSideBar.timer.start();
-        }
-
+   
     }
 
     @Override
@@ -556,6 +441,133 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
             favoriteLabel.setToolTipText("Show Favorite Locations");
         }
         
+        if (e.getSource() == showLabel) {
+            mainPanel.showPins();
+        }
+
+        if (e.getSource() == clearLabel) {
+
+            mainPanel.clearPins();
+        }
+
+        //category click 
+        if (e.getSource() == buildingLabel) {
+
+            secRightSideBar.setVisible(true);
+            secRightSideBar.setBackground(new java.awt.Color(0, 178, 219));
+
+            mainPanel.showLocationPin("BUILDING");
+
+            try {
+                secRightSideBar.ShowLocationName("BUILDING");
+            } catch (SQLException ex) {
+                Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            secRightSideBar.timer.start();
+
+        }
+        if (e.getSource() == diningLabel) {
+
+            secRightSideBar.setVisible(true);
+            secRightSideBar.setBackground(new java.awt.Color(255, 102, 0));
+
+            mainPanel.showLocationPin("DINING");
+
+            try {
+                secRightSideBar.ShowLocationName("DINING");
+            } catch (SQLException ex) {
+                Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            secRightSideBar.timer.start();
+        }
+        if (e.getSource() == gymLabel) {
+
+            secRightSideBar.setVisible(true);
+            secRightSideBar.setBackground(new java.awt.Color(255, 236, 34));
+
+            mainPanel.showLocationPin("GYM");
+
+            try {
+                secRightSideBar.ShowLocationName("GYM");
+            } catch (SQLException ex) {
+                Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            secRightSideBar.timer.start();
+        }
+
+        if (e.getSource() == libraryLabel) {
+
+            secRightSideBar.setVisible(true);
+            secRightSideBar.setBackground(new java.awt.Color(141, 179, 2));
+
+            mainPanel.showLocationPin("LIBRARY");
+
+            try {
+                secRightSideBar.ShowLocationName("LIBRARY");
+            } catch (SQLException ex) {
+                Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            secRightSideBar.timer.start();
+        }
+        if (e.getSource() == parkingLabel) {
+
+            secRightSideBar.setVisible(true);
+            secRightSideBar.setBackground(new java.awt.Color(170, 49, 103));
+
+            mainPanel.showLocationPin("PARKING");
+
+            try {
+                secRightSideBar.ShowLocationName("PARKING");
+            } catch (SQLException ex) {
+                Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            secRightSideBar.timer.start();
+        }
+
+        if (e.getSource() == classroomLabel) {
+            secRightSideBar.setVisible(true);
+            secRightSideBar.setBackground(new java.awt.Color(231, 0, 102));
+            mainPanel.showLocationPin("CLASSROOM");
+
+            try {
+                secRightSideBar.ShowLocationName("CLASSROOM");
+            } catch (SQLException ex) {
+                Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            secRightSideBar.timer.start();
+        }
+
+        if (e.getSource() == restroomLabel) {
+            secRightSideBar.setVisible(true);
+            secRightSideBar.setBackground(new java.awt.Color(38, 195, 194));
+            mainPanel.showLocationPin("RESTROOM");
+
+            try {
+                secRightSideBar.ShowLocationName("RESTROOM");
+            } catch (SQLException ex) {
+                Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            secRightSideBar.timer.start();
+        }
+        
+        if((e.getSource() == buildingLabel || e.getSource() == gymLabel || e.getSource() == diningLabel || e.getSource() == parkingLabel || e.getSource() == libraryLabel || e.getSource() == restroomLabel || e.getSource() == classroomLabel) && !threadrunning) {
+            Thread panelHide = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    threadrunning = true;
+                    while(true) {
+                        Point p = mainPanel.getMousePosition();
+                        if(p != null && p.getX() < 850) {
+                            break;
+                        }
+                    }
+                    mapView.getSecRightSideBar().setVisible(false);
+                    threadrunning = false;
+                }
+            });
+
+            panelHide.start();  
+        }
 
     }
 
