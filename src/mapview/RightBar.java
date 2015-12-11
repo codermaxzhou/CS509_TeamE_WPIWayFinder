@@ -328,12 +328,45 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        if (e.getSource() == showLabel) {
+            mainPanel.showPins();
+        }
 
+        if (e.getSource() == clearLabel) {
+
+            mainPanel.clearPins();
+        }
    
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if(e.getSource() == clearLabel){
+            clearLabel.setBounds(clearLabel.getX() + 3, clearLabel.getY() + 3, clearLabel.getWidth(), clearLabel.getHeight());
+        }
+        if(e.getSource() == showLabel){
+            showLabel.setBounds(showLabel.getX() + 3, showLabel.getY() + 3, showLabel.getWidth(), showLabel.getHeight());
+        }
+        if(e.getSource() == favoriteLabel){
+            favoriteLabel.setBounds(favoriteLabel.getX() + 3, favoriteLabel.getY() + 3, favoriteLabel.getWidth(), favoriteLabel.getHeight());
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        if(e.getSource() == clearLabel){
+            clearLabel.setBounds(clearLabel.getX() - 3, clearLabel.getY() - 3, clearLabel.getWidth(), clearLabel.getHeight());
+        }
+        if(e.getSource() == showLabel){
+            showLabel.setBounds(showLabel.getX() - 3, showLabel.getY() - 3, showLabel.getWidth(), showLabel.getHeight());
+        }
+        if(e.getSource() == favoriteLabel){
+            favoriteLabel.setBounds(favoriteLabel.getX() - 3, favoriteLabel.getY() - 3, favoriteLabel.getWidth(), favoriteLabel.getHeight());
+        }
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
         if(e.getSource() == buildingLabel){
             buildingLabel.setBounds(buildingLabel.getX() + 5, buildingLabel.getY() + 5, buildingLabel.getWidth(), buildingLabel.getHeight());
         }
@@ -356,55 +389,8 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
         if(e.getSource() == restroomLabel){
             restroomLabel.setBounds(restroomLabel.getX() + 5, restroomLabel.getY() + 5, restroomLabel.getWidth(), restroomLabel.getHeight());
         }
-        if(e.getSource() == clearLabel){
-            clearLabel.setBounds(clearLabel.getX() + 3, clearLabel.getY() + 3, clearLabel.getWidth(), clearLabel.getHeight());
-        }
-        if(e.getSource() == showLabel){
-            showLabel.setBounds(showLabel.getX() + 3, showLabel.getY() + 3, showLabel.getWidth(), showLabel.getHeight());
-        }
-        if(e.getSource() == favoriteLabel){
-            favoriteLabel.setBounds(favoriteLabel.getX() + 3, favoriteLabel.getY() + 3, favoriteLabel.getWidth(), favoriteLabel.getHeight());
-        }
-        
-        
-    }
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        if(e.getSource() == buildingLabel){
-            buildingLabel.setBounds(buildingLabel.getX() - 5, buildingLabel.getY() - 5, buildingLabel.getWidth(), buildingLabel.getHeight());
-        }
-        if(e.getSource() == diningLabel){
-            diningLabel.setBounds(diningLabel.getX() - 5, diningLabel.getY() - 5, diningLabel.getWidth(), diningLabel.getHeight());
-        }
-        if(e.getSource() == gymLabel){
-            gymLabel.setBounds(gymLabel.getX() - 5, gymLabel.getY() - 5, gymLabel.getWidth(), gymLabel.getHeight());
-        }
-        if(e.getSource() == libraryLabel){
-            libraryLabel.setBounds(libraryLabel.getX() - 5, libraryLabel.getY() - 5, libraryLabel.getWidth(), libraryLabel.getHeight());
-        }
-        if(e.getSource() == parkingLabel){
-            parkingLabel.setBounds(parkingLabel.getX() - 5, parkingLabel.getY() - 5, parkingLabel.getWidth(), parkingLabel.getHeight());
-        }
-        if(e.getSource() == classroomLabel){
-            classroomLabel.setBounds(classroomLabel.getX() - 5, classroomLabel.getY() - 5, classroomLabel.getWidth(), classroomLabel.getHeight());
-        }
-        if(e.getSource() == restroomLabel){
-            restroomLabel.setBounds(restroomLabel.getX() - 5, restroomLabel.getY() - 5, restroomLabel.getWidth(), restroomLabel.getHeight());
-        }
-        if(e.getSource() == clearLabel){
-            clearLabel.setBounds(clearLabel.getX() - 3, clearLabel.getY() - 3, clearLabel.getWidth(), clearLabel.getHeight());
-        }
-        if(e.getSource() == showLabel){
-            showLabel.setBounds(showLabel.getX() - 3, showLabel.getY() - 3, showLabel.getWidth(), showLabel.getHeight());
-        }
-        if(e.getSource() == favoriteLabel){
-            favoriteLabel.setBounds(favoriteLabel.getX() - 3, favoriteLabel.getY() - 3, favoriteLabel.getWidth(), favoriteLabel.getHeight());
-        }
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
+        
         // some animation here 
 
         if(e.getSource() == classroomLabel){
@@ -439,15 +425,6 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
         }
         if(e.getSource() == favoriteLabel){
             favoriteLabel.setToolTipText("Show Favorite Locations");
-        }
-        
-        if (e.getSource() == showLabel) {
-            mainPanel.showPins();
-        }
-
-        if (e.getSource() == clearLabel) {
-
-            mainPanel.clearPins();
         }
 
         //category click 
@@ -573,6 +550,27 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
 
     @Override
     public void mouseExited(MouseEvent e) {
+        if(e.getSource() == buildingLabel){
+            buildingLabel.setBounds(buildingLabel.getX() - 5, buildingLabel.getY() - 5, buildingLabel.getWidth(), buildingLabel.getHeight());
+        }
+        if(e.getSource() == diningLabel){
+            diningLabel.setBounds(diningLabel.getX() - 5, diningLabel.getY() - 5, diningLabel.getWidth(), diningLabel.getHeight());
+        }
+        if(e.getSource() == gymLabel){
+            gymLabel.setBounds(gymLabel.getX() - 5, gymLabel.getY() - 5, gymLabel.getWidth(), gymLabel.getHeight());
+        }
+        if(e.getSource() == libraryLabel){
+            libraryLabel.setBounds(libraryLabel.getX() - 5, libraryLabel.getY() - 5, libraryLabel.getWidth(), libraryLabel.getHeight());
+        }
+        if(e.getSource() == parkingLabel){
+            parkingLabel.setBounds(parkingLabel.getX() - 5, parkingLabel.getY() - 5, parkingLabel.getWidth(), parkingLabel.getHeight());
+        }
+        if(e.getSource() == classroomLabel){
+            classroomLabel.setBounds(classroomLabel.getX() - 5, classroomLabel.getY() - 5, classroomLabel.getWidth(), classroomLabel.getHeight());
+        }
+        if(e.getSource() == restroomLabel){
+            restroomLabel.setBounds(restroomLabel.getX() - 5, restroomLabel.getY() - 5, restroomLabel.getWidth(), restroomLabel.getHeight());
+        }
 
     }
 
