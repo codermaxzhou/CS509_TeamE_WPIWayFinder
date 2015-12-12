@@ -16,9 +16,11 @@ import adminmodule.Location;
 import adminmodule.Map;
 import adminmodule.MapInfo;
 import adminmodule.Point;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,6 +32,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 
@@ -88,6 +92,18 @@ public class JDBC {
            if(rs.next()) maxMapID = rs.getInt("MAXPOINT") + 1;
        } catch (ClassNotFoundException | SQLException ex) {
            System.out.println("Problem creating connection.");
+       }
+       
+       try {
+           BufferedReader r = new BufferedReader(new FileReader("user.config"));
+           
+           USER = r.readLine().split("=")[1].trim();
+           if(r.readLine().split("=").length > 1)
+                PASS = r.readLine().split("=")[1].trim();
+           
+           r.close();
+       } catch (Exception ex) {
+           
        }
    }
    

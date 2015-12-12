@@ -11,14 +11,19 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import jdbc.JDBC;
 
 /**
  *
@@ -42,6 +47,18 @@ public class AdminLoginFrame extends javax.swing.JFrame {
         initComponents();
         this.setTitle("Administrator Login");
         this.setLocationRelativeTo(null);
+        
+        try {
+           BufferedReader r = new BufferedReader(new FileReader("user.config"));
+           
+           USER = r.readLine().split("=")[1].trim();
+           if(r.readLine().split("=").length > 1)
+                PASS = r.readLine().split("=")[1].trim();
+           
+           r.close();
+       } catch (Exception ex) {
+           
+       }
     }
     
     public void connect() {

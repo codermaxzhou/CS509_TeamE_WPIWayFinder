@@ -136,7 +136,10 @@ public class LocationEdit extends JFrame {
                      else if (box.getSelectedItem() == "PARKING") {
                         l.category = Location.Category.PARKING;
                     }
-                    l.path = chooser.getSelectedFile ().getAbsolutePath ();
+                    if(chooser.getSelectedFile() == null)
+                        l.path = "null";
+                    else
+                        l.path = chooser.getSelectedFile ().getAbsolutePath ();
                     /*if(jrb1.isSelected()) l.category = Location.Category.DINING;
                      else if(jrb2.isSelected()) l.category = Location.Category.ATM;
                      else if(jrb3.isSelected()) l.category = Location.Category.ADMIN;

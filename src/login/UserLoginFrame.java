@@ -8,15 +8,20 @@ package login;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import jdbc.JDBC;
 import mapview.MapView;
 
 /**
@@ -44,9 +49,17 @@ public class UserLoginFrame extends javax.swing.JFrame {
         this.setTitle("User Login");
         this.setLocationRelativeTo(null);
         
-       
-        
-        
+        try {
+           BufferedReader r = new BufferedReader(new FileReader("user.config"));
+           
+           USER = r.readLine().split("=")[1].trim();
+           if(r.readLine().split("=").length > 1)
+                PASS = r.readLine().split("=")[1].trim();
+           
+           r.close();
+       } catch (Exception ex) {
+           
+       }
     }
     public void paintComponent(Graphics page) {
         super.paintComponents(page);
