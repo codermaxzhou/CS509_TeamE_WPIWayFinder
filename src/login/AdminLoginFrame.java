@@ -49,7 +49,7 @@ public class AdminLoginFrame extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         
         try {
-           File jarPath=new File(UserLoginFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+           File jarPath=new File(AdminLoginFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath());
            String propertiesPath=jarPath.getParentFile().getAbsolutePath();
            
            BufferedReader r = null;

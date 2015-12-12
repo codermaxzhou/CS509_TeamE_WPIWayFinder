@@ -79,7 +79,7 @@ public class UserLoginFrame extends javax.swing.JFrame {
         try {
             String driver = JDBC_DRIVER;
             Class.forName(driver);
-            
+            System.out.println("USER=" +USER + ", PASS="+PASS);
             con = DriverManager.getConnection(DB_URL,USER,PASS);
             st = con.createStatement();
             

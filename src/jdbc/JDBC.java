@@ -71,6 +71,28 @@ public class JDBC {
    }
    
    private JDBC() {
+              try {
+           File jarPath=new File(JDBC.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+           String propertiesPath=jarPath.getParentFile().getAbsolutePath();
+           
+           BufferedReader r = null;
+           
+           if(System.getProperty("os.name").startsWith("Windows")) {
+               r = new BufferedReader(new FileReader(propertiesPath + "\\user.config"));
+           } else {
+               r = new BufferedReader(new FileReader(propertiesPath + "/user.config"));
+           }
+           
+           String line = r.readLine();
+           USER = line.split("=")[1].trim();
+           line = r.readLine();
+           if(line != null && line.split("=").length > 1)
+                PASS = line.split("=")[1].trim();
+           
+           r.close();
+       } catch (Exception ex) {
+           
+       }
        try {
            Class.forName("com.mysql.jdbc.Driver");
            conn = DriverManager.getConnection(DB_URL,USER,PASS);
@@ -95,28 +117,7 @@ public class JDBC {
            System.out.println("Problem creating connection.");
        }
        
-       try {
-           File jarPath=new File(UserLoginFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-           String propertiesPath=jarPath.getParentFile().getAbsolutePath();
-           
-           BufferedReader r = null;
-           
-           if(System.getProperty("os.name").startsWith("Windows")) {
-               r = new BufferedReader(new FileReader(propertiesPath + "\\user.config"));
-           } else {
-               r = new BufferedReader(new FileReader(propertiesPath + "/user.config"));
-           }
-           
-           String line = r.readLine();
-           USER = line.split("=")[1].trim();
-           line = r.readLine();
-           if(line != null && line.split("=").length > 1)
-                PASS = line.split("=")[1].trim();
-           
-           r.close();
-       } catch (Exception ex) {
-           
-       }
+
    }
    
    public MapInfo getMapInfo(int MapID, Map map) throws SQLException {
