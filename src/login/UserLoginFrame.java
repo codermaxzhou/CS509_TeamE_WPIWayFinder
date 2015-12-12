@@ -9,19 +9,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import jdbc.JDBC;
 import mapview.MapView;
 
 /**
@@ -44,22 +40,35 @@ public class UserLoginFrame extends javax.swing.JFrame {
      * Creates new form LoginFrame
      */
     public UserLoginFrame() {
-        connect();
+        
         initComponents();
         this.setTitle("User Login");
         this.setLocationRelativeTo(null);
         
         try {
-           BufferedReader r = new BufferedReader(new FileReader("user.config"));
+           File jarPath=new File(UserLoginFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+           String propertiesPath=jarPath.getParentFile().getAbsolutePath();
            
-           USER = r.readLine().split("=")[1].trim();
-           if(r.readLine().split("=").length > 1)
-                PASS = r.readLine().split("=")[1].trim();
+           BufferedReader r = null;
+           
+           if(System.getProperty("os.name").startsWith("Windows")) {
+               r = new BufferedReader(new FileReader(propertiesPath + "\\user.config"));
+           } else {
+               r = new BufferedReader(new FileReader(propertiesPath + "/user.config"));
+           }
+           
+           String line = r.readLine();
+           USER = line.split("=")[1].trim();
+           line = r.readLine();
+           if(line != null && line.split("=").length > 1)
+                PASS = line.split("=")[1].trim();
            
            r.close();
        } catch (Exception ex) {
            
        }
+        
+       connect();
     }
     public void paintComponent(Graphics page) {
         super.paintComponents(page);

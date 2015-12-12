@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import login.UserLoginFrame;
 
 
 /**
@@ -95,11 +96,22 @@ public class JDBC {
        }
        
        try {
-           BufferedReader r = new BufferedReader(new FileReader("user.config"));
+           File jarPath=new File(UserLoginFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+           String propertiesPath=jarPath.getParentFile().getAbsolutePath();
            
-           USER = r.readLine().split("=")[1].trim();
-           if(r.readLine().split("=").length > 1)
-                PASS = r.readLine().split("=")[1].trim();
+           BufferedReader r = null;
+           
+           if(System.getProperty("os.name").startsWith("Windows")) {
+               r = new BufferedReader(new FileReader(propertiesPath + "\\user.config"));
+           } else {
+               r = new BufferedReader(new FileReader(propertiesPath + "/user.config"));
+           }
+           
+           String line = r.readLine();
+           USER = line.split("=")[1].trim();
+           line = r.readLine();
+           if(line != null && line.split("=").length > 1)
+                PASS = line.split("=")[1].trim();
            
            r.close();
        } catch (Exception ex) {
