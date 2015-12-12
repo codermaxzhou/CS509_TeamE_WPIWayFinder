@@ -26,6 +26,7 @@ public class MapModel {
     private ArrayList<Edge> allEdgeList = new ArrayList<>();
     private ArrayList<Location> allLocationList = new ArrayList<>(); 
     private ArrayList<Map> mapList = new ArrayList<>();
+    private ArrayList<Location> favLocationList = new ArrayList<>();
     
      private JDBC dataBase = JDBC.getInstance();
      private int maxMapID = 0;
@@ -65,9 +66,17 @@ public class MapModel {
             getAllEdgeList().addAll(m.edgeList);
 
        }
+         for (Location l : getAllLocationList()) {
+                if (l.favorite == 1) {
+                    favLocationList.add(l);
+                }
+            }
        System.out.println();
     }
 
+    public ArrayList<Location> getFavLocationList() {
+        return favLocationList;
+    }
     /**
      * @return the allPointList
      */

@@ -74,6 +74,7 @@ public class Enter extends  JPopupMenu{
             @Override
             public void actionPerformed(ActionEvent e) {
                 loc.favorite=1;
+                mainPanel.favLocationList.add(loc);
                 try {
                     db.updateSingleLocation(loc);
                 } catch (SQLException ex) {
@@ -117,6 +118,7 @@ public class Enter extends  JPopupMenu{
             @Override
             public void actionPerformed(ActionEvent e) {
                 loc.favorite=1;
+                mainPanel.favLocationList.add(loc); 
                 try {
                     db.updateSingleLocation(loc);
                 } catch (SQLException ex) {

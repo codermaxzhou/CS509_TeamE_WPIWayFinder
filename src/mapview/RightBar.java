@@ -1,6 +1,7 @@
 package mapview;
 
 import adminmodule.Map;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.MouseInfo;
 import java.awt.Point;
@@ -95,7 +96,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
     }
 
     public void initComponent() {
-
+        this.setBackground(new Color(159,193,255));
         buildingLabel = new JLabel();
         buildingIcon = new ImageIcon(getClass().getResource("/icons/building.png"));
         buildingLabel.setIcon(buildingIcon);
@@ -335,6 +336,11 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
         if (e.getSource() == clearLabel) {
 
             mainPanel.clearPins();
+        }
+        
+        if (e.getSource() == favoriteLabel) {
+
+            mainPanel.showFavPins();
         }
    
     }

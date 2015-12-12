@@ -70,6 +70,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
     private ArrayList<JLabel> pinList = new ArrayList<JLabel>();
     private final Image pinImage = new ImageIcon(this.getClass().getResource("/icons/marker.png")).getImage();
+    private final Image favImage = new ImageIcon(this.getClass().getResource("/icons/star.png")).getImage();
     private Image startIcon = new ImageIcon(this.getClass().getResource("/icons/start.png")).getImage();
     private Image endIcon = new ImageIcon(this.getClass().getResource("/icons/end.png")).getImage();
     private Image connctionStartIcon = new ImageIcon(this.getClass().getResource("/icons/connection_start.png")).getImage();
@@ -92,6 +93,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private ArrayList<Location> allLocationList = new ArrayList<>();
     private ArrayList<Edge> allEdgeList = new ArrayList<>();
     private ArrayList<Point> allPointList = new ArrayList<>();
+    public ArrayList<Location> favLocationList = new ArrayList<>();    
 
     private RoutingAlgorithm algo;
     private ArrayList<Location> pins = new ArrayList<>();
@@ -107,6 +109,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private boolean showPins = false;
     private boolean drawRoutes = false;
     private boolean showAllPins = false;
+    private boolean showFavPins = false;   
     public boolean clear = true;
     private boolean drawMultiRoutes = false;
     private boolean showWhenClick = false;
@@ -163,6 +166,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         allEdgeList = mapModel.getAllEdgeList();
         allPointList = mapModel.getAllPointList();
         allLocationList = mapModel.getAllLocationList();
+        favLocationList = mapModel.getFavLocationList();
         algo = new Dijkstra(allEdgeList, allPointList);
 
         //setMap(allMapList.get(mapIndex - 1));  // map 默认是1 
@@ -363,7 +367,18 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         System.out.println (stringSize);
         int x = 775 - stringSize*4;
         g.drawString(getMap().description, x , 33);
+        
+        if (isShowFavPins()) {
 
+            for (Location p : favLocationList) {
+                g.setColor(Color.black);
+                g.setFont(locationFont);
+                g.drawImage(favImage, p.point.X - 5, p.point.Y - 5, 20, 20, null);
+                g.drawString(p.name, p.point.X + 10, p.point.Y - 25);
+
+            }
+        }
+        
         if (isShowPins()) {
 
             for (Location p : pins) {
@@ -671,6 +686,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         this.setShowRoute(false);
         this.setShowPins(true);
         this.setDrawMultiRoutes(false);
+        this.setShowFavPins(false);
 
         Graphics g = this.getGraphics();
         pins.clear();
@@ -707,6 +723,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     }
 
     public void clearPins() {
+        setShowFavPins(false);
         setShowRoute(false);
         setShowPins(false);
         setShowAllPins(false);
@@ -715,12 +732,21 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     }
 
     public void showPins() {
-
+        setShowFavPins(false);
         setShowAllPins(true);
         setShowRoute(false);
         setDrawMultiRoutes(false);
         repaint();
     }
+    
+    public void showFavPins() {
+        setShowFavPins(true);
+        setShowAllPins(false);
+        setShowRoute(false);
+        setDrawMultiRoutes(false);
+        repaint();
+    }
+    
     
     public void route(String loc1, String loc2) {
         startPointField.setText(loc1);
@@ -1278,7 +1304,20 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     public void setShowAllPins(boolean showAllPins) {
         this.showAllPins = showAllPins;
     }
-
+    
+        /**
+     * @return the showAllPins
+     */
+    public boolean isShowFavPins() {
+        return showFavPins;
+    }
+    /**
+     * @param showAllPins the showAllPins to set
+     */
+    public void setShowFavPins(boolean showFavPins) {
+        this.showFavPins = showFavPins;
+    }
+    
     /**
      * @return the drawMultiRoutes
      */
