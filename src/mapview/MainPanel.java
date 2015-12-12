@@ -75,7 +75,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     private Image endIcon = new ImageIcon(this.getClass().getResource("/icons/end.png")).getImage();
     private Image connctionStartIcon = new ImageIcon(this.getClass().getResource("/icons/connection_start.png")).getImage();
     private Image connctionEndIcon = new ImageIcon(this.getClass().getResource("/icons/connection_end.png")).getImage();
-    
+    private Image instructionImage = new ImageIcon(this.getClass().getResource("/icons/adventures.png")).getImage();
+            
     private ImageIcon upIcon;
     private ImageIcon downIcon;
     private ImageIcon leftIcon;
@@ -201,9 +202,13 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         downIcon = new ImageIcon(this.getClass().getResource("/icons/CircleDown.png"));
         
         screenShot.setIcon(new ImageIcon(this.getClass().getResource("/icons/GoogleCamera.png")));
+<<<<<<< Updated upstream
 
         screenShot.setBounds(450, 0, 50, 50);
 
+=======
+        screenShot.setBounds(450, 0, 50, 50);
+>>>>>>> Stashed changes
 
         voice.setIcon(new ImageIcon(this.getClass().getResource("/icons/Voice.png")));
         voice.setBounds(500, 10, 30, 30);
@@ -347,7 +352,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         locationList = getMap().locList;
         mapImage = getMap().image;
         
-       // this.showInstruction();
+        this.showInstruction();
         this.repaint();
 
     }
@@ -441,7 +446,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
                 if (e.startPoint.type.name().equals("CONNECTION")
                         && e.startMapID == getMap().mapID) {
-
+                   
                     g.drawImage(connctionStartIcon, e.startPoint.X - diviation, e.startPoint.Y - diviation, 30, 30, null);
                    
                 }
@@ -479,44 +484,82 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
     public void showInstruction() {
         
         if (getMultiRoute() != null) {
-            ArrayList<Edge> connectionList = new ArrayList<>();
+           
+            ArrayList<Point> connections = new ArrayList<>();
+            ArrayList<Point>  otherPoint = new ArrayList<>();
+            
             for(Edge e: getMultiRoute()){
-                if((e.startPoint.type.name().equals("CONNECTION") && e.startMapID == map.mapID)|| (e.endPoint.type.name().equals("CONNECTION") && e.endMapID == map.mapID)){
-                    connectionList.add(e);
+                if(e.startPoint.type.name().equals("CONNECTION") && (e.startPoint.map.mapID == map.mapID) && (e.startMapID != e.endMapID)){
+                    if(!connections.contains(e.startPoint)){
+                        connections.add(e.startPoint);
+                        otherPoint.add(e.endPoint);
+                    }
+                
+                }
+                if(e.endPoint.type.name().equals("CONNECTION") && (e.endPoint.map.mapID == map.mapID) && (e.startMapID != e.endMapID)){
+                    if(!connections.contains(e.endPoint)){
+                        connections.add(e.endPoint);
+                        otherPoint.add(e.startPoint);
+                    }
                 }
             }
-            for (int i = 0; i <= getMultiRoute().size() - 1; i++) {
-                Edge e = getMultiRoute().get(i);
-                //String type = route.get(i).startPoint.type.equals("CONNECTION");
-
-                if (e.startPoint.type.name().equals("CONNECTION")
-                        && e.startMapID == getMap().mapID) {
-
-                    String instruction = null;
-                    // the second connection or only have 1 connection
-                    if ((connectionList.size() == 4 && connectionList.indexOf(e) == 2) || e.startMapID == startLocation.point.map.mapID) {
-                        if (e.endMapID == 1 && getMap().mapID != 1) {
-                            instruction = "Go out the current building";
-                        } else if (e.endMapID != 1 && getMap().mapID == 1) {
-                            instruction = "Go into the building";
-                        } else if (allMapList.get(e.endMapID - 1).floor > getMap().floor) {
-                            instruction = "Go upstairs";
-                        } else {
-                            instruction = "Go downstairs";
-                        }
-                    }
-                    
-                    else if((connectionList.size() == 4 && connectionList.indexOf(e) == 0)|| e.startMapID == endLocation.point.map.mapID)   {
-                        instruction = "Follow the path";
-                        
+            
+            for(int i = 0; i < connections.size(); i++){
+                String instruction = null;
+                if(connections.size() == 2){
+                    if(i == 0){
+                        instruction = "Follow the Path";
                     }
                     else{
-                        instruction = "No way";
+                        if(connections.get(i).map.mapID == 1){
+                            instruction = "Go into the building";
+                        }
+                        else {
+                            Point thisPt = connections.get(i);
+                            Point otherPt = otherPoint.get(i);
+                                
+                            if(otherPt.map.mapID == 1) {
+                                instruction = "Go outside the building";
+                            } else if(otherPt.map.locationID == thisPt.map.locationID) {
+                                if(otherPt.map.floor > thisPt.map.floor) {
+                                    instruction = "Go upstairs";
+                                } else {
+                                    instruction = "Go downstairs";
+                                }
+                            }
+                        }
                     }
-
-                    CustomBalloonTip tip = new CustomBalloonTip(this,
-                            new ToolTipPanel(null, "Routing Guide", instruction),
-                            new Rectangle(e.startPoint.X - 5, e.startPoint.Y - 5, 20, 20),
+                }
+                else if(connections.size() == 1){
+                    if(connections.get(i).map.mapID == startLocation.point.map.mapID){
+                        if(connections.get(i).map.mapID == 1){
+                            instruction = "Go into the building";
+                        }
+                        else {
+                            Point thisPt = connections.get(i);
+                            Point otherPt = otherPoint.get(i);
+                                
+                            if(otherPt.map.mapID == 1) {
+                                instruction = "Go outside the building";
+                            } else if(otherPt.map.locationID == thisPt.map.locationID) {
+                                if(otherPt.map.floor > thisPt.map.floor) {
+                                    instruction = "Go upstairs";
+                                } else {
+                                    instruction = "Go downstairs";
+                                }
+                            }
+                        }
+                    } else if(connections.get(i).map.mapID == endLocation.point.map.mapID) {
+                        instruction = "Follow the path";
+                    } else{
+                        instruction = "Take stairs";
+                    }
+                }
+                
+                
+                 CustomBalloonTip tip = new CustomBalloonTip(this,
+                            new ToolTipPanel(instructionImage, "Routing Guide", instruction, 100, 100),
+                            new Rectangle(connections.get(i).X - 5, connections.get(i).Y - 5, 20, 20),
                             Utils.createBalloonTipStyle(),
                             Utils.createBalloonTipPositioner(),
                             null);
@@ -524,42 +567,95 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
                     connectionTips.add(tip);
 
                     ToolTipUtils.balloonToToolTip(tip, 200, 4000);
-                }
-
-                if (e.endPoint.type.name().equals("CONNECTION")
-                        && e.endMapID == getMap().mapID) {
-
-                    String instruction = null;
-                    if ((connectionList.size() == 4 && connectionList.indexOf(e) == 2) || e.endMapID == startLocation.point.map.mapID) {
-                        if (e.startMapID == 1 && getMap().mapID != 1) {
-                            instruction = "Go out the current building";
-                        } else if (e.startMapID != 1 && getMap().mapID == 1) {
-                            instruction = "Go into the building";
-                        } else if (allMapList.get(e.startMapID - 1).floor > getMap().floor) {
-                            instruction = "Go upstairs";
-                        } else {
-                            instruction = "Go downstairs";
-                        }
-                    } else if((connectionList.size() == 4 && connectionList.indexOf(e) == 0)|| e.endMapID == endLocation.point.map.mapID)   {
-                        instruction = "Follow the path";
-                    }
-                    else{
-                        instruction = "no way";
-                    }
-
-                    CustomBalloonTip tip = new CustomBalloonTip(this,
-                            new ToolTipPanel(null, "Routing Guide ", instruction),
-                            new Rectangle(e.endPoint.X - 5, e.endPoint.Y - 5, 20, 20),
-                            Utils.createBalloonTipStyle(),
-                            Utils.createBalloonTipPositioner(),
-                            null);
-
-                    connectionTips.add(tip);
-
-                    ToolTipUtils.balloonToToolTip(tip, 200, 4000);
-                }
-
             }
+              
+           
+            
+            
+            
+            
+            
+            
+//            for(Edge e: getMultiRoute()){
+//                if((e.startPoint.type.name().equals("CONNECTION") && e.startMapID == map.mapID)|| (e.endPoint.type.name().equals("CONNECTION") && e.endMapID == map.mapID)){
+//                    connectionList.add(e);
+//                }
+//            }
+//            for (int i = 0; i <= getMultiRoute().size() - 1; i++) {
+//                Edge e = getMultiRoute().get(i);
+//                //String type = route.get(i).startPoint.type.equals("CONNECTION");
+//
+//                if (e.startPoint.type.name().equals("CONNECTION")
+//                        && e.startMapID == getMap().mapID) {
+//
+//                   
+//                    // the second connection or only have 1 connection
+//                    if ((connectionList.size() == 4 && connectionList.indexOf(e) == 2) || e.startMapID == startLocation.point.map.mapID) {
+//                        if (e.endMapID == 1 && getMap().mapID != 1) {
+//                            instruction = "Go out the current building";
+//                        } else if (e.endMapID != 1 && getMap().mapID == 1) {
+//                            instruction = "Go into the building";
+//                        } else if (allMapList.get(e.endMapID - 1).floor > getMap().floor) {
+//                            instruction = "Go upstairs";
+//                        } else {
+//                            instruction = "Go downstairs";
+//                        }
+//                    }
+//                    
+//                    else if((connectionList.size() == 4 && connectionList.indexOf(e) == 0)|| e.startMapID == endLocation.point.map.mapID)   {
+//                        instruction = "Follow the path";
+//                        
+//                    }
+//                    else{
+//                        instruction = "No way";
+//                    }
+//
+//                    CustomBalloonTip tip = new CustomBalloonTip(this,
+//                            new ToolTipPanel(null, "Routing Guide", instruction),
+//                            new Rectangle(e.startPoint.X - 5, e.startPoint.Y - 5, 20, 20),
+//                            Utils.createBalloonTipStyle(),
+//                            Utils.createBalloonTipPositioner(),
+//                            null);
+//
+//                    connectionTips.add(tip);
+//
+//                    ToolTipUtils.balloonToToolTip(tip, 200, 4000);
+//                }
+//
+//                if (e.endPoint.type.name().equals("CONNECTION")
+//                        && e.endMapID == getMap().mapID) {
+//
+//                    
+//                    if ((connectionList.size() == 4 && connectionList.indexOf(e) == 2) || e.endMapID == startLocation.point.map.mapID) {
+//                        if (e.startMapID == 1 && getMap().mapID != 1) {
+//                            instruction = "Go out the current building";
+//                        } else if (e.startMapID != 1 && getMap().mapID == 1) {
+//                            instruction = "Go into the building";
+//                        } else if (allMapList.get(e.startMapID - 1).floor > getMap().floor) {
+//                            instruction = "Go upstairs";
+//                        } else {
+//                            instruction = "Go downstairs";
+//                        }
+//                    } else if((connectionList.size() == 4 && connectionList.indexOf(e) == 0)|| e.endMapID == endLocation.point.map.mapID)   {
+//                        instruction = "Follow the path";
+//                    }
+//                    else{
+//                        instruction = "no way";
+//                    }
+//
+//                    CustomBalloonTip tip = new CustomBalloonTip(this,
+//                            new ToolTipPanel(null, "Routing Guide ", instruction),
+//                            new Rectangle(e.endPoint.X - 5, e.endPoint.Y - 5, 20, 20),
+//                            Utils.createBalloonTipStyle(),
+//                            Utils.createBalloonTipPositioner(),
+//                            null);
+//
+//                    connectionTips.add(tip);
+//
+//                    ToolTipUtils.balloonToToolTip(tip, 200, 4000);
+//                }
+//
+//            }
         }
     }
 
@@ -663,7 +759,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
         for (Location p : pins) {
             CustomBalloonTip tip = new CustomBalloonTip(this,
-                    new ToolTipPanel(p.image, p.name, p.description),
+                    new ToolTipPanel(p.image, p.name, p.description, 150, 150),
                     new Rectangle(p.point.X - 5, p.point.Y - 5, 20, 20),
                     Utils.createBalloonTipStyle(),
                     Utils.createBalloonTipPositioner(),
@@ -708,7 +804,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
         for (Location p : pins) {
             CustomBalloonTip tip = new CustomBalloonTip(this,
-                    new ToolTipPanel(p.image, p.name, p.description),
+                    new ToolTipPanel(p.image, p.name, p.description, 150, 150),
                     new Rectangle(p.point.X - 5, p.point.Y - 5, 20, 20),
                     Utils.createBalloonTipStyle(),
                     Utils.createBalloonTipPositioner(),
@@ -879,8 +975,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             startLocation = null;
             endLocation = null;
 
-            System.out.println("The start Point name:" + startPointString);
-            System.out.println("The end Point name:" + endPointString);
+//            System.out.println("The start Point name:" + startPointString);
+//            System.out.println("The end Point name:" + endPointString);
             if (startPointString.isEmpty() || endPointString.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please input the location!");
 
@@ -907,9 +1003,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 //                     multi map route 
                 else if (startLocation.point.map.mapID != endLocation.point.map.mapID) {
 
-                    if (startLocation.point.map.mapID != getMap().mapID) {
-                        this.reloadMap(startLocation.point.map);
-                    }
+//                    if (startLocation.point.map.mapID != getMap().mapID) {
+//                        this.reloadMap(startLocation.point.map);
+//                    }
                     drawMultiRoute(startLocation, endLocation);
 
                 } // single map routing 

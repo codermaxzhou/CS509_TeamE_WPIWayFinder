@@ -89,7 +89,6 @@ public class UserLoginFrame extends javax.swing.JFrame {
         adminButton = new javax.swing.JButton();
         CreateAccountButton = new javax.swing.JButton();
         logo = new javax.swing.JLabel();
-        voiceIcon = new javax.swing.JLabel();
         background = new javax.swing.JLabel();
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
@@ -182,15 +181,6 @@ public class UserLoginFrame extends javax.swing.JFrame {
         jPanel1.add(logo);
         logo.setBounds(140, 10, 230, 100);
 
-        voiceIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Voice.png"))); // NOI18N
-        voiceIcon.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                voiceIconMouseClicked(evt);
-            }
-        });
-        jPanel1.add(voiceIcon);
-        voiceIcon.setBounds(320, 190, 30, 40);
-
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/back.png"))); // NOI18N
         background.setPreferredSize(new java.awt.Dimension(451, 350));
         jPanel1.add(background);
@@ -264,10 +254,6 @@ public class UserLoginFrame extends javax.swing.JFrame {
         caf.setVisible(true);
     }//GEN-LAST:event_CreateAccountButtonActionPerformed
 
-    private void voiceIconMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_voiceIconMouseClicked
-        // TODO 
-    }//GEN-LAST:event_voiceIconMouseClicked
-
 
     /**
      * @param args the command line arguments
@@ -324,6 +310,5 @@ public class UserLoginFrame extends javax.swing.JFrame {
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JLabel userNameLabel;
     private javax.swing.JTextField userTextField;
-    private javax.swing.JLabel voiceIcon;
     // End of variables declaration//GEN-END:variables
 }

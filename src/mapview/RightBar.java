@@ -432,6 +432,19 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
         if(e.getSource() == favoriteLabel){
             favoriteLabel.setToolTipText("Show Favorite Locations");
         }
+<<<<<<< Updated upstream
+=======
+        
+        if (e.getSource() == showLabel) {
+            mainPanel.showPins();
+        }
+        
+
+        if (e.getSource() == clearLabel) {
+
+            mainPanel.clearPins();
+        }
+>>>>>>> Stashed changes
 
         //category click 
         if (e.getSource() == buildingLabel) {
