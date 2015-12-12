@@ -202,13 +202,9 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         downIcon = new ImageIcon(this.getClass().getResource("/icons/CircleDown.png"));
         
         screenShot.setIcon(new ImageIcon(this.getClass().getResource("/icons/GoogleCamera.png")));
-<<<<<<< Updated upstream
-
         screenShot.setBounds(450, 0, 50, 50);
 
-=======
-        screenShot.setBounds(450, 0, 50, 50);
->>>>>>> Stashed changes
+
 
         voice.setIcon(new ImageIcon(this.getClass().getResource("/icons/Voice.png")));
         voice.setBounds(500, 10, 30, 30);
@@ -293,8 +289,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         rightArrow.setIcon(rightIcon);
         }
         else{
-        leftArrow.setIcon(upIcon);
-        rightArrow.setIcon(downIcon);   
+        leftArrow.setIcon(downIcon);
+        rightArrow.setIcon(upIcon);   
         
         }
 
