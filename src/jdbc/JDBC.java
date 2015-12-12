@@ -198,7 +198,7 @@ public class JDBC {
            if(l.locationID != -1) continue;
            query = "INSERT INTO Location (LocationID, PointID, category, name, description, mapID, path, favorite) ";
            query += "VALUES(" + getMaxLocID() + ", " + getMaxPointID() + ", \"" + l.category.toString() + "\", \"" + 
-                    l.name + "\", \"" + l.description + "\", " + l.point.map.mapID +  ", \"" + l.path +   ", \"" + l.favorite + "\");";
+                    l.name + "\", \"" + l.description + "\", " + l.point.map.mapID +  ", \"" + l.path +   "\", " + l.favorite + ");";
            Statement stmt = conn.createStatement();
            stmt.executeUpdate(query);
            
@@ -311,7 +311,7 @@ public class JDBC {
            Location l=A.get(i);
            if (l.locationID != -1) {
             query="UPDATE Location SET ";
-            query+="locationID="+l.locationID+",category=\""+l.category+"\",name=\""+l.name+"\",description=\""+l.description+"\",mapID="+ l.point.map.mapID +  ", path=\"" + l.path + "\""+",favorite=\""+l.favorite;
+            query+="locationID="+l.locationID+",category=\""+l.category+"\",name=\""+l.name+"\",description=\""+l.description+"\",mapID="+ l.point.map.mapID +  ", path=\"" + l.path + "\""+", favorite="+l.favorite;
             query+=" where locationID=" + l.locationID + ";";
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(query);
