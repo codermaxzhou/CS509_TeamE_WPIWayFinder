@@ -26,7 +26,7 @@ public class LocationThread extends Thread {
     public void run(){
         for (Location l:locationlist){
             if (l.path.equals("null")) {
-                l.path="../CS509_TeamE_WPIWayFinder/src/icons/Inst-Second-FulClr-Rev.gif";
+                l.path="/icons/Inst-Second-FulClr-Rev.gif";
                 System.out.println("null");
             }
             oriImage=new ImageIcon(l.path);
