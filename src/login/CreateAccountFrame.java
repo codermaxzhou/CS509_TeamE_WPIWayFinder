@@ -114,7 +114,7 @@ public class CreateAccountFrame extends javax.swing.JFrame {
             }
         });
         jPanel3.add(createButton2);
-        createButton2.setBounds(110, 210, 67, 23);
+        createButton2.setBounds(110, 210, 82, 29);
 
         cancelButton2.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         cancelButton2.setText("Cancel");
@@ -124,7 +124,7 @@ public class CreateAccountFrame extends javax.swing.JFrame {
             }
         });
         jPanel3.add(cancelButton2);
-        cancelButton2.setBounds(250, 210, 69, 23);
+        cancelButton2.setBounds(250, 210, 82, 29);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/back.png"))); // NOI18N
         jLabel3.setPreferredSize(new java.awt.Dimension(451, 350));
@@ -152,11 +152,42 @@ public class CreateAccountFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_userTextField2ActionPerformed
 
     private void createButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButton2ActionPerformed
-        // TODO add your handling code here:
+        try {
+            String username = userTextField2.getText().trim();		
+            String password = new String(jPasswordField5.getPassword());		
+            String passwordCheck = new String(jPasswordField6.getPassword());		
+            String sql = "select username from user where username = '"+username+"';";		
+            rs = st.executeQuery(sql);		
+            int count = 0;		
+            while(rs.next()){		
+                count++;		
+            }		
+            if(count > 0) {		
+                JOptionPane.showMessageDialog(null, "Same username existed. Please choose another username."); 		
+            }		
+            else if (username.equals("")){		
+                JOptionPane.showMessageDialog(null, "Please choose a username."); 		
+            }		
+            else if (password.equals("")) {		
+                JOptionPane.showMessageDialog(null, "Password cannot be empty.");            		
+            }		
+            else if (!password.equals(passwordCheck)) {		
+                JOptionPane.showMessageDialog(null, "Retype password is wrong."); 		
+            }		
+            else {		
+                sql = "INSERT INTO user (username, password, type) VALUES (\""+username+"\", \""+password+"\", \"user\");";		
+                st.executeUpdate(sql);		
+                JOptionPane.showMessageDialog(null, "Account creates successfully."); 		
+                this.dispose();		
+            }		
+        }		
+        catch(Exception ex) {		
+            JOptionPane.showMessageDialog(null, "problem creating an account."); 		
+        }
     }//GEN-LAST:event_createButton2ActionPerformed
 
     private void cancelButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButton2ActionPerformed
-        // TODO add your handling code here:
+            this.dispose();
     }//GEN-LAST:event_cancelButton2ActionPerformed
 
     /**
