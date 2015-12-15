@@ -258,7 +258,7 @@ public class AdminLoginFrame extends javax.swing.JFrame {
                File jarPath=new File(UserLoginFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath());
                String propertiesPath=jarPath.getParentFile().getAbsolutePath();
             
-               JOptionPane.showMessageDialog(null, "Problem login to system. Please make sure you have copied the lib folder and the user.config file to this directory:\n" + propertiesPath);  
+               JOptionPane.showMessageDialog(null, "Problem login to system. Please make sure you have copied the lib folder and the user.config file to this directory:\n" + propertiesPath +"\nthen restart the application.");  
         }
     }                                           
 
