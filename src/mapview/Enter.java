@@ -10,50 +10,155 @@ package mapview;
  * @author Emma
  */
 import adminmodule.Location;
-import adminmodule.LocationEdit;
 import adminmodule.Map;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import jdbc.JDBC;
 
-public class Enter extends  JPopupMenu{
-    
-        private RightBar rightBar ;
-        private SecRightSideBar secRightBar;
-        private ArrayList<Map> mapList;
-        
-        
-        
-    
-        public Enter(Location location, MainPanel mainPanel) {
-        JMenuItem item = new JMenuItem("Enter");
+public class Enter extends JPopupMenu {
+
+    private RightBar rightBar;
+    private SecRightSideBar secRightBar;
+    private ArrayList<Map> mapList;
+
+    public Enter(Map locationMap, Location loc, MainPanel mainPanel) {
+        JMenuItem item = new JMenuItem("Enter building");
+        JDBC db = JDBC.getInstance();
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                rightBar.inner();
-                
-               // mainPanel.reloadMap(location.point.map.mapID);
-                rightBar.setIsCampus(false);
-                rightBar.repaint();
-                secRightBar.removeAll();
-                secRightBar.setVisible(false);
+
                 mapList = mainPanel.mapModel.getMapList();
-                for(Map m : mapList){
-                    if(location.name.equals(m.name)){
-                        mainPanel.reloadMap(m.mapID);
-                    }
-                }
-                
-                
+
+                mainPanel.reloadMap(locationMap);
             }
         });
         this.add(item);
+
+        item = new JMenuItem("Set as start point");
+
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainPanel.startPointField.setText(loc.name);
+                mainPanel.clear = true;
+                mainPanel.showSinglePin(loc.name);
+            }
+        });
+        this.add(item);
+
+        item = new JMenuItem("Set as end point");
+
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainPanel.endPointField.setText(loc.name);
+                mainPanel.clear = false;
+                mainPanel.showSinglePin(loc.name);
+            }
+        });
+        this.add(item);
+        if (loc.favorite == 1) {
+            item = new JMenuItem("Delete from favorite");
+            item.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    loc.favorite = 0;
+                    mainPanel.favLocationList.remove(loc);
+                    try {
+                        db.updateSingleLocation(loc);
+                    } catch (SQLException ex) {
+                        System.out.println("problem save favorite");
+                    }
+                }
+            });
+            this.add(item);
+        } else {
+            item = new JMenuItem("Save as favorite");
+
+            item.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    loc.favorite = 1;
+                    mainPanel.favLocationList.add(loc);
+                    try {
+                        db.updateSingleLocation(loc);
+                    } catch (SQLException ex) {
+                        System.out.println("problem save favorite");
+                    }
+                }
+            });
+            this.add(item);
+        }
     }
-        
+
+    public Enter(Location loc, MainPanel mainPanel) {
+        JDBC db = JDBC.getInstance();
+        JMenuItem item = new JMenuItem("Set as start point");
+
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainPanel.startPointField.setText(loc.name);
+                mainPanel.clear = true;
+                mainPanel.showSinglePin(loc.name);
+            }
+        });
+        this.add(item);
+
+        item = new JMenuItem("Set as end point");
+
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainPanel.endPointField.setText(loc.name);
+                mainPanel.clear = false;
+                mainPanel.showSinglePin(loc.name);
+            }
+        });
+        this.add(item);
+
+        if (loc.favorite == 1) {
+            item = new JMenuItem("Delete from favorite");
+            item.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    loc.favorite = 0;
+                    mainPanel.favLocationList.remove(loc);
+                    try {
+                        db.updateSingleLocation(loc);
+                    } catch (SQLException ex) {
+                        System.out.println("problem save favorite");
+                    }
+
+                }
+            });
+            this.add(item);
+        } else {
+            item = new JMenuItem("Save as favorite");
+
+            item.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    loc.favorite = 1;
+                    mainPanel.favLocationList.add(loc);
+                    try {
+                        db.updateSingleLocation(loc);
+                    } catch (SQLException ex) {
+                        System.out.println("problem save favorite");
+                    }
+
+                }
+            });
+            this.add(item);
+        }
+    }
+
     public void setRightBar(RightBar rightBar) {
         this.rightBar = rightBar;
     }

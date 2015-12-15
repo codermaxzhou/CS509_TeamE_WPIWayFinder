@@ -15,6 +15,7 @@ public class Map {
     public String description;
     public Image image;                     // Map's image
     public int floor;
+    public int locationID;
     public String deletedEdge = "";
     public String deletedLocation = "";
     public String deletedPoint = "";

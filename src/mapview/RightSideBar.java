@@ -214,7 +214,7 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
         // show list of location name in second right side bar
         try {
             secRightSideBar.ShowLocationName("CLASSROOM");
-            secRightSideBar.timer.start();
+            //secRightSideBar.timer.start();
         } catch (SQLException ex) {
             Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -235,7 +235,7 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
         try {
 
             secRightSideBar.ShowLocationName("RESTROOM");
-            secRightSideBar.timer.start();
+           // secRightSideBar.timer.start();
         } catch (SQLException ex) {
             Logger.getLogger(RightSideBar.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -350,7 +350,7 @@ public class RightSideBar extends JPanel implements MouseListener, ActionListene
                     
 //                    mainPanel.changeMap(m.mapID);
 //                    mainPanel.setMapIndex(m.mapID);
-                    mainPanel.reloadMap(m.mapID);
+                    mainPanel.reloadMap(m);
                     mainPanel.setShowAllPins(false);
                     mainPanel.setShowPins(false);
                     mainPanel.setDrawRoutes(false);
