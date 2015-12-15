@@ -410,6 +410,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
 
         if(e.getSource() == classroomLabel){
             //classroomMove = true;
+            
             classroomLabel.setToolTipText("Classroom");
             
         }
@@ -451,7 +452,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
 
             secRightSideBar.setVisible(true);
             secRightSideBar.setBackground(new java.awt.Color(0, 178, 219));
-
+            mainPanel.clearPins();
             mainPanel.showLocationPin("BUILDING");
 
             try {
@@ -459,14 +460,14 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
             } catch (SQLException ex) {
                 Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
             }
-            secRightSideBar.timer.start();
+           // secRightSideBar.timer.start();
 
         }
         if (e.getSource() == diningLabel) {
 
             secRightSideBar.setVisible(true);
             secRightSideBar.setBackground(new java.awt.Color(255, 102, 0));
-
+            mainPanel.clearPins();
             mainPanel.showLocationPin("DINING");
 
             try {
@@ -474,13 +475,13 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
             } catch (SQLException ex) {
                 Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
             }
-            secRightSideBar.timer.start();
+            //secRightSideBar.timer.start();
         }
         if (e.getSource() == gymLabel) {
 
             secRightSideBar.setVisible(true);
             secRightSideBar.setBackground(new java.awt.Color(255, 236, 34));
-
+            mainPanel.clearPins();
             mainPanel.showLocationPin("GYM");
 
             try {
@@ -488,14 +489,14 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
             } catch (SQLException ex) {
                 Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
             }
-            secRightSideBar.timer.start();
+            //secRightSideBar.timer.start();
         }
 
         if (e.getSource() == libraryLabel) {
 
             secRightSideBar.setVisible(true);
             secRightSideBar.setBackground(new java.awt.Color(141, 179, 2));
-
+            mainPanel.clearPins();
             mainPanel.showLocationPin("LIBRARY");
 
             try {
@@ -503,13 +504,13 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
             } catch (SQLException ex) {
                 Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
             }
-            secRightSideBar.timer.start();
+            //secRightSideBar.timer.start();
         }
         if (e.getSource() == parkingLabel) {
 
             secRightSideBar.setVisible(true);
             secRightSideBar.setBackground(new java.awt.Color(170, 49, 103));
-
+            mainPanel.clearPins();
             mainPanel.showLocationPin("PARKING");
 
             try {
@@ -517,12 +518,13 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
             } catch (SQLException ex) {
                 Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
             }
-            secRightSideBar.timer.start();
+            //secRightSideBar.timer.start();
         }
 
         if (e.getSource() == classroomLabel) {
             secRightSideBar.setVisible(true);
             secRightSideBar.setBackground(new java.awt.Color(231, 0, 102));
+            mainPanel.clearPins();
             mainPanel.showLocationPin("CLASSROOM");
 
             try {
@@ -530,12 +532,13 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
             } catch (SQLException ex) {
                 Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
             }
-            secRightSideBar.timer.start();
+           // secRightSideBar.timer.start();
         }
 
         if (e.getSource() == restroomLabel) {
             secRightSideBar.setVisible(true);
             secRightSideBar.setBackground(new java.awt.Color(38, 195, 194));
+            mainPanel.clearPins();
             mainPanel.showLocationPin("RESTROOM");
 
             try {
@@ -543,7 +546,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
             } catch (SQLException ex) {
                 Logger.getLogger(RightBar.class.getName()).log(Level.SEVERE, null, ex);
             }
-            secRightSideBar.timer.start();
+           // secRightSideBar.timer.start();
         }
         
         if((e.getSource() == buildingLabel || e.getSource() == gymLabel || e.getSource() == diningLabel || e.getSource() == parkingLabel || e.getSource() == libraryLabel || e.getSource() == restroomLabel || e.getSource() == classroomLabel) && !threadrunning) {

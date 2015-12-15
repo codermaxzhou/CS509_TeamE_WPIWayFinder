@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import login.UserLoginFrame;
 
 
@@ -71,7 +72,7 @@ public class JDBC {
    }
    
    private JDBC() {
-              try {
+       try {
            File jarPath=new File(JDBC.class.getProtectionDomain().getCodeSource().getLocation().getPath());
            String propertiesPath=jarPath.getParentFile().getAbsolutePath();
            
@@ -525,7 +526,12 @@ public class JDBC {
            
            //TODO remove
            //InputStream binaryStream = rs.getBinaryStream("image");
-           temp.image = ImageIO.read(new FileInputStream(temp.path));
+           if(temp.mapID != 1){
+               temp.image = ImageIO.read(new FileInputStream(temp.path));
+           }
+           else{
+               temp.image = new ImageIcon(this.getClass().getResource("/maps/CampusMap.png")).getImage();
+           }
            
            MapInfo info = this.getMapInfo(temp.mapID, temp);
            temp.edgeList = info.edges;

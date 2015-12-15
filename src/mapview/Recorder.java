@@ -7,6 +7,7 @@ import edu.cmu.sphinx.api.SpeechResult;
 import edu.cmu.sphinx.api.StreamSpeechRecognizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jdbc.JDBC;
  
 /**
  * Modified from example provided at www.coderanch.com
@@ -19,7 +20,9 @@ public class Recorder {
     static final long RECORD_TIME = 5000;  // 3 seconds
  
     // path of the wav file
-    File wavFile = new File("record.wav");
+    
+    
+    File wavFile = null;
  
     // format of audio file
     AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
@@ -30,6 +33,19 @@ public class Recorder {
     MainPanel mp;
     
     public Recorder(MainPanel mp) {
+        try {
+           File jarPath=new File(Recorder.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+           String propertiesPath=jarPath.getParentFile().getAbsolutePath();
+           
+           if(System.getProperty("os.name").startsWith("Windows")) {
+               wavFile = new File(propertiesPath + "\\record.wav");
+           } else {
+               wavFile = new File(propertiesPath + "/record.wav");
+           }
+       } catch (Exception ex) {
+           
+       }
+        
         this.mp = mp;
         
         Thread loadVoiceEngine = new Thread(new Runnable() {
@@ -115,8 +131,15 @@ public class Recorder {
         
         InputStream stream = null;
         try {
-            stream = new FileInputStream(new File("record.wav"));
-        } catch (FileNotFoundException ex) {
+            File jarPath=new File(Recorder.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+            String propertiesPath=jarPath.getParentFile().getAbsolutePath();
+            
+            if(System.getProperty("os.name").startsWith("Windows")) {
+               stream = new FileInputStream(new File(propertiesPath + "\\record.wav"));
+            } else {
+               stream = new FileInputStream(new File(propertiesPath + "/record.wav"));
+            }
+        } catch (Exception ex) {
             Logger.getLogger(Recorder.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -145,6 +168,8 @@ public class Recorder {
                 mp.route(loc1, loc2);
             }
         }
+        
+        mp.isRecording = false;
     }
 }
 

@@ -27,11 +27,15 @@ public class LocationThread extends Thread {
         for (Location l:locationlist){
             if (l.path.equals("null")) {
                 l.image = new ImageIcon(this.getClass().getResource("/icons/Inst-Second-FulClr-Rev.gif")).getImage().getScaledInstance(150, 150, BufferedImage.SCALE_SMOOTH);
-                System.out.println("null");
+                //System.out.println("null");
             } else {
-                oriImage=new ImageIcon(l.path);
-                newImage=new ImageIcon(oriImage.getImage().getScaledInstance(150, 150, BufferedImage.SCALE_SMOOTH));
-                l.image = newImage.getImage();
+                try {
+                    oriImage=new ImageIcon(l.path);
+                    newImage=new ImageIcon(oriImage.getImage().getScaledInstance(150, 150, BufferedImage.SCALE_SMOOTH));
+                    l.image = newImage.getImage();
+                } catch(Exception e) {
+                    l.image = new ImageIcon(this.getClass().getResource("/icons/Inst-Second-FulClr-Rev.gif")).getImage().getScaledInstance(150, 150, BufferedImage.SCALE_SMOOTH);
+                }
             }
         }
     }

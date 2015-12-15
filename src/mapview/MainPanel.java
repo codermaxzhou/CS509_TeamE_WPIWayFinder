@@ -131,6 +131,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
 
     // other class
     public MapModel mapModel;
+    public boolean isRecording = false;
     JFrame frame;
    
     private Recorder r = new Recorder(this);
@@ -1200,7 +1201,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             }
             
         }
-        if(e.getSource() == voice){
+        if((e.getSource() == voice) && !isRecording){
+            isRecording = true;
             Thread stopper = new Thread(new Runnable() {
                 public void run() {
                     try {
