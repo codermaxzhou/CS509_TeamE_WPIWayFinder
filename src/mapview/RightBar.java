@@ -96,7 +96,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
     }
 
     public void initComponent() {
-        this.setBackground(new Color(159,193,255));
+        this.setBackground(new Color(240,240,240));
         buildingLabel = new JLabel();
         buildingIcon = new ImageIcon(getClass().getResource("/icons/building.png"));
         buildingLabel.setIcon(buildingIcon);
