@@ -11,9 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class ToolTipPanel extends JPanel {
-    ToolTipPanel(Image img, String locName, String desc) {
+    ToolTipPanel(Image img, String locName, String desc, int x, int y) {
         this.setLayout(new BorderLayout());
-        this.add(new ToolTipImage(img), BorderLayout.CENTER);
+        this.add(new ToolTipImage(img,x,y), BorderLayout.CENTER);
         JTextArea jt = new JTextArea();
         jt.setOpaque(false);
         jt.setText(locName + "\n\n" + desc);

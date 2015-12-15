@@ -3,7 +3,7 @@ package adminmodule;
 import java.awt.Image;
 
 public class Location {
-    public enum Category { DINING, ATM, ADMIN, PARKING, CLASSROOM, RESTROOM };   // we will expand this list later
+    public enum Category { BUILDING, DINING, GYM, LIBRARY, PARKING, CLASSROOM, RESTROOM };   // we will expand this list later
     
     public Point point;                                     // The location's point on the map
     public Category category;                               // Location type
@@ -12,6 +12,7 @@ public class Location {
     public int locationID;                                  // The primary key of this location from the DB
     public String path;
     public Image image=null;
+    public int favorite;
     
     public Location() {
     

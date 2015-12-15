@@ -45,6 +45,8 @@ public class RightPanel extends javax.swing.JPanel {
         locationButton = new javax.swing.JLabel();
         edgeButton = new javax.swing.JLabel();
 
+        setPreferredSize(new java.awt.Dimension(150, 800));
+
         resetButton.setText("Reset");
         resetButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -115,30 +117,28 @@ public class RightPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(resetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(49, 49, 49)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(locationButton)
-                                .addComponent(edgeButton)
-                                .addComponent(pointButton)))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(27, 27, 27)
-                            .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(locationButton)
+                            .addComponent(edgeButton)
+                            .addComponent(pointButton))
+                        .addGap(16, 16, 16)))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(101, 101, 101)
+                .addGap(102, 102, 102)
                 .addComponent(pointButton)
-                .addGap(132, 132, 132)
+                .addGap(131, 131, 131)
                 .addComponent(locationButton)
-                .addGap(149, 149, 149)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
                 .addComponent(edgeButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
+                .addGap(108, 108, 108)
                 .addComponent(saveButton)
                 .addGap(18, 18, 18)
                 .addComponent(resetButton)
@@ -159,7 +159,7 @@ public class RightPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_resetButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        JDBC db = new JDBC();
+        JDBC db = JDBC.getInstance();
         frame.button = AdminFrame.Button.NULL;
         try {
             db.addMap(frame.maps);

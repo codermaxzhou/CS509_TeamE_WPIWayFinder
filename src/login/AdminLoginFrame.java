@@ -7,13 +7,24 @@ package login;
 
 import adminmodule.AdminFrame;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import jdbc.JDBC;
 
 /**
  *
@@ -27,14 +38,40 @@ public class AdminLoginFrame extends javax.swing.JFrame {
     Connection con;
     Statement st;
     ResultSet rs;
+   private Image back = new ImageIcon(this.getClass().getResource("/icons/back.png")).getImage();
 
     /**
      * Creates new form LoginFrame
      */
     public AdminLoginFrame() {
-        connect();
         initComponents();
         this.setTitle("Administrator Login");
+        this.setLocationRelativeTo(null);
+        
+        try {
+           File jarPath=new File(AdminLoginFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+           String propertiesPath=jarPath.getParentFile().getAbsolutePath();
+           
+           BufferedReader r = null;
+           
+           if(System.getProperty("os.name").startsWith("Windows")) {
+               r = new BufferedReader(new FileReader(propertiesPath + "\\user.config"));
+           } else {
+               r = new BufferedReader(new FileReader(propertiesPath + "/user.config"));
+           }
+           
+           String line = r.readLine();
+           USER = line.split("=")[1].trim();
+           line = r.readLine();
+           if(line != null && line.split("=").length > 1)
+                PASS = line.split("=")[1].trim();
+           
+           r.close();
+       } catch (Exception ex) {
+           
+       }
+        
+       connect();
     }
     
     public void connect() {
@@ -52,6 +89,12 @@ public class AdminLoginFrame extends javax.swing.JFrame {
         }
         
     }
+    public void paintComponent(Graphics g) {
+        Image a = new ImageIcon(this.getClass().getResource("/icons/back.png")).getImage();
+        g.drawImage(a, 0, 0, this);
+       
+    }
+
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -71,9 +114,10 @@ public class AdminLoginFrame extends javax.swing.JFrame {
         loginButton = new javax.swing.JButton();
         userButton = new javax.swing.JButton();
 
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("EZ WayFinder");
+        jLabel1.setText("WPI WayFinder");
 
         jLabel2.setText("Username");
 
@@ -121,21 +165,21 @@ public class AdminLoginFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(81, 81, 81)
+                        .addGap(151, 151,151)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
+                        .addGap(55, 55, 55)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
+                        .addGap(28, 28, 28)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(loginButton)
                             .addComponent(userButton)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(userTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)))))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,7 +255,10 @@ public class AdminLoginFrame extends javax.swing.JFrame {
             }
         }
         catch(Exception ex) {
-                JOptionPane.showMessageDialog(null, "Problem login to system."); 
+               File jarPath=new File(UserLoginFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+               String propertiesPath=jarPath.getParentFile().getAbsolutePath();
+            
+               JOptionPane.showMessageDialog(null, "Problem login to system. Please make sure you have copied the lib folder and the user.config file to this directory:\n" + propertiesPath +"\nthen restart the application.");  
         }
     }                                           
 
@@ -276,5 +323,7 @@ public class AdminLoginFrame extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JButton loginButton;
     private javax.swing.JTextField userTextField;
+ 
+    
     // End of variables declaration                   
 }

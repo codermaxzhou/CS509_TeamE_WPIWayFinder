@@ -26,12 +26,17 @@ public class LocationThread extends Thread {
     public void run(){
         for (Location l:locationlist){
             if (l.path.equals("null")) {
-                l.path="../CS509_TeamE_WPIWayFinder/src/icons/Inst-Second-FulClr-Rev.gif";
-                System.out.println("null");
+                l.image = new ImageIcon(this.getClass().getResource("/icons/Inst-Second-FulClr-Rev.gif")).getImage().getScaledInstance(150, 150, BufferedImage.SCALE_SMOOTH);
+                //System.out.println("null");
+            } else {
+                try {
+                    oriImage=new ImageIcon(l.path);
+                    newImage=new ImageIcon(oriImage.getImage().getScaledInstance(150, 150, BufferedImage.SCALE_SMOOTH));
+                    l.image = newImage.getImage();
+                } catch(Exception e) {
+                    l.image = new ImageIcon(this.getClass().getResource("/icons/Inst-Second-FulClr-Rev.gif")).getImage().getScaledInstance(150, 150, BufferedImage.SCALE_SMOOTH);
+                }
             }
-            oriImage=new ImageIcon(l.path);
-            newImage=new ImageIcon(oriImage.getImage().getScaledInstance(150, 150, BufferedImage.SCALE_SMOOTH));
-            l.image = newImage.getImage();
         }
     }
     

@@ -16,11 +16,12 @@ import adminmodule.Location;
 import adminmodule.Map;
 import adminmodule.MapInfo;
 import adminmodule.Point;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Statement;
@@ -31,7 +32,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import login.UserLoginFrame;
+
 
 /**
  *
@@ -56,7 +62,38 @@ public class JDBC {
    private int isInteriorMap;
    private int path;
    
-   public JDBC() {
+   static private JDBC instance = null;
+   
+   public static JDBC getInstance() {
+       // this is not thread-safe but it's ok since we don't have
+       // multiple threads accessing the object
+       if(instance == null) instance = new JDBC();
+       return instance;
+   }
+   
+   private JDBC() {
+       try {
+           File jarPath=new File(JDBC.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+           String propertiesPath=jarPath.getParentFile().getAbsolutePath();
+           
+           BufferedReader r = null;
+           
+           if(System.getProperty("os.name").startsWith("Windows")) {
+               r = new BufferedReader(new FileReader(propertiesPath + "\\user.config"));
+           } else {
+               r = new BufferedReader(new FileReader(propertiesPath + "/user.config"));
+           }
+           
+           String line = r.readLine();
+           USER = line.split("=")[1].trim();
+           line = r.readLine();
+           if(line != null && line.split("=").length > 1)
+                PASS = line.split("=")[1].trim();
+           
+           r.close();
+       } catch (Exception ex) {
+           
+       }
        try {
            Class.forName("com.mysql.jdbc.Driver");
            conn = DriverManager.getConnection(DB_URL,USER,PASS);
@@ -80,10 +117,12 @@ public class JDBC {
        } catch (ClassNotFoundException | SQLException ex) {
            System.out.println("Problem creating connection.");
        }
+       
+
    }
    
    public MapInfo getMapInfo(int MapID, Map map) throws SQLException {
-       String query = "SELECT locationID, pointID, category, name, description, path, mapID FROM Location WHERE MapID = " + MapID + ";";
+       String query = "SELECT locationID, pointID, category, name, description, path, mapID , favorite FROM Location WHERE MapID = " + MapID + ";";
        Statement stmt = conn.createStatement();
        ResultSet rs = stmt.executeQuery(query);
        
@@ -101,16 +140,22 @@ public class JDBC {
            temp.name = rs.getString("name");
            temp.point = null;
            temp.path = rs.getString("path");
+           temp.favorite=rs.getInt("favorite");
            switch(rs.getString("category")) {
+               case "BUILDING": temp.category = Location.Category.BUILDING;
+                              break;
+               case "LIBRARY": temp.category = Location.Category.LIBRARY;
+                              break;
                case "DINING": temp.category = Location.Category.DINING;
                               break;
-               case "ATM": temp.category = Location.Category.ATM;
+               case "GYM": temp.category = Location.Category.GYM;
                            break;
                case "CLASSROOM": temp.category = Location.Category.CLASSROOM;
                                 break;
                case "RESTROOM": temp.category = Location.Category.RESTROOM;
                                 break;
-               default: temp.category = Location.Category.PARKING;
+               case "PARKING": temp.category = Location.Category.PARKING;
+                              break;
            }
            
            locMap.put(rs.getInt("pointID"), temp); //Why is this "pointID", not "locationID"?
@@ -125,18 +170,14 @@ public class JDBC {
            Point temp = new Point();
            temp.X = rs.getInt("X");
            temp.Y = rs.getInt("Y");
-           Location partner = locMap.get(rs.getInt("pointID"));
-           temp.location = partner;
-//           if(partner != null) {
-//               partner.point = temp;
-//               temp.type = Point.Type.LOCATION;
-//           } else
-//               temp.type = Point.Type.WAYPOINT;
            
+           if(locMap.containsKey(rs.getInt("pointID"))) {
+                Location partner = locMap.get(rs.getInt("pointID"));
+                temp.location = partner;
+                partner.point = temp;
+           }
+
            switch(rs.getString("type")) {
-               case "LOCATION": temp.type = Point.Type.LOCATION;
-                                partner.point = temp;
-                              break;
                case "CONNECTION": temp.type = Point.Type.CONNECTION;
                            break;
                case "WAYPOINT": temp.type = Point.Type.WAYPOINT;
@@ -185,9 +226,9 @@ public class JDBC {
        for(int i = 0; i < A.size(); ++i) {
            Location l = A.get(i);
            if(l.locationID != -1) continue;
-           query = "INSERT INTO Location (LocationID, PointID, category, name, description, mapID, path) ";
+           query = "INSERT INTO Location (LocationID, PointID, category, name, description, mapID, path, favorite) ";
            query += "VALUES(" + getMaxLocID() + ", " + getMaxPointID() + ", \"" + l.category.toString() + "\", \"" + 
-                    l.name + "\", \"" + l.description + "\", " + l.point.map.mapID +  ", \"" + l.path + "\");";
+                    l.name + "\", \"" + l.description + "\", " + l.point.map.mapID +  ", \"" + l.path.replace("\\", "\\\\") +   "\", " + l.favorite + ");";
            Statement stmt = conn.createStatement();
            stmt.executeUpdate(query);
            
@@ -255,6 +296,44 @@ public class JDBC {
        
        return true;
    }
+   //get userid from username
+   public int returnUserId(String userName) throws SQLException{
+       String query;
+       query="SELECT userid FROM user WHERE username="+userName+";";
+       ResultSet rs = stmt.executeQuery(query);
+       int userid=rs.getInt("userid");
+       return userid;
+   }
+   //   save favorite point
+   public boolean saveFavorite(int userID,int locationID) throws SQLException{
+       String query;
+       query="INSERT INTO Favorite (userid,locationid)";
+       query+="VALUES("+userID+","+locationID+");";
+       Statement stmt = conn.createStatement();
+       stmt.executeUpdate(query);
+       return true;      
+   }
+   //delete favorite point
+   public boolean deleteFavorite(int userID,int locationID) throws SQLException{
+       String query;
+       query="DELETE FROM Favorite WHERE userid="+userID+"AND locationid="+locationID+";";
+       Statement stmt = conn.createStatement();
+       stmt.executeUpdate(query);
+       return true; 
+       
+   }
+   //read from favorite point
+   public ArrayList<Integer> getfavorite(int userid) throws SQLException{
+       String query;
+       query="SELECT FROM Favorite WHERE userid="+userid+";";
+       Statement stmt = conn.createStatement();
+       ResultSet rs = stmt.executeQuery(query);
+       
+       ArrayList<Integer> locationlist = new ArrayList<Integer>();
+       return locationlist;
+       
+       
+   }
    //########################
    public boolean updateLocation(ArrayList<Location> A) throws SQLException{
        String query = null;
@@ -262,7 +341,7 @@ public class JDBC {
            Location l=A.get(i);
            if (l.locationID != -1) {
             query="UPDATE Location SET ";
-            query+="locationID="+l.locationID+",category=\""+l.category+"\",name=\""+l.name+"\",description=\""+l.description+"\",mapID="+ l.point.map.mapID +  ", path=\"" + l.path + "\"";
+            query+="locationID="+l.locationID+",category=\""+l.category+"\",name=\""+l.name+"\",description=\""+l.description+"\",mapID="+ l.point.map.mapID +  ", path=\"" + l.path.replace("\\", "\\\\") + "\""+", favorite="+l.favorite;
             query+=" where locationID=" + l.locationID + ";";
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(query);
@@ -288,6 +367,15 @@ public class JDBC {
        return true;
    }
    
+   public boolean updateSingleLocation(Location l) throws SQLException{
+       String query = null;
+       query = "UPDATE Location SET ";
+       query += "favorite = " + l.favorite;
+       query += " where locationID=" + l.locationID + ";";
+       Statement stmt = conn.createStatement();
+       stmt.executeUpdate(query);
+       return true;
+   }
    
    public boolean deleteALL(String tableName) throws SQLException{
        String query=null;
@@ -306,7 +394,7 @@ public class JDBC {
                 int isBldgMap = m.isInteriorMap ? 1 : 0;
 
                 query = "INSERT INTO Map (mapID, name, description, path, floor, isInteriorMap, locationID) ";
-                query += "VALUES('" + maxMapID + "', '" + m.name + "', '" + m.description + "', '" + m.path + "', " + m.floor+","+isBldgMap + "," + m.locationID + ");";
+                query += "VALUES('" + maxMapID + "', '" + m.name + "', '" + m.description + "', '" + m.path.replace("\\", "\\\\") + "', " + m.floor+","+isBldgMap + "," + m.locationID + ");";
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(query);
 
@@ -383,6 +471,7 @@ public class JDBC {
        
        return true;
    }
+ 
    
    public GlobalMapInfo getGlobalMapInfo() throws SQLException, IOException {
        ArrayList<Map> maps = showAllMap();
@@ -437,7 +526,12 @@ public class JDBC {
            
            //TODO remove
            //InputStream binaryStream = rs.getBinaryStream("image");
-           temp.image = ImageIO.read(new FileInputStream(temp.path));
+           if(temp.mapID != 1){
+               temp.image = ImageIO.read(new FileInputStream(temp.path));
+           }
+           else{
+               temp.image = new ImageIcon(this.getClass().getResource("/maps/CampusMap.png")).getImage();
+           }
            
            MapInfo info = this.getMapInfo(temp.mapID, temp);
            temp.edgeList = info.edges;
@@ -551,5 +645,6 @@ public class JDBC {
     public void setMaxMapID(int maxMapID) {
         this.maxMapID = maxMapID;
     }
+
     
 }

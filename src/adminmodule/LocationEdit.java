@@ -38,7 +38,7 @@ public class LocationEdit extends JFrame {
     public class Information extends JPanel {
 
         
-        private String options[] = {"DINING", "ATM", "ADMIN", "PARKING", "CLASSROOM", "RESTROOM"};
+        private String options[] = {"BUILDING", "DINING", "GYM", "LIBRARY", "PARKING", "CLASSROOM", "RESTROOM"};
 
         /* private JRadioButton jrb1 = new JRadioButton("DINING");// 定义一个单选按钮
          private JRadioButton jrb2 = new JRadioButton("ATM");// 定义一个单选按钮
@@ -121,18 +121,25 @@ public class LocationEdit extends JFrame {
                     l.description = Description.getText();
                     if (box.getSelectedItem() == "DINING") {
                         l.category = Location.Category.DINING;
-                    } else if (box.getSelectedItem() == "ATM") {
-                        l.category = Location.Category.ATM;
-                    } else if (box.getSelectedItem() == "ADMIN") {
-                        l.category = Location.Category.ADMIN;
+                    } else if (box.getSelectedItem() == "GYM") {
+                        l.category = Location.Category.GYM;
+                    } else if (box.getSelectedItem() == "LIBRARY") {
+                        l.category = Location.Category.LIBRARY;
                     }  else if (box.getSelectedItem() == "CLASSROOM") {
                         l.category = Location.Category.CLASSROOM;
                     } else if (box.getSelectedItem() == "RESTROOM") {
                         l.category = Location.Category.RESTROOM;
-                    } else {
+                    } 
+                     else if (box.getSelectedItem() == "BUILDING") {
+                        l.category = Location.Category.BUILDING;
+                    }
+                     else if (box.getSelectedItem() == "PARKING") {
                         l.category = Location.Category.PARKING;
                     }
-                    l.path = chooser.getSelectedFile ().getAbsolutePath ();
+                    if(chooser.getSelectedFile() == null)
+                        l.path = "null";
+                    else
+                        l.path = chooser.getSelectedFile ().getAbsolutePath ();
                     /*if(jrb1.isSelected()) l.category = Location.Category.DINING;
                      else if(jrb2.isSelected()) l.category = Location.Category.ATM;
                      else if(jrb3.isSelected()) l.category = Location.Category.ADMIN;

@@ -14,10 +14,10 @@ public class ToolTipImage extends JPanel {
     private Image img;
    // private String defaultpath="";
     
-    public ToolTipImage (Image img) {
-        this.setMinimumSize(new Dimension(150, 150));
-        this.setPreferredSize(new Dimension(150, 150));
-        this.setMaximumSize(new Dimension(150, 150));
+    public ToolTipImage (Image img, int x, int y) {
+        this.setMinimumSize(new Dimension(x, y));
+        this.setPreferredSize(new Dimension(x, y));
+        this.setMaximumSize(new Dimension(x, y));
         
         this.img = img;
     }
