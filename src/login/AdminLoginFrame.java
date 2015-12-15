@@ -11,14 +11,20 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import jdbc.JDBC;
 
 /**
  *
@@ -38,10 +44,34 @@ public class AdminLoginFrame extends javax.swing.JFrame {
      * Creates new form LoginFrame
      */
     public AdminLoginFrame() {
-        connect();
         initComponents();
         this.setTitle("Administrator Login");
         this.setLocationRelativeTo(null);
+        
+        try {
+           File jarPath=new File(AdminLoginFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+           String propertiesPath=jarPath.getParentFile().getAbsolutePath();
+           
+           BufferedReader r = null;
+           
+           if(System.getProperty("os.name").startsWith("Windows")) {
+               r = new BufferedReader(new FileReader(propertiesPath + "\\user.config"));
+           } else {
+               r = new BufferedReader(new FileReader(propertiesPath + "/user.config"));
+           }
+           
+           String line = r.readLine();
+           USER = line.split("=")[1].trim();
+           line = r.readLine();
+           if(line != null && line.split("=").length > 1)
+                PASS = line.split("=")[1].trim();
+           
+           r.close();
+       } catch (Exception ex) {
+           
+       }
+        
+       connect();
     }
     
     public void connect() {

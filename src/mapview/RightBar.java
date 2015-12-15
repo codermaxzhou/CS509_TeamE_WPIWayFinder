@@ -342,6 +342,15 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
 
             mainPanel.showFavPins();
         }
+         if (e.getSource() == showLabel) {
+            mainPanel.showPins();
+        }
+        
+
+        if (e.getSource() == clearLabel) {
+
+            mainPanel.clearPins();
+        }
    
     }
 
@@ -434,15 +443,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
         }
 
         
-        if (e.getSource() == showLabel) {
-            mainPanel.showPins();
-        }
-        
-
-        if (e.getSource() == clearLabel) {
-
-            mainPanel.clearPins();
-        }
+       
 
 
         //category click 

@@ -198,8 +198,8 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         rightIcon = new ImageIcon(this.getClass().getResource("/icons/CircleRight.png"));
         rightArrow.setIcon(rightIcon);
         
-        upIcon = new ImageIcon(this.getClass().getResource("/icons/CircleUp.png"));
-        downIcon = new ImageIcon(this.getClass().getResource("/icons/CircleDown.png"));
+      //  upIcon = new ImageIcon(this.getClass().getResource("/icons/CircleUp.png"));
+      //  downIcon = new ImageIcon(this.getClass().getResource("/icons/CircleDown.png"));
         
         screenShot.setIcon(new ImageIcon(this.getClass().getResource("/icons/GoogleCamera.png")));
         screenShot.setBounds(450, 0, 50, 50);
@@ -282,19 +282,20 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
         endAutoSuggestor.setDictionary(suggestions);
     }
     
-     private void setCampusIcon(int mapID) {
-        
-        if (map.mapID == 1){
-        leftArrow.setIcon(leftIcon);
-        rightArrow.setIcon(rightIcon);
-        }
-        else{
-        leftArrow.setIcon(downIcon);
-        rightArrow.setIcon(upIcon);   
-        
-        }
+          /*  private void setCampusIcon(int mapID) {
 
-}
+               if (map.mapID == 1){
+               leftArrow.setIcon(leftIcon);
+               rightArrow.setIcon(rightIcon);
+               }
+               else{
+               leftArrow.setIcon(downIcon);
+               rightArrow.setIcon(upIcon);   
+
+               }
+    
+
+}*/
 
     public void reloadMap(Map mapToLoad) {
     
@@ -331,7 +332,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             mapView.getSecRightSideBar().repaint();
          // mapView.getSecRightSideBar().setIsCampus(false);
          //   mapView.getSecRightSideBar().changeBackGround();
-            setCampusIcon(map.mapID);
+          /*  setCampusIcon(map.mapID);*/
             
         } else {
             mapView.getRightBar().setIsCampus(true);
@@ -340,7 +341,7 @@ public class MainPanel extends JPanel implements MouseListener, ActionListener {
             mapView.getSecRightSideBar().repaint();
           //  mapView.getSecRightSideBar().setIsCampus(true);
          //   mapView.getSecRightSideBar().changeBackGround();
-            setCampusIcon(map.mapID);
+
         }
 
         pointList = getMap().pointList;

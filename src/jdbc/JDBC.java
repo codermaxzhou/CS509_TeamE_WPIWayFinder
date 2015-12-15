@@ -16,9 +16,11 @@ import adminmodule.Location;
 import adminmodule.Map;
 import adminmodule.MapInfo;
 import adminmodule.Point;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,7 +32,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import login.UserLoginFrame;
 
 
 /**
@@ -66,6 +71,28 @@ public class JDBC {
    }
    
    private JDBC() {
+              try {
+           File jarPath=new File(JDBC.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+           String propertiesPath=jarPath.getParentFile().getAbsolutePath();
+           
+           BufferedReader r = null;
+           
+           if(System.getProperty("os.name").startsWith("Windows")) {
+               r = new BufferedReader(new FileReader(propertiesPath + "\\user.config"));
+           } else {
+               r = new BufferedReader(new FileReader(propertiesPath + "/user.config"));
+           }
+           
+           String line = r.readLine();
+           USER = line.split("=")[1].trim();
+           line = r.readLine();
+           if(line != null && line.split("=").length > 1)
+                PASS = line.split("=")[1].trim();
+           
+           r.close();
+       } catch (Exception ex) {
+           
+       }
        try {
            Class.forName("com.mysql.jdbc.Driver");
            conn = DriverManager.getConnection(DB_URL,USER,PASS);
@@ -89,6 +116,8 @@ public class JDBC {
        } catch (ClassNotFoundException | SQLException ex) {
            System.out.println("Problem creating connection.");
        }
+       
+
    }
    
    public MapInfo getMapInfo(int MapID, Map map) throws SQLException {
@@ -198,7 +227,7 @@ public class JDBC {
            if(l.locationID != -1) continue;
            query = "INSERT INTO Location (LocationID, PointID, category, name, description, mapID, path, favorite) ";
            query += "VALUES(" + getMaxLocID() + ", " + getMaxPointID() + ", \"" + l.category.toString() + "\", \"" + 
-                    l.name + "\", \"" + l.description + "\", " + l.point.map.mapID +  ", \"" + l.path +   "\", " + l.favorite + ");";
+                    l.name + "\", \"" + l.description + "\", " + l.point.map.mapID +  ", \"" + l.path.replace("\\", "\\\\") +   "\", " + l.favorite + ");";
            Statement stmt = conn.createStatement();
            stmt.executeUpdate(query);
            
@@ -311,7 +340,7 @@ public class JDBC {
            Location l=A.get(i);
            if (l.locationID != -1) {
             query="UPDATE Location SET ";
-            query+="locationID="+l.locationID+",category=\""+l.category+"\",name=\""+l.name+"\",description=\""+l.description+"\",mapID="+ l.point.map.mapID +  ", path=\"" + l.path + "\""+", favorite="+l.favorite;
+            query+="locationID="+l.locationID+",category=\""+l.category+"\",name=\""+l.name+"\",description=\""+l.description+"\",mapID="+ l.point.map.mapID +  ", path=\"" + l.path.replace("\\", "\\\\") + "\""+", favorite="+l.favorite;
             query+=" where locationID=" + l.locationID + ";";
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(query);
@@ -364,7 +393,7 @@ public class JDBC {
                 int isBldgMap = m.isInteriorMap ? 1 : 0;
 
                 query = "INSERT INTO Map (mapID, name, description, path, floor, isInteriorMap, locationID) ";
-                query += "VALUES('" + maxMapID + "', '" + m.name + "', '" + m.description + "', '" + m.path + "', " + m.floor+","+isBldgMap + "," + m.locationID + ");";
+                query += "VALUES('" + maxMapID + "', '" + m.name + "', '" + m.description + "', '" + m.path.replace("\\", "\\\\") + "', " + m.floor+","+isBldgMap + "," + m.locationID + ");";
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(query);
 
