@@ -148,27 +148,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
         favoriteLabel.setIcon(favoriteIcon);
         favoriteLabel.setBounds(15, 680, 35, 35);
         
-        //camera
-//        cameraLabel = new JLabel();
-//        cameraIcon = new ImageIcon(getClass().getResource("/icons/show.png"));
-//        cameraLabel.setIcon(cameraIcon);
-//        cameraLabel.setBounds(30, 750, 35, 35);
-//        clearButton = new JButton();
-//        clearButton.setText("Clear Pins");
-        //clearButton.setBounds(50, 700, 15, 60);
-//        
-//        showButton = new JButton();
-//        showButton.setText("Show Pins");
-        //showButton.setBounds(50, 750, 15, 60);
-        
        
-        
-
-//        floorList.setBorder(javax.swing.BorderFactory.createTitledBorder("Floor "));
-//        floorList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-//        floorList.setToolTipText("Choose Floor in Project Center");
-//        scrollPane = new JScrollPane();
-//        scrollPane.setViewportView(floorList);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(null);
@@ -479,7 +459,7 @@ public class RightBar extends javax.swing.JPanel implements MouseListener, Actio
         if (e.getSource() == gymLabel) {
 
             secRightSideBar.setVisible(true);
-            secRightSideBar.setBackground(new java.awt.Color(255, 236, 34));
+            secRightSideBar.setBackground(new java.awt.Color(215, 15, 29));
 
             mainPanel.showLocationPin("GYM");
 

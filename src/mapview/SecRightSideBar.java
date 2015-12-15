@@ -106,7 +106,7 @@ public class SecRightSideBar extends javax.swing.JPanel implements MouseListener
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setBackground(new java.awt.Color(159, 193, 255));
+        setBackground(new java.awt.Color(204, 204, 204));
         setPreferredSize(new java.awt.Dimension(170, 800));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
