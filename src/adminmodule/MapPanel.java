@@ -44,21 +44,28 @@ public class MapPanel extends JScrollPane {
         for (Point p : frame.points) {
             int x = p.X - this.getHorizontalScrollBar().getValue();
             int y = p.Y - this.getVerticalScrollBar().getValue();
-            switch (p.type) {
-                case WAYPOINT:
+            
+            if (p.location != null) {
+                 if (!(x < 0 || y < 0)) {
+                        g.fillRect(x-5, y-5, 10, 10);
+                    }
+            }
+            else if (p.type == Point.Type.WAYPOINT) {
                     if (!(x < 0 || y < 0)) {
                         g.fillOval(x-5, y-5, 10, 10);
                     }
-                    break;
-                case LOCATION:
-                    if (!(x < 0 || y < 0)) {
-                        g.fillRect(x-5, y-5, 10, 10);
-                    }
-                    break;
             }
+            else if (p.type == Point.Type.CONNECTION) {
+                    if (!(x < 0 || y < 0)) {
+                        g.draw3DRect(x-5, y-5, 10, 10, true);
+                    }
+            }
+                 
         }
+        
         for (Edge e : frame.edges) {
-            g.drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
+            if(e.startMapID == e.endMapID)
+                g.drawLine(e.startPoint.X, e.startPoint.Y, e.endPoint.X, e.endPoint.Y);
         }
     }
 

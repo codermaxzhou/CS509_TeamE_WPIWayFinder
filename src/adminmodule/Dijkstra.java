@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 
-public class Dijkstra {
+public class Dijkstra implements RoutingAlgorithm {
     private HashMap<Point, Integer> pToIndex = null;
     private HashMap<Integer, Point> iToPoint = null;
     private HashMap<String, Edge> kToEdge = null;
@@ -21,100 +21,14 @@ public class Dijkstra {
     
     // Only for testing purposes to demostrate how the algorithm works
     public static void main(String[] args) {
-        /*ArrayList<Point> points = new ArrayList<>();
-        ArrayList<Edge>  edges  = new ArrayList <>();
         
-        // The algorithm doesn't care about the various point
-        // attributes, it just needs the set of points to treat
-        // as nodes/vertices in the graph
-        Point a = new Point();
-        a.name = "a";
-        Point b = new Point();
-        b.name = "b";
-        Point c = new Point();
-        c.name = "c";
-        Point d = new Point();
-        d.name = "d";
-        Point e = new Point();
-        e.name = "e";
-        Point f = new Point();
-        f.name = "f";
-        
-        points.add(a);
-        points.add(b);
-        points.add(c);
-        points.add(d);
-        points.add(e);
-        points.add(f);
-        
-        Edge edge = new Edge();
-        edge.startPoint = a;
-        edge.endPoint = b;
-        edge.weight = 5;
-        edges.add(edge);
-        
-        edge = new Edge();
-        edge.startPoint = a;
-        edge.endPoint = c;
-        edge.weight = 20;
-        edges.add(edge);
-        
-        edge = new Edge();
-        edge.startPoint = a;
-        edge.endPoint = f;
-        edge.weight = 100;
-        edges.add(edge);
-        
-        edge = new Edge();
-        edge.startPoint = b;
-        edge.endPoint = e;
-        edge.weight = 10;
-        edges.add(edge);
-        
-        edge = new Edge();
-        edge.startPoint = c;
-        edge.endPoint = f;
-        edge.weight = 15;
-        edges.add(edge);
-        
-        edge = new Edge();
-        edge.startPoint = c;
-        edge.endPoint = e;
-        edge.weight = 2;
-        edges.add(edge);
-        
-        edge = new Edge();
-        edge.startPoint = c;
-        edge.endPoint = d;
-        edge.weight = 70;
-        edges.add(edge);
-        
-        edge = new Edge();
-        edge.startPoint = d;
-        edge.endPoint = f;
-        edge.weight = 30;
-        edges.add(edge);
-        
-        edge = new Edge();
-        edge.startPoint = d;
-        edge.endPoint = e;
-        edge.weight = 100;
-        edges.add(edge);
-        
-        Dijkstra algo = new Dijkstra(edges, points);
-        edges = (ArrayList)algo.calculate(a, f);
-        System.out.println("Shortest Path: ");
-        for(int i = 0; i < edges.size(); ++i) {
-            edge = edges.get(i);
-            System.out.print(edge.startPoint.name + "-" + edge.endPoint.name);
-            if(i != edges.size() - 1) System.out.print(", ");
-        }*/
     }
     
     public Dijkstra(Collection<Edge> edgeSet, Collection<Point> vertexSet) {
         resetGraph(edgeSet, vertexSet);
     }
     
+    @Override
     public final void resetGraph(Collection<Edge> edgeSet, Collection<Point> vertexSet) {
         pToIndex = new HashMap<>();
         iToPoint = new HashMap<>();
@@ -134,9 +48,11 @@ public class Dijkstra {
             iToPoint.put(i++, pt);
         }
         
+        int j = 0;
         for(Edge e : edgeSet) {
             int x = pToIndex.get(e.startPoint);
             int y = pToIndex.get(e.endPoint);
+            
             
             kToEdge.put(x + "-" + y, e);
             kToEdge.put(y + "-" + x, e);
@@ -146,6 +62,7 @@ public class Dijkstra {
         }
     }
     
+    @Override
     public Collection<Edge> calculate(Point start, Point end) {
         int source = pToIndex.get(start);
         int dest   = pToIndex.get(end);
