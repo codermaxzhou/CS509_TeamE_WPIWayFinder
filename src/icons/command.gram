@@ -1,0 +1,5 @@
+#JSGF V1.0
+grammar command;
+public <command> = <place> <to> <place>;
+<place> = (project center | fuller lab | parking lot | campus center);
+<to> = to;
