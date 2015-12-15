@@ -43,6 +43,10 @@ public class Recorder {
                 configuration
                         .setLanguageModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
                 
+                configuration.setGrammarPath("resource:/icons/");
+                configuration.setGrammarName("command");
+                configuration.setUseGrammar(true);
+                
                 try {
                     recognizer = new StreamSpeechRecognizer(configuration);
                 } catch (IOException ex) {
@@ -127,7 +131,8 @@ public class Recorder {
             
             recognizer.stopRecognition();
             
-            phrase.trim();
+            phrase = phrase.replace("<unk>", "").trim();
+            
             System.out.println("phrase is: " + phrase);
             if(phrase.contains(" to ")) {
                 String loc1 = "";
